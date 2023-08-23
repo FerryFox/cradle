@@ -16,4 +16,37 @@ public class CradleApplication {
 		if(age > 18) return  true;
 		else return  false;
 	}
+
+	static boolean isEvenNumber(int n)
+	{
+		if(n%2 == 0)
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	static int addNumbers(int a, int b)
+	{
+		return a + b;
+	}
+
+	static int multiplayNumbers(int a, int b)
+	{
+		return a * b;
+	}
+
+	static String convertToHuge(String s )
+	{
+		return  s.toUpperCase();
+	}
+
+	static boolean isPositivNumber(int number)
+	{
+		if(number >= 0)
+		{
+			return true;
+		}
+		else return false;
+	}
 }

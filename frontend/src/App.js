@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Dashboard from './feature/dashboard/Dashboard';
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import HomePage from './HomePage';
+import Dashboard from './feature/dashboard/Dashboard';
+import SignInPage from './feature/user/SignInPage';
+import SignUpPage from './feature/user/SignUpPage';
+import NotFoundPage from './NotFoundPage';
+
 function App() {
     //code
     const [soup, setSoup] = useState(null);
@@ -21,17 +26,25 @@ function App() {
             .catch((error) => console.error("Error fetching soup:", error));
     }, []);
 
-
     //view
-    return (
-        <ThemeProvider theme={darkTheme}>
-        <CssBaseline enableColorScheme/>
-        <Router>
-            <div className="App">
-                <Dashboard></Dashboard>
-            </div>
-        </Router>
-        </ThemeProvider>
+return (
+<div className="App">
+    <ThemeProvider theme={darkTheme}>
+    <CssBaseline enableColorScheme/>
+
+            <Router>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/signin" element={<SignInPage />} />
+                    <Route path="/signup" element={<SignUpPage />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+            </Router>
+
+
+    </ThemeProvider>
+</div>
     );
 }
 

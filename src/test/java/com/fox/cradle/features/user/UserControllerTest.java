@@ -1,24 +1,22 @@
 package com.fox.cradle.features.user;
 
-import com.fox.cradle.features.user.User;
-import com.fox.cradle.features.user.UserService;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@SpringBootTest
 public class UserControllerTest {
 
-    @InjectMocks
     private UserController userController;
 
     @Mock
@@ -26,8 +24,15 @@ public class UserControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before("")
+    @BeforeEach
     public void setup() {
+        // Initialize Mockito annotations
+        MockitoAnnotations.initMocks(this);
+
+        // Create instance of userController with mocked userService
+        userController = new UserController(userService);
+
+        // Setup mockMvc with userController instance
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
@@ -35,14 +40,30 @@ public class UserControllerTest {
     public void testGetUserByUsername() throws Exception {
         User mockUser = new User();
         mockUser.setUsername("Alice");
-        mockUser.setPassword("password1");
+        mockUser.setPassword("password");
 
         when(userService.getUserByUsername("Alice")).thenReturn(mockUser);
 
-        mockMvc.perform(get("/users/Alice")
+        mockMvc.perform(get("/api/user/username/Alice")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("Alice"))
-                .andExpect(jsonPath("$.password").value("password1"));
+                .andExpect(jsonPath("$.password").value("password"));
+    }
+
+    @Test
+    public void testAddUser() throws Exception {
+        User mockUser = new User();
+        mockUser.setUsername("Alice");
+        mockUser.setPassword("password");
+
+        when(userService.addUser(mockUser)).thenReturn(mockUser);
+
+        mockMvc.perform(post("/api/user/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"Alice\",\"password\":\"password\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("Alice"))
+                .andExpect(jsonPath("$.password").value("password"));
     }
 }

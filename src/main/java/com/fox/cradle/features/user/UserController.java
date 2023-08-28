@@ -2,7 +2,6 @@ package com.fox.cradle.features.user;
 
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/api/user")
 public class UserController
@@ -14,16 +13,22 @@ public class UserController
         this._userService = userService;
     }
 
+    @GetMapping("/id/{id}")
+    public User getUserById(@PathVariable long id)
+    {
+        return _userService.getUserById(id);
+    }
+
+    @GetMapping("/username/{username}")
+    public User getUserByUsername(@PathVariable String username)
+    {
+        return _userService.getUserByUsername(username);
+    }
+
     @PostMapping
     public User addUser(@RequestBody User user)
     {
         return _userService.addUser(user);
-    }
-
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable long id)
-    {
-        return _userService.getUserById(id);
     }
 
     @DeleteMapping("/{id}")
@@ -37,6 +42,4 @@ public class UserController
     {
         return _userService.putUser(id, newUserData);
     }
-
-
 }

@@ -10,7 +10,7 @@ public class PasswordValidaterTest
     @Test
     public void isPasswordValidTest()
     {
-        String password = "this is a 5 Good password";
+        String password = "this is a 5& Good password";
         boolean actual = PasswordValidater.isValid(password);
         Assertions.assertTrue(actual, "password meets all criteria");
     }
@@ -89,7 +89,7 @@ public class PasswordValidaterTest
     @Test
     public void passwordHasSpecialCharacter()
     {
-        String password = "i need a lot of $$$$";
+        String password = "i need a lot of text &&&&&&";
         boolean actual = PasswordValidater.hasSpecialCharacters(password);
         Assertions.assertTrue(actual, "Password has special character returns true");
     }
@@ -99,7 +99,7 @@ public class PasswordValidaterTest
     {
         String password = "i need a lot of somthing";
         boolean actual = PasswordValidater.hasSpecialCharacters(password);
-        Assertions.assertTrue(actual, "Password has no special character returns false");
+        Assertions.assertFalse(actual, "Password has no special character returns false");
     }
 
 }

@@ -8,6 +8,9 @@ public class PasswordValidater
     private static final String[] FORBIDDEN_PASSWORDS = {"Password123", "Password", "12345678"};
     public static boolean isValid(String password)
     {
+        //just in case some persons copyed ther password
+        password = password.trim();
+
         if(!isPasswordLenghtOK(password)) return false;
 
         if(!isNumberIncluded(password)) return false;
@@ -71,7 +74,11 @@ public class PasswordValidater
         boolean hasSpecial = false;
         for(char c : password.toCharArray())
         {
-            if(!Character.isDigit(c) && !Character.isLetter(c)) hasSpecial = true;
+            if(Character.isWhitespace(c)) continue;
+            if(!Character.isLetter(c) && !Character.isDigit(c))
+            {
+                hasSpecial = true;
+            }
         }
         return hasSpecial;
     }

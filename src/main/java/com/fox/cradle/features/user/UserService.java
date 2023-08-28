@@ -1,5 +1,6 @@
 package com.fox.cradle.features.user;
 
+import com.fox.cradle.configuration.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,11 +8,13 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository _userRepository;
+    private  SecurityService _securityService;
 
     @Autowired
-    public UserService(UserRepository userRepository)
+    public UserService(UserRepository userRepository, SecurityService securityService)
     {
         this._userRepository = userRepository;
+        this._securityService = securityService;
         addMockData();
     }
 
@@ -52,12 +55,12 @@ public class UserService {
         return _userRepository.findByUsername(username).orElse(null);
     }
 
-
     private void addMockData()
     {
         User user = new User();
         user.setUsername("Bob");
         user.setPassword("1234");
+        user.setPassword(_securityService.encodePassword(user.getPassword()));
 
         _userRepository.save(user);
     }

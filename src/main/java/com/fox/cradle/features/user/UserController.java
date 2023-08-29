@@ -26,9 +26,16 @@ public class UserController
     }
 
     @PostMapping
-    public User addUser(@RequestBody User user)
+    public UserRegistrationDTO addUser(@RequestBody UserRegistrationDTO user)
     {
-        return _userService.addUser(user);
+        //Mapping
+        User newUser = new User();
+        newUser.setPassword(user.getPassword());
+        newUser.setUsername(user.getUsername());
+        newUser.setEmail(user.getEmail());
+
+        _userService.addUser(newUser);
+        return user;
     }
 
     @DeleteMapping("/{id}")

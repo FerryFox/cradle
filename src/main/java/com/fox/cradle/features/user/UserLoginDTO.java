@@ -12,5 +12,4 @@ public class UserLoginDTO
         private String username;
         private String password;
         // ... getters, setters, and validation annotations ...
-
 }

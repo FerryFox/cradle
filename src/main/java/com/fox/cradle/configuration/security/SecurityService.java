@@ -1,5 +1,5 @@
 package com.fox.cradle.configuration.security;
-
+/*
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,3 +24,5 @@ public class SecurityService
         return _passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }
+
+ */

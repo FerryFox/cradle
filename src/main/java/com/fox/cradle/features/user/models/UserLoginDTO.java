@@ -1,4 +1,4 @@
-package com.fox.cradle.features.user;
+package com.fox.cradle.features.user.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

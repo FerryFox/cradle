@@ -1,5 +1,8 @@
 package com.fox.cradle.features.user;
 
+import com.fox.cradle.features.user.controllers.UserController;
+import com.fox.cradle.features.user.models.AppUser;
+import com.fox.cradle.features.user.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

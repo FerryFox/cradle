@@ -1,5 +1,7 @@
 package com.fox.cradle.features.user;
 
+import com.fox.cradle.features.user.models.AppUser;
+import com.fox.cradle.features.user.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,13 +1,15 @@
-package com.fox.cradle.features.user;
+package com.fox.cradle.features.user.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity @Data @AllArgsConstructor @NoArgsConstructor
 @Table(name = "users")
-@Data
-@AllArgsConstructor
 public class AppUser
 {
     @Id
@@ -18,6 +20,6 @@ public class AppUser
     private String password;
     private String email;
 
-    public AppUser() {
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles = new ArrayList<>();
 }

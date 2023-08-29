@@ -1,5 +1,9 @@
-package com.fox.cradle.features.user;
+package com.fox.cradle.features.user.controllers;
 
+import com.fox.cradle.features.user.services.UserService;
+import com.fox.cradle.features.user.models.AppUser;
+import com.fox.cradle.features.user.models.UserRegistrationDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,10 +17,11 @@ public class UserController
         this._userService = userService;
     }
 
+    //this is may be better as a GET request because it also sends ok status
     @GetMapping("/id/{id}")
-    public AppUser getUserById(@PathVariable long id)
+    public ResponseEntity<AppUser> getUserById(@PathVariable long id)
     {
-        return _userService.getUserById(id);
+        return  ResponseEntity.ok().body( _userService.getUserById(id));
     }
 
     @GetMapping("/username/{username}")

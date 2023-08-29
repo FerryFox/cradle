@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-public class UserControllerTest {
+public class AppUserControllerTest {
 
     private UserController userController;
 
@@ -38,11 +38,11 @@ public class UserControllerTest {
 
     @Test
     public void testGetUserByUsername() throws Exception {
-        User mockUser = new User();
-        mockUser.setUsername("Alice");
-        mockUser.setPassword("password");
+        AppUser mockAppUser = new AppUser();
+        mockAppUser.setUsername("Alice");
+        mockAppUser.setPassword("password");
 
-        when(userService.getUserByUsername("Alice")).thenReturn(mockUser);
+        when(userService.getUserByUsername("Alice")).thenReturn(mockAppUser);
 
         mockMvc.perform(get("/api/user/username/Alice")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -53,11 +53,11 @@ public class UserControllerTest {
 
     @Test
     public void testAddUser() throws Exception {
-        User mockUser = new User();
-        mockUser.setUsername("Alice");
-        mockUser.setPassword("password");
+        AppUser mockAppUser = new AppUser();
+        mockAppUser.setUsername("Alice");
+        mockAppUser.setPassword("password");
 
-        when(userService.addUser(mockUser)).thenReturn(mockUser);
+        when(userService.addUser(mockAppUser)).thenReturn(mockAppUser);
 
         mockMvc.perform(post("/api/user/")
                         .contentType(MediaType.APPLICATION_JSON)

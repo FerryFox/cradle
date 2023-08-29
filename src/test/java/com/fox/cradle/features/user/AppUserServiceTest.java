@@ -8,18 +8,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class UserServiceTest
+public class AppUserServiceTest
 {
     @Autowired
     private UserService _userService;
 
     private long addMockUserAndGetId()
     {
-        User user = new User();
-        user.setUsername("TestUser");
-        user.setPassword("TestPassword");
-        user  = _userService.addUser(user);
-        return user.getId();
+        AppUser appUser = new AppUser();
+        appUser.setUsername("TestUser");
+        appUser.setPassword("TestPassword");
+        appUser = _userService.addUser(appUser);
+        return appUser.getId();
     }
 
     @Test
@@ -33,26 +33,26 @@ public class UserServiceTest
     {
         long Id = addMockUserAndGetId();
 
-        User deletedUser = _userService.deleteUser(Id);
-        assertEquals(deletedUser.getId(), Id);
+        AppUser deletedAppUser = _userService.deleteUser(Id);
+        assertEquals(deletedAppUser.getId(), Id);
     }
 
     @Test public void getUserById()
     {
         long Id = addMockUserAndGetId();
 
-        User retrievedUser = _userService.getUserById(Id);
-        assertEquals(retrievedUser.getId(), Id);
+        AppUser retrievedAppUser = _userService.getUserById(Id);
+        assertEquals(retrievedAppUser.getId(), Id);
     }
 
     @Test public void putUser()
     {
         long id = addMockUserAndGetId();
-        User changedUser  = new User();
-        changedUser.setUsername("ChangedUsername");
-        changedUser.setPassword("ChangedPassword");
+        AppUser changedAppUser = new AppUser();
+        changedAppUser.setUsername("ChangedUsername");
+        changedAppUser.setPassword("ChangedPassword");
 
-        User updatedUser = _userService.putUser(id, changedUser);
-        assertEquals(updatedUser.getUsername(), changedUser.getUsername());
+        AppUser updatedAppUser = _userService.putUser(id, changedAppUser);
+        assertEquals(updatedAppUser.getUsername(), changedAppUser.getUsername());
     }
 }

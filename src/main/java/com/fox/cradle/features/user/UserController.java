@@ -14,13 +14,13 @@ public class UserController
     }
 
     @GetMapping("/id/{id}")
-    public User getUserById(@PathVariable long id)
+    public AppUser getUserById(@PathVariable long id)
     {
         return _userService.getUserById(id);
     }
 
     @GetMapping("/username/{username}")
-    public User getUserByUsername(@PathVariable String username)
+    public AppUser getUserByUsername(@PathVariable String username)
     {
         return _userService.getUserByUsername(username);
     }
@@ -29,24 +29,24 @@ public class UserController
     public UserRegistrationDTO addUser(@RequestBody UserRegistrationDTO user)
     {
         //Mapping
-        User newUser = new User();
-        newUser.setPassword(user.getPassword());
-        newUser.setUsername(user.getUsername());
-        newUser.setEmail(user.getEmail());
+        AppUser newAppUser = new AppUser();
+        newAppUser.setPassword(user.getPassword());
+        newAppUser.setUsername(user.getUsername());
+        newAppUser.setEmail(user.getEmail());
 
-        _userService.addUser(newUser);
+        _userService.addUser(newAppUser);
         return user;
     }
 
     @DeleteMapping("/{id}")
-    public User deleteUser(@PathVariable long id)
+    public AppUser deleteUser(@PathVariable long id)
     {
         return _userService.deleteUser(id);
     }
 
     @PutMapping("/{id}")
-    public User putUser(@PathVariable long id, @RequestBody User newUserData)
+    public AppUser putUser(@PathVariable long id, @RequestBody AppUser newAppUserData)
     {
-        return _userService.putUser(id, newUserData);
+        return _userService.putUser(id, newAppUserData);
     }
 }

@@ -15,49 +15,49 @@ public class UserService {
         addMockData();
     }
 
-    public User addUser(User user)
+    public AppUser addUser(AppUser appUser)
     {
-        return _userRepository.save(user);
+        return _userRepository.save(appUser);
     }
 
-    public User deleteUser(long id)
+    public AppUser deleteUser(long id)
     {
-        User user = _userRepository.findById(id).orElse(null);
-        if (user != null)
+        AppUser appUser = _userRepository.findById(id).orElse(null);
+        if (appUser != null)
         {
-            _userRepository.delete(user);
+            _userRepository.delete(appUser);
         }
-        return user;
+        return appUser;
     }
 
-    public User getUserById(long id)
+    public AppUser getUserById(long id)
     {
         return _userRepository.findById(id).orElse(null);
     }
 
-        public User putUser(long id, User newUserData)
+        public AppUser putUser(long id, AppUser newAppUserData)
     {
-        User existingUser = _userRepository.findById(id).orElse(null);
-        if (existingUser != null)
+        AppUser existingAppUser = _userRepository.findById(id).orElse(null);
+        if (existingAppUser != null)
         {
-            existingUser.setUsername(newUserData.getUsername());
-            existingUser.setPassword(newUserData.getPassword());
-            _userRepository.save(existingUser);
+            existingAppUser.setUsername(newAppUserData.getUsername());
+            existingAppUser.setPassword(newAppUserData.getPassword());
+            _userRepository.save(existingAppUser);
         }
-        return existingUser;
+        return existingAppUser;
     }
 
-    public User getUserByUsername(String username)
+    public AppUser getUserByUsername(String username)
     {
         return _userRepository.findByUsername(username).orElse(null);
     }
 
     private void addMockData()
     {
-        User user = new User();
-        user.setUsername("Bob");
-        user.setPassword("1234");
+        AppUser appUser = new AppUser();
+        appUser.setUsername("Bob");
+        appUser.setPassword("1234");
 
-        _userRepository.save(user);
+        _userRepository.save(appUser);
     }
 }

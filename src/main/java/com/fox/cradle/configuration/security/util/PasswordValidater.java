@@ -1,4 +1,4 @@
-package com.fox.cradle.features.user;
+package com.fox.cradle.configuration.security.util;
 
 public class PasswordValidater
 {

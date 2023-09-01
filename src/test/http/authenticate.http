@@ -1,5 +1,6 @@
 POST http://localhost:8080/api/auth/authenticate
 Content-Type: application/json
+Authorization: Bearer "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTM1NDU2MDgsImV4cCI6MTY5MzYzMjAwOH0.TE7jpKPugTEFVN-DfAAU0JOCh2B_4xK1OrZU2HELVZo"
 
 {
   "email" : "q@q",

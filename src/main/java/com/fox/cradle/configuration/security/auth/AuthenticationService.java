@@ -38,14 +38,14 @@ public class AuthenticationService
 
     public AuthenticationResponse authenticate(AuthenticationRequest request)
     {
-        /*
+
+        System.out.println("AuthenticationService.authenticate");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
-         */
 
         var user = _repository.findByEmail(request.getEmail())
                 .orElseThrow();

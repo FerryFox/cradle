@@ -1,2 +1,6 @@
 GET http://localhost:8080/greet
 Content-Type: application/json
+
+{
+    "name": "John"
+}

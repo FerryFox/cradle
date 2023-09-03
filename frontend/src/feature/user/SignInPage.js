@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -12,6 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 function Copyright(props) {
     return (
@@ -29,15 +29,39 @@ function Copyright(props) {
 export default function SignIn()
 {
     const navigate = useNavigate();
-    const handleSubmit = (event) =>
+    const handleSubmit = async (event) =>
     {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),});
-        //error handling not implemented
-        navigate('/dashboard');
+        try
+        {
+            const data = new FormData(event.currentTarget);
+
+
+            // Replace this URL with your login endpoint
+            const response = await axios.post('/api/auth/authenticate', {
+                email: data.get('email'),
+                password: data.get('password'),
+            });
+
+            const token = response.data.access_token;
+            if (token)
+            {
+                // Store the token in LocalStorage
+                localStorage.setItem('authToken', token);
+                // Set default axios authorization header
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+                navigate('/dashboard');
+            }
+            else
+            {
+                    // Handle any other validation or issues here
+                    console.error('No token received');
+            }
+        }
+        catch (error)
+        {
+            console.error('Error logging in:', error.response ? error.response.data : error.message);
+        }
     };
 
 return (

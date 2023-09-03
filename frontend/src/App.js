@@ -7,11 +7,14 @@ import Dashboard from './feature/dashboard/Dashboard';
 import SignInPage from './feature/user/SignInPage';
 import SignUpPage from './feature/user/SignUpPage';
 import NotFoundPage from './NotFoundPage';
-import PrivateRoute from "./feature/security/ProtectedRout";
+import axios from "axios";
 
 function App() {
-    //code
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+// Retrieve token
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    }
 
     const darkTheme = createTheme({
         palette: {
@@ -26,7 +29,6 @@ return (
 <div className="App">
     <ThemeProvider theme={darkTheme}>
     <CssBaseline enableColorScheme/>
-
             <Router>
                 <Routes>
                     <Route path="/" element={<HomePage />} />

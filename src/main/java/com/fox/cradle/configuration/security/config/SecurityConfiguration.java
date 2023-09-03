@@ -33,11 +33,14 @@ public class SecurityConfiguration {
                     c.disable();  // If you still want CSRF disabled, but in a more DSL styled manner
                 })
                 .authorizeHttpRequests(c -> {
+                    //list here end points i want to protect for GET requests
                     c.requestMatchers(HttpMethod.GET , "/greet").authenticated();
-                    c.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll();
-                    c.requestMatchers(HttpMethod.GET, "/**").permitAll();
-                    //c.requestMatchers(HttpMethod.GET, "/api/auth/**").authenticated();
 
+                    //permits POST for login
+                    c.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll();
+
+                    //serves REACT --> TODO make it more specific atm /static/**  dose not work
+                    c.requestMatchers(HttpMethod.GET, "/**").permitAll();
                     c.anyRequest().authenticated();
                 })
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

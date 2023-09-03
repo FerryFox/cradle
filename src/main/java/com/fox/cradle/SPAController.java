@@ -10,5 +10,4 @@ public class SPAController
     public String forwardToReactApp() {
         return "forward:/";
     }
-
 }

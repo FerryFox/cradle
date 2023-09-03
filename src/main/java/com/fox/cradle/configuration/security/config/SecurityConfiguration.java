@@ -33,7 +33,10 @@ public class SecurityConfiguration {
                     c.disable();  // If you still want CSRF disabled, but in a more DSL styled manner
                 })
                 .authorizeHttpRequests(c -> {
+                    c.requestMatchers(HttpMethod.GET, "/**").permitAll();
                     c.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll();
+                    //c.requestMatchers(HttpMethod.GET, "/api/auth/**").authenticated();
+
                     c.anyRequest().authenticated();
                 })
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -43,6 +46,4 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
-
 }

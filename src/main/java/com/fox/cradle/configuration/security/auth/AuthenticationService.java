@@ -26,6 +26,7 @@ public class AuthenticationService implements IAuthenticationService
                 .firstname(request.getFirstname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .receiveNews(request.isReceiveNews())
                 .build();
 
         _repository.save(user);

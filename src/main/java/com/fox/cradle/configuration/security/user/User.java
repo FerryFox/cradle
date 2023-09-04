@@ -25,10 +25,10 @@ public class User implements UserDetails
     @Id
     @GeneratedValue
     private long id;
-
     private String firstname;
     private String email;
     private String password;
+    private boolean receiveNews;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

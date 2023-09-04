@@ -43,6 +43,12 @@ public class ApplicationConfiguration
         return authProvider;
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder()
+    {
+        return new BCryptPasswordEncoder();
+    }
+
     /*
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -58,10 +64,6 @@ public class ApplicationConfiguration
     }
     */
 
-    @Bean
-    public PasswordEncoder passwordEncoder()
-    {
-        return new BCryptPasswordEncoder();
-    }
+
 
 }

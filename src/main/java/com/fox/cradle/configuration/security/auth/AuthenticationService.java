@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService
+public class AuthenticationService implements IAuthenticationService
 {
     private final UserRepository _repository;
     private final JwtService _jwtService;

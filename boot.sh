@@ -7,4 +7,4 @@ cd frontend
 npm run build
 
 # Copy build output to Spring Boot's static folder
-cp -r build/* ../src/main/resources/static/
+cp -r build/* ../src/main/resources/static

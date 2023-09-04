@@ -7,10 +7,14 @@ import Dashboard from './feature/dashboard/Dashboard';
 import SignInPage from './feature/user/SignInPage';
 import SignUpPage from './feature/user/SignUpPage';
 import NotFoundPage from './NotFoundPage';
+import axios from "axios";
 
 function App() {
-    //code
-    const [soup, setSoup] = useState(null);
+// Retrieve token
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    }
 
     const darkTheme = createTheme({
         palette: {
@@ -19,30 +23,21 @@ function App() {
         },
     });
 
-    useEffect(() => {
-        fetch("/api/soups/1") // Fetching the soup with ID 1 as an example
-            .then((response) => response.json())
-            .then((data) => setSoup(data))
-            .catch((error) => console.error("Error fetching soup:", error));
-    }, []);
-
     //view
+    //<PrivateRoute path={"/dashboard"} isLoggedIn={true} element={<Dashboard />}></PrivateRoute>
 return (
 <div className="App">
     <ThemeProvider theme={darkTheme}>
     <CssBaseline enableColorScheme/>
-
             <Router>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/signin" element={<SignInPage />} />
                     <Route path="/signup" element={<SignUpPage />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/dashboard" element={<Dashboard/>} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </Router>
-
-
     </ThemeProvider>
 </div>
     );

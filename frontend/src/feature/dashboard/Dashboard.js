@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
+import Test from "../test/Test";
+
 import {
     CssBaseline, Box, Toolbar, Typography, Divider, IconButton, Badge, Container,
     Grid, Paper, Link, List, ListItem, ListItemIcon, ListItemText, styled, ListItemButton
@@ -113,6 +115,13 @@ return (
         <Grid item xs={12}>
             <Paper sx={{ p: 2 }}>
                 Orders Placeholder
+            </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+            <Paper sx={{ p: 2 }}>
+                Test Placeholder
+                <Test></Test>
             </Paper>
         </Grid>
 

@@ -46,6 +46,7 @@ public class AuthenticationServiceTest
     //since I do not mock this, the time of the test is dependent on its success
     //when I mock the response then I do not test the method, because my service uses almost only use internal methods
     //I really should not write anything to my real db, I may forget to remove it when my db gets persistent.
+
     //@Test
     public void registerTest()
     {

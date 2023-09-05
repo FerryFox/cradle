@@ -110,7 +110,7 @@ return (
 
             <Grid container>
                 <Grid item xs>
-                    <Button variant="text" onClick={() => navigate('/signup')} size="small"
+                    <Button variant="text" onClick={() => navigate('/reset-password')} size="small"
                             sx={{
                                 textDecoration: 'underline',
                                 fontSize: '0.5rem',

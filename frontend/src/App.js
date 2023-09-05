@@ -9,6 +9,7 @@ import SignUpPage from './feature/user/SignUpPage';
 import NotFoundPage from './NotFoundPage';
 import axios from "axios";
 import './assets/animation/css/Shake.css';
+import ResetPassword from "./feature/user/ResetPassword";
 
 function App() {
 // Retrieve token
@@ -37,6 +38,7 @@ return (
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/dashboard" element={<Dashboard/>} />
                     <Route path="*" element={<NotFoundPage />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
                 </Routes>
             </Router>
     </ThemeProvider>

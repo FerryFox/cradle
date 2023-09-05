@@ -14,6 +14,8 @@ import {useNavigate} from "react-router-dom";
 import { useState } from 'react';
 import axios from "axios";
 
+
+
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -25,6 +27,14 @@ function Copyright(props) {
             {'.'}
         </Typography>
     );
+}
+
+function saveUsername(username) {
+    localStorage.setItem('email', username);
+}
+
+function getUsername() {
+    return localStorage.getItem('email');
 }
 
 export default function SignIn()
@@ -56,6 +66,7 @@ export default function SignIn()
             {
                 // Store the token in LocalStorage
                 localStorage.setItem('authToken', token);
+                saveUsername(data.get('email'));
                 // Set default axios authorization header
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
                 navigate('/dashboard');
@@ -86,7 +97,7 @@ return (
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email"
-                       autoComplete="email" autoFocus/>
+                       autoComplete="email" value={getUsername()} autoFocus/>
 
             <TextField margin="normal" required fullWidth name="password" label="Password" type="password"
                        id="password" autoComplete="current-password"/>
@@ -99,14 +110,28 @@ return (
 
             <Grid container>
                 <Grid item xs>
-                    <Link href="#" variant="body2">
-                        Forgot password?
-                    </Link>
+                    <Button variant="text" onClick={() => navigate('/signup')} size="small"
+                            sx={{
+                                textDecoration: 'underline',
+                                fontSize: '0.5rem',
+                                textTransform: 'none',
+                            }}>
+                        <Typography variant="body2" color="primary">
+                            Forgot password?
+                        </Typography>
+                    </Button>
                 </Grid>
                 <Grid item>
-                    <Link href="/signup" variant="body2">
-                        {"Don't have an account? Sign Up"}
-                    </Link>
+                    <Button variant="text" onClick={() => navigate('/signup')} size="small"
+                    sx={{
+                        textDecoration: 'underline',
+                        fontSize: '0.5rem',
+                        textTransform: 'none',
+                    }}>
+                        <Typography variant="body2" color="primary">
+                            Don't have an account? Sign Up
+                        </Typography>
+                    </Button>
                 </Grid>
             </Grid>
         </Box>

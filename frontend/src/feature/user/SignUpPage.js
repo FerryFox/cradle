@@ -123,9 +123,16 @@ return (
 
             <Grid container justifyContent="flex-end">
                 <Grid item>
-                    <Link href="/signin" variant="body2">
-                        Already have an account? Sign in
-                    </Link>
+                    <Button variant="text" onClick={() => navigate('/signin')} size="small"
+                            sx={{
+                                textDecoration: 'underline',
+                                fontSize: '0.5rem',
+                                textTransform: 'none',
+                            }}>
+                        <Typography variant="body2" color="primary">
+                            Already have an account? Sign in
+                        </Typography>
+                    </Button>
                 </Grid>
             </Grid>
         </Box>

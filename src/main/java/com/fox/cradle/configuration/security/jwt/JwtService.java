@@ -50,9 +50,8 @@ public class JwtService implements IJwtService
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
-    public String generateRefreshToken(
-            UserDetails userDetails
-    ) {
+    public String generateRefreshToken(UserDetails userDetails)
+    {
         return buildToken(new HashMap<>(), userDetails, refreshExpiration);
     }
 
@@ -75,11 +74,12 @@ public class JwtService implements IJwtService
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-    private boolean isTokenExpired(String token)
+    boolean isTokenExpired(String token)
     {
         return extractExpiration(token).before(new Date());
     }
-    private Date extractExpiration(String token) {
+    private Date extractExpiration(String token)
+    {
         return extractClaim(token, Claims::getExpiration);
     }
 
@@ -96,6 +96,4 @@ public class JwtService implements IJwtService
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-
 }

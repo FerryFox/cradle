@@ -14,4 +14,5 @@ public class RegisterRequest {
     private String firstname;
     private String email;
     private String password;
+    private boolean receiveNews;
 }

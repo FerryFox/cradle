@@ -11,6 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useNavigate} from "react-router-dom";
+import { useState } from 'react';
 import axios from "axios";
 
 function Copyright(props) {
@@ -29,6 +30,15 @@ function Copyright(props) {
 export default function SignIn()
 {
     const navigate = useNavigate();
+    const [isShaking, setIsShaking] = useState(false);
+
+    const handleShake = () => {
+        setIsShaking(true);
+        setTimeout(() => {
+            setIsShaking(false);
+        }, 820);  // match the duration of the shake animation
+    };
+
     const handleSubmit = async (event) =>
     {
         event.preventDefault();
@@ -36,8 +46,6 @@ export default function SignIn()
         {
             const data = new FormData(event.currentTarget);
 
-
-            // Replace this URL with your login endpoint
             const response = await axios.post('/api/auth/authenticate', {
                 email: data.get('email'),
                 password: data.get('password'),
@@ -54,18 +62,19 @@ export default function SignIn()
             }
             else
             {
-                    // Handle any other validation or issues here
+                    handleShake();
                     console.error('No token received');
             }
         }
         catch (error)
         {
+            handleShake();
             console.error('Error logging in:', error.response ? error.response.data : error.message);
         }
     };
 
 return (
-<Container component="main" maxWidth="xs">
+<Container className={isShaking ? 'shake' : ''} component="main" maxWidth="xs">
     <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />

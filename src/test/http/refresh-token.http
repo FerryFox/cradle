@@ -1,0 +1,5 @@
+POST http://localhost:8080/api/auth/refresh-token
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+

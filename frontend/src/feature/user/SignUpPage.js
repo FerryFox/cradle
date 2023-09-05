@@ -13,19 +13,20 @@ import Container from '@mui/material/Container';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
-const saveUser = async (userDTO) => {
+const saveUser = async (userDTO) =>
+{
     try
     {
-        const response = await axios.post('http://localhost:8080/api/user', userDTO);
+        const response = await axios.post('http://localhost:8080/api/auth/register', userDTO);
         if(response.status === 200 || response.status === 201)
         {
-            console.log("User saved successfully");
+            return response;
         }
     }catch (error)
     {
         console.error('There was an error saving the user:', error);
     }
+    return null;
 };
 
 function Copyright(props) {
@@ -51,27 +52,30 @@ export default function SignUp()
         const data = new FormData(event.currentTarget);
         const userDTO =
             {
-                userName: data.get('userName'),
+                firstname: data.get('userName'),
                 email: data.get('email'),
-                password: data.get('password')
+                password: data.get('password'),
+                receiveNews : data.get('allowExtraEmails') === "on"
             };
-
-        console.log(userDTO);
 
         try
         {
             const response = await saveUser(userDTO);
-            navigate('/signin');
-            /*
-            Error handling does not work. The return object seems not defined
-            if (response.status === 200 || response.status === 201)
-            {
-                console.log("User saved successfully");
-                navigate('/login');
-            } else {
-                // Handle other status scenarios here
-            };*/
 
+            const token = response.data.access_token;
+            if (token)
+            {
+                // Store the token in LocalStorage
+                localStorage.setItem('authToken', token);
+                // Set default axios authorization header
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+                navigate('/dashboard');
+            }
+            else
+            {
+                // Handle any other validation or issues here
+                console.error('No token received');
+            }
         }
         catch (error)
         {
@@ -108,7 +112,7 @@ return (
                 </Grid>
 
                 <Grid item xs={12}>
-                    <FormControlLabel control={<Checkbox value="allowExtraEmails" color="primary" />}
+                    <FormControlLabel control={<Checkbox name="allowExtraEmails" color="primary" />}
                         label="I want to receive inspiration, marketing promotions and updates via email."/>
                 </Grid>
             </Grid>

@@ -8,6 +8,7 @@ import SignInPage from './feature/user/SignInPage';
 import SignUpPage from './feature/user/SignUpPage';
 import NotFoundPage from './NotFoundPage';
 import axios from "axios";
+import './assets/animation/css/Shake.css';
 
 function App() {
 // Retrieve token

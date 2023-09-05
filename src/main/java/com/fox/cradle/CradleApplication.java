@@ -14,7 +14,6 @@ public class CradleApplication {
 	public static void main(String[] args)
 	{
 		SpringApplication.run(CradleApplication.class, args);
-
 	}
 
 }

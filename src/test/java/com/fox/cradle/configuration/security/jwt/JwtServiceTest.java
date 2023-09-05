@@ -1,7 +1,10 @@
 package com.fox.cradle.configuration.security.jwt;
 
 
+import com.fox.cradle.configuration.security.auth.AuthenticationResponse;
 import com.fox.cradle.configuration.security.user.User;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import io.jsonwebtoken.Claims;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -124,5 +128,21 @@ public class JwtServiceTest
         String token = this.token;
         String username = jwtService.extractUsername(token);
         Assertions.assertFalse(user.getEmail().equals(username));
+    }
+
+    @Test
+    public void isRefreshTokenlongLived()
+    {
+        User user = new User();
+        user.setEmail("f@f");
+        String token = jwtService.generateLongLiveToken(user);
+
+        var expiration = jwtService.extractClaim(token, Claims::getExpiration);
+
+        boolean isValid = jwtService.isTokenValid(token, user);
+        assert isValid;
+        assert jwtService.extractUsername(token).equals(user.getEmail());
+        Assertions.assertFalse(jwtService.isTokenExpired(token));
+        assert expiration.after(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 6));
     }
 }

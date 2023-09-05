@@ -18,7 +18,8 @@ public class AuthenticationController {
     private final AuthenticationService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request)
+    {
         return ResponseEntity.ok(authService.register(request));
     }
 
@@ -29,14 +30,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 
-    /*
+    //this seems like a security flaw, so with an existing token I can get a new one, without any new credentials
+    //the request holds the token
     @PostMapping("/refresh-token")
-    public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws IOException {
-        authService.refreshToken(request, response);
+    public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request)
+    {
+        return ResponseEntity.ok(authService.refreshToken(request));
     }
-
-     */
 }

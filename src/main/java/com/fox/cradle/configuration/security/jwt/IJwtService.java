@@ -1,5 +1,6 @@
 package com.fox.cradle.configuration.security.jwt;
 
+import com.fox.cradle.configuration.security.user.User;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Map;
@@ -11,6 +12,7 @@ public interface IJwtService
      <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
      String generateToken(UserDetails userDetails);
      String generateToken(Map<String, Object> extraClaims, UserDetails userDetails);
+     String generateLongLiveToken(UserDetails userDetails);
      boolean isTokenValid(String token, UserDetails userDetails);
 
 

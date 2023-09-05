@@ -1,5 +1,6 @@
 package com.fox.cradle.configuration.security.jwt;
 
+import com.fox.cradle.configuration.security.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -50,8 +51,9 @@ public class JwtService implements IJwtService
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
-    public String generateRefreshToken(UserDetails userDetails)
+    public String generateLongLiveToken(UserDetails userDetails)
     {
+        //makes the token last longer
         return buildToken(new HashMap<>(), userDetails, refreshExpiration);
     }
 

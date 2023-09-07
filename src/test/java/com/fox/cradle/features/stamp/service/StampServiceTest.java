@@ -31,6 +31,7 @@ public class StampServiceTest
         // Action
         StampCard stampedCard = stampService.stampACard(card, savedStamp);
 
+
         // Verification
         List<Stamp> stampsOnCard = stampedCard.getStamps();
         Assertions.assertNotNull(stampsOnCard, "Stamps list on card should not be null.");

@@ -1,8 +1,7 @@
 package com.fox.cradle.features.stamp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fox.cradle.features.appuser.model.AppUser;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -18,5 +17,8 @@ public class Stamp
     private long id;
 
     private String name;
-    private String issuer;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private AppUser appUser;
 }

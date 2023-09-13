@@ -27,9 +27,10 @@ public class User implements UserDetails
     private String email;
     private String password;
 
-
+    @Transient
     private String firstname;
 
+    @Transient
     private boolean receiveNews;
 
     @Override

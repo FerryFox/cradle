@@ -26,12 +26,4 @@ public class AppUser
 
     @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<StampCard> myStampCards = new ArrayList<>();
-
-    /*
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
-    private User user;
-    //map later to user
-     */
 }

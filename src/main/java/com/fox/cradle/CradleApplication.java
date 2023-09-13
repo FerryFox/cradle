@@ -7,13 +7,11 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import java.util.ArrayList;
 import java.util.List;
 
-
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-public class CradleApplication {
-
+public class CradleApplication
+{
 	public static void main(String[] args)
 	{
 		SpringApplication.run(CradleApplication.class, args);
 	}
-
 }

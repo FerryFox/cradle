@@ -23,7 +23,6 @@ public class StampService implements IStampService
         return stampCardRepository.findById(id).orElse(null);
     }
 
-
     //Crud methods
     public Stamp getStampById(Long id)
     {
@@ -44,5 +43,4 @@ public class StampService implements IStampService
     {
         return stampRepository.save(stamp);
     }
-
 }

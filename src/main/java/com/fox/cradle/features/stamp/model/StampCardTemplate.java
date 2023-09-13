@@ -5,10 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +12,7 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode
 @Entity
-public class StampCard
+public class StampCardTemplate
 {
     @Id
     @GeneratedValue
@@ -26,10 +22,9 @@ public class StampCard
     private String description;
     private String image;
 
-    private Instant createdDate = Instant.now();
+    private String createdBy;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Stamp> stamps = new ArrayList<>();
+    private Instant createdDate = Instant.now();
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;

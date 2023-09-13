@@ -20,6 +20,12 @@ public class AppUser
     @GeneratedValue
     private Long id;
 
+    private String AppUserName;
+    private boolean receiveNews;
+
+    @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<StampCard> myStampCards = new ArrayList<>();
+
     /*
     @OneToOne
     @MapsId
@@ -29,9 +35,4 @@ public class AppUser
      */
 
 
-    ///some other stuff
-
-
-    @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
-    private List<StampCard> myStampCards = new ArrayList<>();
 }

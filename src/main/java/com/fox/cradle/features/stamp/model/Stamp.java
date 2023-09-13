@@ -4,6 +4,8 @@ import com.fox.cradle.features.appuser.model.AppUser;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +18,7 @@ public class Stamp
     @GeneratedValue
     private long id;
 
-    private String name;
+    private Instant createdDate = Instant.now();
 
     @ManyToOne
     @JoinColumn(name="user_id")

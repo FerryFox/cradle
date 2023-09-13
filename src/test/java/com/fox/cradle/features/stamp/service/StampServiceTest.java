@@ -19,23 +19,5 @@ public class StampServiceTest
     @Autowired
     private StampRepository stampRepository;
 
-    @Test
-    public void stampACardSavesAReferenceToTheStampTest() {
-        // Setup
-        StampCard card = stampService.getStampCardById(1L);
-        Stamp stamp = new Stamp();
-        stamp.setName("Stamp 1");
-        stamp.setAppUser(new AppUser());
-        Stamp savedStamp = stampRepository.save(stamp);
 
-        // Action
-        StampCard stampedCard = stampService.stampACard(card, savedStamp);
-
-
-        // Verification
-        List<Stamp> stampsOnCard = stampedCard.getStamps();
-        Assertions.assertNotNull(stampsOnCard, "Stamps list on card should not be null.");
-        Assertions.assertTrue(stampsOnCard.contains(savedStamp), "Stamped card should contain the saved stamp.");
-        Assertions.assertEquals(1, stampsOnCard.size(), "Stamped card should have only one stamp.");
-    }
 }

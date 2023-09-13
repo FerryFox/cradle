@@ -4,6 +4,7 @@ import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.stamp.model.StampCard;
 import com.fox.cradle.features.stamp.model.StampCardTemplate;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ public class StampCardService
     private final StampCardRepository stampCardRepository;
     private final AppUserService appUserService;
 
+    @Transactional
     public StampCard createStampCard(StampCardTemplate template, AppUser appUser)
     {
         StampCard stampCard = new StampCard();
@@ -24,9 +26,14 @@ public class StampCardService
         stampCard.setStampCardSecurity(template.getStampCardSecurity());
         stampCard.setStampCardCategory(template.getStampCardCategory());
 
-        AppUser user = appUserService.addStampCardToUser(stampCard, appUser);
-        stampCard.setAppUser(user);
+        stampCard.setAppUser(appUser);
+        appUser.getMyStampCards().add(stampCard);
 
         return stampCardRepository.save(stampCard);
+    }
+
+    public StampCard getStampCardById(long id)
+    {
+        return stampCardRepository.findById(id).orElse(null);
     }
 }

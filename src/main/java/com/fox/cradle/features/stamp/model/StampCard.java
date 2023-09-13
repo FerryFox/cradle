@@ -28,7 +28,11 @@ public class StampCard
 
     private Instant createdDate = Instant.now();
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private AppUser appUser;
+
+    @OneToOne(fetch = FetchType.EAGER)
     private StampCardTemplate stampCardTemplate;
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -40,7 +44,22 @@ public class StampCard
     @Enumerated(EnumType.STRING)
     private StampCardSecurity stampCardSecurity;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private AppUser appUser;
+    public void smallPrint()
+    {
+        System.out.println("stamp card : " + getStampCardTemplate().getName());
+    }
+    @Override
+    public String toString()
+    {
+
+        return
+        "stamp card name : " + getStampCardTemplate().getName() + "\n" +
+        "created by: " + getStampCardTemplate().getCreatedBy() + "\n" +
+        "template created: " + getStampCardTemplate().getCreatedDate() + "\n" +
+        "stamp card created: " + getCreatedDate() + "\n" +
+        "stamp card owner : " + getAppUser().getAppUserName() + "\n" +
+        "----------Stamps ----------\n" +
+        getStamps().toString() + "\n" ;
+    }
+
 }

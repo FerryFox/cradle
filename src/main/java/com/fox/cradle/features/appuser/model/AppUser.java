@@ -21,6 +21,7 @@ public class AppUser
     private Long id;
 
     private String AppUserName;
+    private String AppUserEmail;
     private boolean receiveNews;
 
     @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

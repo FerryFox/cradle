@@ -22,27 +22,4 @@ public class AppUserService
     {
         return appUserRepository.findById(id).orElse(null);
     }
-
-    public AppUser getAppUserByEmail(String email)
-    {
-        Optional<AppUser> AppUserBox = appUserRepository.findByEmail(email);
-        if(AppUserBox.isPresent()) return AppUserBox.get();
-        else return null;
-    }
-
-    public AppUser updateAppUser(AppUser appUser)
-    {
-        //not changing the password
-        //not changing email
-        //not changing the id
-        AppUser oldAppUser = getAppUserById(appUser.getId());
-        if(oldAppUser != null)
-        {
-            oldAppUser.setAppUserName(appUser.getAppUserName());
-            oldAppUser.setReceiveNews(appUser.isReceiveNews());
-            oldAppUser.setMyStampCards(appUser.getMyStampCards());
-            return saveAppUser(oldAppUser);
-        }
-        else return null;
-    }
 }

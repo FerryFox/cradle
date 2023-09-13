@@ -3,7 +3,6 @@ package com.fox.cradle;
 import com.fox.cradle.configuration.security.user.User;
 import com.fox.cradle.configuration.security.user.UserRepository;
 import com.fox.cradle.features.appuser.model.AppUser;
-import com.fox.cradle.features.appuser.service.AppUserRepository;
 import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.stamp.model.*;
 import com.fox.cradle.features.stamp.service.*;
@@ -41,7 +40,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUser1.setAppUserName("Ice cream man");
         appUser1.setAppUserEmail("w@w");
         appUser1.setReceiveNews(true);
-        appUserService.save(appUser1);
+        appUserService.saveAppUser(appUser1);
 
     //User 2 with AppUser 2
         User user2 = new User();
@@ -56,7 +55,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUser2.setAppUserName("Bob");
         appUser2.setAppUserEmail("q@q");
         appUser2.setReceiveNews(true);
-        appUserService.save(appUser2);
+        appUserService.saveAppUser(appUser2);
 
 //Create some stamp card templates
         StampCardTemplate stampCardTemplate_001 = new StampCardTemplate();

@@ -24,6 +24,6 @@ public class SecurityHook
         appUser.setAppUserEmail(user.getEmail());
         appUser.setReceiveNews(user.isReceiveNews());
 
-        appUserService.save(appUser);
+        appUserService.saveAppUser(appUser);
     }
 }

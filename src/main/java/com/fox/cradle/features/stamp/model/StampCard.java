@@ -28,6 +28,9 @@ public class StampCard
 
     private Instant createdDate = Instant.now();
 
+    @OneToOne
+    private StampCardTemplate stampCardTemplate;
+
     @OneToMany(fetch = FetchType.EAGER)
     private List<Stamp> stamps = new ArrayList<>();
 

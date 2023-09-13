@@ -6,40 +6,36 @@ import com.fox.cradle.features.stamp.model.TemplateResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class StampCardTemplateService
 {
     private final StampCardTemplateRepository templateRepository;
-
     public TemplateResponseDTO createTemplate(TemplateRequestDTO request)
     {
-        StampCardTemplate template = mapDTOToStemCardTemplate(request);
+        StampCardTemplate template = MapService.mapDTOToStemCardTemplate(request);
         templateRepository.save(template);
-        return mapStampCardTemplateToDTO(template);
+        return MapService.mapStampCardTemplateToDTO(template);
     }
 
-    private StampCardTemplate mapDTOToStemCardTemplate(TemplateRequestDTO dto)
+    public List<TemplateResponseDTO> getAllTemplatesDTO()
     {
-        StampCardTemplate template = new StampCardTemplate();
-        template.setName(dto.getName());
-        template.setDescription(dto.getDescription());
-        template.setImage(dto.getImage());
-        template.setCreatedBy(dto.getCreatedBy());
-        template.setStampCardCategory(dto.getStampCardCategory());
-        template.setStampCardSecurity(dto.getStampCardSecurity());
-        return template;
+        List<StampCardTemplate> templates = templateRepository.findAll();
+        return templates.stream().map(MapService::mapStampCardTemplateToDTO).collect(Collectors.toList());
     }
 
-    private TemplateResponseDTO mapStampCardTemplateToDTO(StampCardTemplate template)
+    public StampCardTemplate getStampCardTemplateById(Long id)
     {
-        TemplateResponseDTO response = new TemplateResponseDTO();
-        response.setName(template.getName());
-        response.setDescription(template.getDescription());
-        response.setImage(template.getImage());
-        response.setCreatedBy(template.getCreatedBy());
-        response.setStampCardCategory(template.getStampCardCategory());
-        response.setStampCardSecurity(template.getStampCardSecurity());
-        return response;
+        return templateRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Stamp card template not found"));
     }
+
+    public StampCardTemplate save(StampCardTemplate stampCardTemplate)
+    {
+        return templateRepository.save(stampCardTemplate);
+    }
+
 }

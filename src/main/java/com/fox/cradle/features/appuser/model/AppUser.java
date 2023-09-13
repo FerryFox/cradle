@@ -33,6 +33,4 @@ public class AppUser
     private User user;
     //map later to user
      */
-
-
 }

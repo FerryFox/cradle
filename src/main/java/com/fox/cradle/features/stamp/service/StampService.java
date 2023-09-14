@@ -23,7 +23,7 @@ public class StampService implements IStampService
     }
 
     @Transactional
-    public StampCard stampCard(StampCard stampCard)
+    public StampCard stampACard(StampCard stampCard)
     {
         AppUser appUser = stampCard.getAppUser();
         Stamp stamp = createStamp(new Stamp(), appUser);

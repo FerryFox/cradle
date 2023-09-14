@@ -8,9 +8,6 @@ public interface IStampService
 {
     StampCard stampACard(StampCard stampCard, AppUser appUser, Stamp stamp);
 
-    //Crud methods
-    StampCard getStampCardById(Long id);
-
     //Crud methods Stamp
     Stamp getStampById(Long id);
     Stamp saveStamp(Stamp stamp);

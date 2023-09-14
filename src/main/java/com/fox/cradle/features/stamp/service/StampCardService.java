@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 public class StampCardService
 {
     private final StampCardRepository stampCardRepository;
-    private final AppUserService appUserService;
 
     @Transactional
     public StampCard createStampCard(StampCardTemplate template, AppUser appUser)
@@ -29,7 +28,7 @@ public class StampCardService
         stampCard.setAppUser(appUser);
         appUser.getMyStampCards().add(stampCard);
 
-        return stampCardRepository.save(stampCard);
+        return  stampCardRepository.save(stampCard);
     }
 
     public StampCard getStampCardById(long id)

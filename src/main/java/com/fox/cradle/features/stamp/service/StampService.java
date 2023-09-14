@@ -3,6 +3,7 @@ package com.fox.cradle.features.stamp.service;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.stamp.model.Stamp;
 import com.fox.cradle.features.stamp.model.StampCard;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,19 @@ public class StampService implements IStampService
     private final StampCardRepository stampCardRepository;
     private final StampRepository stampRepository;
 
+    @Transactional
     public StampCard stampACard(StampCard stampCard, AppUser appUser, Stamp stamp)
     {
         stamp.setAppUser(appUser);
+        stampCard.getStamps().add(stamp);
+        return stampCardRepository.save(stampCard);
+    }
+
+    @Transactional
+    public StampCard stampCard(StampCard stampCard)
+    {
+        AppUser appUser = stampCard.getAppUser();
+        Stamp stamp = createStamp(new Stamp(), appUser);
         stampCard.getStamps().add(stamp);
         return stampCardRepository.save(stampCard);
     }
@@ -27,11 +38,6 @@ public class StampService implements IStampService
         return stampRepository.save(stamp);
     }
 
-
-    public StampCard getStampCardById(Long id)
-    {
-        return stampCardRepository.findById(id).orElse(null);
-    }
 
     //Crud methods
     public Stamp getStampById(Long id)

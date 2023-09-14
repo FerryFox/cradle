@@ -23,5 +23,7 @@ public class Stamp
     @JoinColumn(name="stamp_card_id")
     private StampCard stampCard;
 
-
+    @ManyToOne
+    @JoinColumn(name="issuer_id")
+    private AppUser issuer;
 }

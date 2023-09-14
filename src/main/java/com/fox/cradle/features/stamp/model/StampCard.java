@@ -25,9 +25,16 @@ public class StampCard
 
     private Instant createdDate = Instant.now();
 
+    @Enumerated(EnumType.STRING)
+    private StampCardCategory stampCardCategory;
+
+    @Enumerated(EnumType.STRING)
+    private StampCardSecurity stampCardSecurity;
+
+    //Relationships
     @ManyToOne
-    @JoinColumn(name="user_id")
-    private AppUser appUser;
+    @JoinColumn(name="app_user_id")
+    private AppUser owner;
 
     @OneToOne(fetch = FetchType.EAGER)
     private StampCardTemplate stampCardTemplate;
@@ -35,11 +42,6 @@ public class StampCard
     @OneToMany(mappedBy = "stampCard", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stamp> stamps = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    private StampCardCategory stampCardCategory;
-
-    @Enumerated(EnumType.STRING)
-    private StampCardSecurity stampCardSecurity;
 
     public void smallPrint()
     {
@@ -54,7 +56,7 @@ public class StampCard
                 ", description='" + description + '\'' +
                 ", image='" + image + '\'' +
                 ", createdDate=" + createdDate +
-                ", appUser=" + (appUser != null ? appUser.getAppUserName() : "null") +  // assuming AppUser has a getUsername() method
+                ", appUser=" + (owner != null ? owner.getAppUserName() : "null") +  // assuming AppUser has a getUsername() method
                 ", stampCardTemplateName=" + (stampCardTemplate != null ? stampCardTemplate.getName() : "null") + // assuming StampCardTemplate has a getName() method
                 ", stampCardTemplateOwner=" + (stampCardTemplate != null ? stampCardTemplate.getAppUser() : "null") +
                 ", stampCount=" + stamps.size() + // just displaying count of stamps instead of full details to avoid recursion

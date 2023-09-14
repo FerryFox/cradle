@@ -1,7 +1,6 @@
 package com.fox.cradle.features.stamp.service;
 
 import com.fox.cradle.features.appuser.model.AppUser;
-import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.stamp.model.StampCard;
 import com.fox.cradle.features.stamp.model.StampCardTemplate;
 import jakarta.transaction.Transactional;
@@ -25,7 +24,7 @@ public class StampCardService
         stampCard.setStampCardSecurity(template.getStampCardSecurity());
         stampCard.setStampCardCategory(template.getStampCardCategory());
 
-        stampCard.setAppUser(appUser);
+        stampCard.setOwner(appUser);
         appUser.getMyStampCards().add(stampCard);
 
         return  stampCardRepository.save(stampCard);

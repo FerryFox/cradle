@@ -1,6 +1,5 @@
 package com.fox.cradle.features.stamp.service;
 
-import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.stamp.model.Stamp;
 import com.fox.cradle.features.stamp.model.StampCard;
 import jakarta.transaction.Transactional;
@@ -20,6 +19,7 @@ public class StampService implements IStampService
     {
         Stamp stamp = new Stamp();
         stamp.setStampCard(stampCard);
+        stamp.setIssuer(stampCard.getOwner());
         stampCard.getStamps().add(stamp);
 
         return stampCardRepository.save(stampCard);

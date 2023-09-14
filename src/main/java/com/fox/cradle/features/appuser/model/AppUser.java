@@ -23,6 +23,7 @@ public class AppUser
     private String appUserEmail;
     private boolean receiveNews;
 
-    @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //Relationships
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<StampCard> myStampCards = new ArrayList<>();
 }

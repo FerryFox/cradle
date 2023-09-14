@@ -96,12 +96,12 @@ public class DatabaseInitializer implements CommandLineRunner
 //load bob new and check
         AppUser unknown = appUserService.getAppUserById(bob.getId());
         System.out.println("----Bob2 Print------");
-        System.out.println("Bob2 (AppUser) stamp cards");
+        System.out.println("Bob2 (AppUser) s    tamp cards");
         unknown.getMyStampCards().forEach(StampCard::smallPrint);
 
 //try stamp some card
-        //StampCard stampCard = unknown.getMyStampCards().get(0);
-        //(stampService.stampACard(unknown.getMyStampCards().get(1));
+        StampCard stampCard = unknown.getMyStampCards().get(0);
+        stampService.stampACard(stampCard);
         System.out.println("----Bob3 Print------");
         System.out.println("Bo3 (AppUser) stamp cards");
         unknown.getMyStampCards().forEach(x -> System.out.println(x));

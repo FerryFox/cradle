@@ -11,7 +11,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode
 @Entity
 public class StampCard
@@ -33,7 +32,7 @@ public class StampCard
     @OneToOne(fetch = FetchType.EAGER)
     private StampCardTemplate stampCardTemplate;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "stampCard", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stamp> stamps = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -46,18 +45,26 @@ public class StampCard
     {
         System.out.println("stamp card : " + getStampCardTemplate().getName());
     }
-    @Override
-    public String toString()
-    {
 
-        return
-        "stamp card name : " + getStampCardTemplate().getName() + "\n" +
-        "created by: " + getStampCardTemplate().getCreatedBy() + "\n" +
-        "template created: " + getStampCardTemplate().getCreatedDate() + "\n" +
-        "stamp card created: " + getCreatedDate() + "\n" +
-        "stamp card owner : " + getAppUser().getAppUserName() + "\n" +
-        "----------Stamps ----------\n" +
-        getStamps().toString() + "\n" ;
+    @Override
+    public String toString() {
+        return "StampCard{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
+                ", createdDate=" + createdDate +
+                ", appUser=" + (appUser != null ? appUser.getAppUserName() : "null") +  // assuming AppUser has a getUsername() method
+                ", stampCardTemplateName=" + (stampCardTemplate != null ? stampCardTemplate.getName() : "null") + // assuming StampCardTemplate has a getName() method
+                ", stampCardTemplateOwner=" + (stampCardTemplate != null ? stampCardTemplate.getAppUser() : "null") +
+                ", stampCount=" + stamps.size() + // just displaying count of stamps instead of full details to avoid recursion
+                ", stampCardCategory=" + stampCardCategory +
+                ", stampCardSecurity=" + stampCardSecurity +
+                '}';
     }
+
+
+
+
 
 }

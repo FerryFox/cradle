@@ -9,7 +9,6 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode
 @Entity
 public class Stamp
@@ -20,7 +19,9 @@ public class Stamp
 
     private Instant createdDate = Instant.now();
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private AppUser appUser;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="stamp_card_id")
+    private StampCard stampCard;
+
+
 }

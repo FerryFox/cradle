@@ -14,30 +14,16 @@ public class StampService implements IStampService
     private final StampCardRepository stampCardRepository;
     private final StampRepository stampRepository;
 
-    @Transactional
-    public StampCard stampACard(StampCard stampCard, AppUser appUser, Stamp stamp)
-    {
-        stamp.setAppUser(appUser);
-        stampCard.getStamps().add(stamp);
-        return stampCardRepository.save(stampCard);
-    }
 
     @Transactional
     public StampCard stampACard(StampCard stampCard)
     {
-        AppUser appUser = stampCard.getAppUser();
-        Stamp stamp = createStamp(new Stamp(), appUser);
+        Stamp stamp = new Stamp();
+        stamp.setStampCard(stampCard);
         stampCard.getStamps().add(stamp);
+
         return stampCardRepository.save(stampCard);
     }
-
-
-    public Stamp createStamp(Stamp stamp, AppUser appUser)
-    {
-        stamp.setAppUser(appUser);
-        return stampRepository.save(stamp);
-    }
-
 
     //Crud methods
     public Stamp getStampById(Long id)

@@ -6,7 +6,6 @@ import com.fox.cradle.features.stamp.model.StampCard;
 
 public interface IStampService
 {
-    StampCard stampACard(StampCard stampCard, AppUser appUser, Stamp stamp);
 
     //Crud methods Stamp
     Stamp getStampById(Long id);

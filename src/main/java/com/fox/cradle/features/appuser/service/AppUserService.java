@@ -22,4 +22,9 @@ public class AppUserService
     {
         return appUserRepository.findById(id).orElse(null);
     }
+
+    public Optional<AppUser> findUserByEmail(String email)
+    {
+        return appUserRepository.findByAppUserEmail(email);
+    }
 }

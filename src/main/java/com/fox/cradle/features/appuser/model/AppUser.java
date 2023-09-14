@@ -1,6 +1,5 @@
 package com.fox.cradle.features.appuser.model;
 
-import com.fox.cradle.configuration.security.user.User;
 import com.fox.cradle.features.stamp.model.StampCard;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,8 +19,8 @@ public class AppUser
     @GeneratedValue
     private Long id;
 
-    private String AppUserName;
-    private String AppUserEmail;
+    private String appUserName;
+    private String appUserEmail;
     private boolean receiveNews;
 
     @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

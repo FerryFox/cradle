@@ -31,8 +31,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 
-    //this seems like a security flaw, so with an existing token I can get a new one, without any new credentials
-    //the request holds the token
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request)
     {

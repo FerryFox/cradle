@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class MassageServiceTest
 {
     @Autowired
-    private MassageService massageService;
+    private MessageService massageService;
 
     @Test
     public void readAllMassages()

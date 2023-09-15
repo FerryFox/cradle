@@ -11,7 +11,7 @@ import java.time.ZoneId;
 
 @Document
 @Data
-public class Massage
+public class Message
 {
     @MongoId
     @GeneratedValue

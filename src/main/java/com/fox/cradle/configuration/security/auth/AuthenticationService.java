@@ -1,14 +1,14 @@
 package com.fox.cradle.configuration.security.auth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fox.cradle.configuration.security.SecuritySender;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.UserRepository;
 import com.fox.cradle.configuration.security.user.User;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +23,7 @@ public class AuthenticationService implements IAuthenticationService
     private final JwtService _jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
     public AuthenticationResponse register(RegisterRequest request)
     {
@@ -33,7 +34,14 @@ public class AuthenticationService implements IAuthenticationService
                 .receiveNews(request.isReceiveNews())
                 .build();
 
-        _userRepository.save(user);
+
+        User savedUser = _userRepository.save(user);
+        //send event to if user is registered
+        if(savedUser != null)
+        {
+            eventPublisher.publishEvent(new SecuritySender(this, savedUser));
+        }
+
         var jwtToken = _jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()

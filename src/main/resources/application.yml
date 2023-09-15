@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/jwt_security
     username: postgres
-    password: Werder123werder!?
+    password: Werder123werder!?  # this is for local application only
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -15,10 +15,25 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+  data:
+    mongodb:
+      uri: ${MONGO_URL}
+      database: DeleteMeDb
+
+  hibernate:
+    ogm:
+      datastore:
+        provider: MONGODB
+        database: DeleteMeDb
+        host: localhost
+        username: ${MONGO_USER}
+        password: ${MONGO_PASSWORD}
+      create_database: true
+
 application:
   security:
     jwt:
-      secret-key: 574E635266556A586E3272357538782F413F4428472B4B6250645367566B7954
+      secret-key: ${JWT_SECRET_KEY}
       expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days

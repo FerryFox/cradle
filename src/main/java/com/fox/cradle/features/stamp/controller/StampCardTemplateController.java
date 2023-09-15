@@ -22,6 +22,7 @@ public class StampCardTemplateController
     @GetMapping
     public ResponseEntity<List<TemplateResponseDTO>> getAllTemplates()
     {
+        //not real return atm
         List<TemplateResponseDTO> response = new ArrayList<>();
         return ResponseEntity.ok(response);
     }

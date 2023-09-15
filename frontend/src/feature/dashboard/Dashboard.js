@@ -13,7 +13,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import InboxIcon from '@mui/icons-material/Inbox';
 import MailIcon from '@mui/icons-material/Mail';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
+import {useNavigate} from "react-router-dom";
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -26,6 +27,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function Dashboard()
 {
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);
     const drawerWidth = 240;
     const toggleDrawer = () => {setOpen(!open);
@@ -49,7 +51,6 @@ return (
                 <NotificationsIcon />
             </Badge>
         </IconButton>
-
     </Toolbar>
 </AppBar>
 
@@ -60,6 +61,19 @@ return (
         </IconButton>
     </DrawerHeader>
     <Divider />
+
+    <List>
+        <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates')}>
+            <ListItemButton>
+                <ListItemIcon>
+                    <DashboardCustomizeIcon />
+                </ListItemIcon>
+                <ListItemText primary={'Templates'} secondary={'search for stamp cards'} />
+            </ListItemButton>
+        </ListItem>
+    </List>
+    <Divider />
+
     <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem key={text} disablePadding>

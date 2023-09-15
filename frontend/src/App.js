@@ -10,6 +10,7 @@ import NotFoundPage from './NotFoundPage';
 import axios from "axios";
 import './assets/animation/css/Shake.css';
 import ResetPassword from "./feature/user/ResetPassword";
+import Templates from "./feature/stamp/Templates";
 
 function App() {
 // Retrieve token
@@ -39,6 +40,7 @@ return (
                     <Route path="/dashboard" element={<Dashboard/>} />
                     <Route path="*" element={<NotFoundPage />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/templates" element={<Templates/>} />
                 </Routes>
             </Router>
     </ThemeProvider>

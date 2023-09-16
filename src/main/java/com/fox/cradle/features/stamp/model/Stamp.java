@@ -11,6 +11,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
+@Builder
 public class Stamp
 {
     @Id

@@ -17,15 +17,17 @@ function Template({ template }) {
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                    {template.name} by {template.createdBy}
+                    {template.name}
+                </Typography>
+                <Typography gutterBottom variant="h6" component="div">
+                     by {template.createdBy}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    {template.stampCardCategory} : {template.description}
+                    {template.stampCardCategory} : {template.description} :{template.stampCardSecurity} : {template.stampCardStatus}
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small">Learn More</Button>
+                <Button size="small">Get!</Button>
             </CardActions>
         </Card>
     );
@@ -40,6 +42,7 @@ Template.propTypes = {
         createdBy: PropTypes.string.isRequired,
         stampCardCategory: PropTypes.string.isRequired,
         stampCardSecurity: PropTypes.string.isRequired,
+        stampCardStatus: PropTypes.string.isRequired,
     }).isRequired,
 };
 

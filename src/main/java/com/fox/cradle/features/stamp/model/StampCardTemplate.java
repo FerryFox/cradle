@@ -12,6 +12,7 @@ import java.time.Instant;
 @ToString
 @EqualsAndHashCode
 @Entity
+@Builder
 public class StampCardTemplate
 {
     @Id
@@ -31,6 +32,9 @@ public class StampCardTemplate
 
     @Enumerated(EnumType.STRING)
     private StampCardSecurity stampCardSecurity;
+
+    @Enumerated(EnumType.STRING)
+    private StampCardStatus stampCardStatus;
 
     @ManyToOne
     @JoinColumn(name="user_id")

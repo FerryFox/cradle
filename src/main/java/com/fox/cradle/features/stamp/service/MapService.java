@@ -36,6 +36,7 @@ public class MapService
         response.setCreatedBy(template.getCreatedBy());
         response.setStampCardCategory(template.getStampCardCategory());
         response.setStampCardSecurity(template.getStampCardSecurity());
+        response.setStampCardStatus(template.getStampCardStatus());
         return response;
     }
 }

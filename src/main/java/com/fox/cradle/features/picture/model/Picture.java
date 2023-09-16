@@ -14,5 +14,7 @@ public class Picture
     @GeneratedValue
     private String id;
 
+    private String name;
+
     private Binary imageData;
 }

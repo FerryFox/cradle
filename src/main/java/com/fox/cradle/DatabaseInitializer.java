@@ -28,12 +28,17 @@ public class DatabaseInitializer implements CommandLineRunner
     @Override
     public void run(String... args) throws Exception
     {
-        //fill database with some data
-        /*
-        var ice = pictureService.loadImageAsBytes("ice");
-        var coffe = pictureService.loadImageAsBytes("coffe");
-        */
+        //fill mongo db with some pictures
+/*
+        var ice = pictureService.loadPictureFromFile("ice");
+        pictureService.savePicture(ice);
 
+        var coffee = pictureService.loadPictureFromFile("coffee");
+        pictureService.savePicture(coffee);
+
+        var cinema = pictureService.loadPictureFromFile("cinema");
+        pictureService.savePicture(cinema);
+*/
 
 //create some users
     //User 1 with AppUser 1
@@ -69,24 +74,37 @@ public class DatabaseInitializer implements CommandLineRunner
 
 //Create some stamp card templates
         StampCardTemplate stampCardTemplate_001 = new StampCardTemplate();
-        stampCardTemplate_001.setName("Stamp Card Ice Cream");
-        stampCardTemplate_001.setImage("6505e4bee4451044ece0a30a");
+        stampCardTemplate_001.setName("Ice Cream Card");
+        stampCardTemplate_001.setImage("6505fc2aa54d6f41e4374591");
         stampCardTemplate_001.setStampCardCategory(StampCardCategory.FOOD);
         stampCardTemplate_001.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        stampCardTemplate_001.setStampCardStatus(StampCardStatus.PUBLIC);
         stampCardTemplate_001.setDescription("Buy 10 ice creams and get one for free");
         stampCardTemplate_001.setCreatedBy(appUser1.getAppUserName());
         stampCardTemplate_001.setAppUser(appUser1);
         stampCardTemplateService.save(stampCardTemplate_001);
 
         StampCardTemplate stampCardTemplate_002 = new StampCardTemplate();
-        stampCardTemplate_002.setName("Stamp Card Coffee");
-        stampCardTemplate_002.setImage("6505e4bee4451044ece0a30b");
+        stampCardTemplate_002.setName("Coffee Card");
+        stampCardTemplate_002.setImage("6505fc2aa54d6f41e4374592");
         stampCardTemplate_002.setStampCardCategory(StampCardCategory.DRINK);
         stampCardTemplate_002.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        stampCardTemplate_002.setStampCardStatus(StampCardStatus.PUBLIC);
         stampCardTemplate_002.setDescription("Buy 10 coffees and get one for free");
         stampCardTemplate_002.setCreatedBy(appUser2.getAppUserName());
         stampCardTemplate_002.setAppUser(appUser2);
         stampCardTemplateService.save(stampCardTemplate_002);
+
+        StampCardTemplate stampCardTemplate_003 = new StampCardTemplate();
+        stampCardTemplate_003.setName("Cinema Card");
+        stampCardTemplate_003.setImage("6505fc2aa54d6f41e4374593");
+        stampCardTemplate_003.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
+        stampCardTemplate_003.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        stampCardTemplate_003.setStampCardStatus(StampCardStatus.PUBLIC);
+        stampCardTemplate_003.setDescription("Visit the cinema 5 times to get a free ticket");
+        stampCardTemplate_003.setCreatedBy(appUser2.getAppUserName());
+        stampCardTemplate_003.setAppUser(appUser2);
+        stampCardTemplateService.save(stampCardTemplate_003);
 
 
 //Create a stamp card and from a template and add it to AppUser 1

@@ -7,6 +7,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TemplateRequest
 {
     private String name;
@@ -20,4 +21,7 @@ public class TemplateRequest
 
     @Enumerated(EnumType.STRING)
     private StampCardSecurity stampCardSecurity;
+
+    @Enumerated(EnumType.STRING)
+    private StampCardStatus stampCardStatus;
 }

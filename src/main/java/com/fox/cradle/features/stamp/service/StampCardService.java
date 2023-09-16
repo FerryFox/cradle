@@ -27,7 +27,7 @@ public class StampCardService
         stampCard.setOwner(appUser);
         appUser.getMyStampCards().add(stampCard);
 
-        return  stampCardRepository.save(stampCard);
+        return stampCardRepository.save(stampCard);
     }
 
     public StampCard getStampCardById(long id)

@@ -35,9 +35,4 @@ public class StampCardTemplateController
         //not jet created
         return ResponseEntity.ok(response);
     }
-
-
-    {
-
-    }
 }

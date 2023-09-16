@@ -21,9 +21,33 @@ public class PictureService
         return Files.readAllBytes(resource.getFile().toPath());
     }
 
+    public Picture loadPictureFromFile(String imageName) throws Exception
+    {
+        ClassPathResource resource = new ClassPathResource("images/" + imageName + ".jpg");
+        byte[] imageData = Files.readAllBytes(resource.getFile().toPath());
+        Picture picture = new Picture();
+        picture.setImageData(new Binary(imageData));
+        picture.setName(imageName);
+        return picture;
+    }
+
     public Picture savePicture(Picture picture)
     {
-        return pictureRepository.save(picture);
+        try
+        {
+            return pictureRepository.findById(picture.getId()).get();
+        }
+        catch (Exception e)
+        {
+            return pictureRepository.save(picture);
+        }
+    }
+
+    public Picture savePicture(byte [] imageData, String name)
+    {
+        Picture picture = byteToPicture(imageData);
+        picture.setName(name);
+        return savePicture(picture);
     }
 
     public Picture savePicture(byte [] imageData)
@@ -31,6 +55,7 @@ public class PictureService
         Picture picture = byteToPicture(imageData);
         return savePicture(picture);
     }
+
 
     public String getPictureId(String id)
     {

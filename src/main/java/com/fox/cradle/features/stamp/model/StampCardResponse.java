@@ -1,27 +1,21 @@
 package com.fox.cradle.features.stamp.model;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TemplateResponse
+public class StampCardResponse
 {
     private String name;
     private String description;
     private String image;
-
     private String createdBy;
-
-    @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;
-
-    @Enumerated(EnumType.STRING)
     private StampCardSecurity stampCardSecurity;
-
-    @Enumerated(EnumType.STRING)
     private StampCardStatus stampCardStatus;
 }

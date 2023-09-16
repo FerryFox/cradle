@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
+@Builder
 public class StampCard
 {
     @Id

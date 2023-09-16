@@ -13,9 +13,6 @@ public class MessageService
     public MessageService(MessageRepository massageRepository)
     {
         this.massageRepository = massageRepository;
-        Message massage = new Message();
-        massage.setMessage("application started");
-        saveMassage(massage);
     }
 
     public Message saveMassage(Message massage)

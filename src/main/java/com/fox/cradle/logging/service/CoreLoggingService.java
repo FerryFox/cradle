@@ -10,7 +10,8 @@ public class CoreLoggingService
 {
     private final MessageService messageService;
 
-    public void logMassage(String massage) {
+    public void logMassage(String massage)
+    {
         Message message = new Message();
         message.setMessage(massage);
         messageService.saveMassage(message);

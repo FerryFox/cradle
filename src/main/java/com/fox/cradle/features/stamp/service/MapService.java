@@ -1,17 +1,19 @@
 package com.fox.cradle.features.stamp.service;
 
+import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stamp.model.StampCardTemplate;
-import com.fox.cradle.features.stamp.model.TemplateRequestDTO;
-import com.fox.cradle.features.stamp.model.TemplateResponseDTO;
+import com.fox.cradle.features.stamp.model.TemplateRequest;
+import com.fox.cradle.features.stamp.model.TemplateResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class MapService
 {
-    private MapService()
-    {
-        throw new UnsupportedOperationException("StringUtil is a utility class and cannot be instantiated.");
-    }
+    private final PictureService pictureService;
 
-    public static StampCardTemplate mapDTOToStemCardTemplate(TemplateRequestDTO dto)
+    public StampCardTemplate mapRequestToTemplate(TemplateRequest dto)
     {
         StampCardTemplate template = new StampCardTemplate();
         template.setName(dto.getName());
@@ -23,12 +25,14 @@ public class MapService
         return template;
     }
 
-    public static TemplateResponseDTO mapStampCardTemplateToDTO(StampCardTemplate template)
+    public TemplateResponse mapTemplateToResponse(StampCardTemplate template)
     {
-        TemplateResponseDTO response = new TemplateResponseDTO();
+        TemplateResponse response = new TemplateResponse();
         response.setName(template.getName());
         response.setDescription(template.getDescription());
-        response.setImage(template.getImage());
+
+        var image = pictureService.getPictureId(template.getImage());
+        response.setImage(image);
         response.setCreatedBy(template.getCreatedBy());
         response.setStampCardCategory(template.getStampCardCategory());
         response.setStampCardSecurity(template.getStampCardSecurity());

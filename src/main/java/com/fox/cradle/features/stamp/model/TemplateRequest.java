@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TemplateResponseDTO
+public class TemplateRequest
 {
     private String name;
     private String description;

@@ -38,7 +38,7 @@ public class StampCard
     private AppUser owner;
 
     @OneToOne(fetch = FetchType.EAGER)
-    private StampCardTemplate stampCardTemplate;
+    private Template template;
 
     @OneToMany(mappedBy = "stampCard", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stamp> stamps = new ArrayList<>();
@@ -46,7 +46,7 @@ public class StampCard
 
     public void smallPrint()
     {
-        System.out.println("stamp card : " + getStampCardTemplate().getName());
+        System.out.println("stamp card : " + getTemplate().getName());
     }
 
     @Override
@@ -58,8 +58,8 @@ public class StampCard
                 ", image='" + image + '\'' +
                 ", createdDate=" + createdDate +
                 ", appUser=" + (owner != null ? owner.getAppUserName() : "null") +  // assuming AppUser has a getUsername() method
-                ", stampCardTemplateName=" + (stampCardTemplate != null ? stampCardTemplate.getName() : "null") + // assuming StampCardTemplate has a getName() method
-                ", stampCardTemplateOwner=" + (stampCardTemplate != null ? stampCardTemplate.getAppUser() : "null") +
+                ", stampCardTemplateName=" + (template != null ? template.getName() : "null") + // assuming StampCardTemplate has a getName() method
+                ", stampCardTemplateOwner=" + (template != null ? template.getAppUser() : "null") +
                 ", stampCount=" + stamps.size() + // just displaying count of stamps instead of full details to avoid recursion
                 ", stampCardCategory=" + stampCardCategory +
                 ", stampCardSecurity=" + stampCardSecurity +

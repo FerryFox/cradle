@@ -23,7 +23,13 @@ function Template({ template }) {
                      by {template.createdBy}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    {template.stampCardCategory} : {template.description} :{template.stampCardSecurity} : {template.stampCardStatus}
+                    {template.description}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                   Debug  = {template.stampCardSecurity} : {template.stampCardStatus}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Debug  = {template.id} : {template.stampCardCategory}
                 </Typography>
             </CardContent>
             <CardActions>
@@ -36,6 +42,7 @@ function Template({ template }) {
 // Using PropTypes to validate the data structure
 Template.propTypes = {
     template: PropTypes.shape({
+        id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,

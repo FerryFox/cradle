@@ -10,6 +10,8 @@ import lombok.*;
 @Builder
 public class TemplateResponse
 {
+    private long id;
+
     private String name;
     private String description;
     private String image;

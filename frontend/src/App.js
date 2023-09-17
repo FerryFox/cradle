@@ -10,7 +10,7 @@ import NotFoundPage from './NotFoundPage';
 import axios from "axios";
 import './assets/animation/css/Shake.css';
 import ResetPassword from "./feature/user/ResetPassword";
-import Templates from "./feature/stamp/Templates";
+import Templates from "./feature/template/Templates";
 
 function App() {
 // Retrieve token

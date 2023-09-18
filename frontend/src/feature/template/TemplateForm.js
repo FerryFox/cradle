@@ -23,9 +23,8 @@ function TemplateForm()
     const [Category, setCategory] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     useEffect(() => {
-        axios('api/templates/categories')
-            .then((response) => response.json())
-            .then((data) => setCategory(data));
+        axios('/api/templates/categories')
+            .then((response) => setCategory(response.data))
     }, []);
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
@@ -34,9 +33,8 @@ function TemplateForm()
     const [Security, setSecurity] = useState([]);
     const [selectedSecurity, setSelectedSecurity] = useState('');
     useEffect(() => {
-        axios('api/templates/security')
-            .then((response) => response.json())
-            .then((data) => setSecurity(data));
+        axios('/api/templates/security')
+            .then((response) => setSecurity(response.data));
     }, []);
     const handleSecurityChange = (event) => {
         setSelectedSecurity(event.target.value);
@@ -45,11 +43,11 @@ function TemplateForm()
     const [Status, setStatus] = useState([]);
     const [selectedStatus, setSelectedStatus] = useState('');
     useEffect(() => {
-        axios('api/templates/status')
-            .then((response) => response.json())
-            .then((data) => setStatus(data));
+        axios('/api/templates/status')
+            .then((response) => setStatus(response.data))
+           ;
     }, []);
-    const handleSecurityStatus = (event) => {
+    const handleStatusChanged = (event) => {
         setSelectedStatus(event.target.value);
     };
 
@@ -143,6 +141,36 @@ return (
                     </select>
                 </label>
             </div>
+
+            <div>
+                <label>
+                    Select a Security:
+                    <select value={selectedSecurity} onChange={handleSecurityChange}>
+                        <option value="" disabled>Select a Security</option>
+                        {Security.map((security) => (
+                            <option key={security} value={security}>
+                                {security}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    Select a Status:
+                    <select value={selectedStatus} onChange={handleStatusChanged}>
+                        <option value="" disabled>Select a Status</option>
+                        {Status.map((status) => (
+                            <option key={status} value={status}>
+                                {status}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+            </div>
+
+
 
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Generate Template

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/templates")
 @RequiredArgsConstructor
@@ -53,7 +54,7 @@ public class TemplateController
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/category")
+    @GetMapping("/categories")
     public ResponseEntity<StampCardCategory[]> getTemplatesByCategory()
     {
         return ResponseEntity.ok(StampCardCategory.values());

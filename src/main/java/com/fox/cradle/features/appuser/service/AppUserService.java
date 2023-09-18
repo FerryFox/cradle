@@ -26,6 +26,6 @@ public class AppUserService
 
     public Optional<AppUser> findUserByEmail(String email)
     {
-        return appUserRepository.findByAppUserEmail(email);
+        return appUserRepository.findByEmail(email);
     }
 }

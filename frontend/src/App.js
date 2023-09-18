@@ -11,6 +11,8 @@ import axios from "axios";
 import './assets/animation/css/Shake.css';
 import ResetPassword from "./feature/user/ResetPassword";
 import Templates from "./feature/template/Templates";
+import TemplatesOwned from "./feature/template/TemplatesOwned";
+import TemplateForm from "./feature/template/TemplateForm";
 
 function App() {
 // Retrieve token
@@ -41,6 +43,8 @@ return (
                     <Route path="*" element={<NotFoundPage />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/templates" element={<Templates/>} />
+                    <Route path="/templates-owned" element={<TemplatesOwned/>} />
+                    <Route path="/templates/new" element={<TemplateForm/>} />
                 </Routes>
             </Router>
     </ThemeProvider>

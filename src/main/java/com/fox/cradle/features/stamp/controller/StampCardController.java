@@ -19,7 +19,6 @@ public class StampCardController
 {
     private final StampCardService stampCardService;
     private final JwtService _jwtService;
-    private final AppUserService _appUserService;
 
     /*
     @PostMapping("/create")

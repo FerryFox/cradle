@@ -40,6 +40,20 @@ function DrawerComponent({ open, toggleDrawer, navigate })
             </List>
             <Divider />
 
+
+            <List>
+                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates-owned')}>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <DashboardCustomizeIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'My Templates'} secondary={'Visit your Templates'} />
+                    </ListItemButton>
+                </ListItem>
+            </List>
+            <Divider />
+
+
             <List>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem key={text} disablePadding>

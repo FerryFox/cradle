@@ -20,17 +20,5 @@ public class StampCardController
     private final StampCardService stampCardService;
     private final JwtService _jwtService;
 
-    /*
-    @PostMapping("/create")
-    public ResponseEntity<StampCardResponse> createStampCard(@RequestBody NewStempCard request, HttpServletRequest httpServlet)
-    {
-        String email = _jwtService.extractUsernameFromRequest(httpServlet);
-        AppUser appUser = _appUserService.findUserByEmail(email).orElse(null);
-        if(appUser == null) return ResponseEntity.badRequest().body();
 
-        StampCard response = stampCardService.createStampCard( );
-
-        return ResponseEntity.created(null).body(response);
-    }
-    */
 }

@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Template from "./Template";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 function TemplatesOwned()
 {
@@ -43,15 +44,24 @@ function TemplatesOwned()
         <Container>
             <h1>Your Templates</h1>
             <p>Total templates: {templates.length}</p>
-            <Button variant="contained" onClick={() => navigate('/templates/new')}> Create New Template</Button>
 
             <Grid container spacing={4} justifyContent="center">
+                <Grid item xs={12} sm={6} md={4}>
+                    <Box
+                        component="div"
+                        elevation={3}
+                        style={{ height: '100%', backgroundColor: 'lightgray', cursor: 'pointer', padding: '16px' }}
+                        onClick={() => navigate('/templates/new')}>
+                        Click to create new template
+                    </Box>
+                </Grid>
+
                 {templates.map(t => (
-                    <Grid item xs={12} sm={6} md={4} key={t.name}>
-                        <Paper elevation={3} style={{ padding: '16px' }}>
-                            <Template template={t} />
-                        </Paper>
-                    </Grid>
+                <Grid item xs={12} sm={6} md={4} key={t.name}>
+                    <Paper elevation={3} style={{ padding: '16px' }}>
+                        <Template template={t} />
+                    </Paper>
+                </Grid>
                 ))}
             </Grid>
         </Container>

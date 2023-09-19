@@ -12,6 +12,47 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import {Divider, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+
+function resizeImage(file, maxWidth, maxHeight, callback)
+{
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const img = new Image();
+
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+                if (width > maxWidth) {
+                    height *= maxWidth / width;
+                    width = maxWidth;
+                }
+            } else {
+                if (height > maxHeight) {
+                    width *= maxHeight / height;
+                    height = maxHeight;
+                }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            callback(canvas.toDataURL("image/jpeg"));
+        }
+
+        img.src = event.target.result;
+    }
+
+    reader.readAsDataURL(file);
+}
 
 function TemplateForm()
 {
@@ -51,7 +92,6 @@ function TemplateForm()
         setSelectedStatus(event.target.value);
     };
 
-
     const handleShake = () => {
         setIsShaking(true);
         setTimeout(() => {
@@ -68,38 +108,45 @@ function TemplateForm()
             reader.onload = function(event) {
                 setImageSrc(event.target.result);
             };
-
             reader.readAsDataURL(file);
         }
     };
 
-    const handleSubmit = async (event) =>
-    {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        try
-        {
-            const data = new FormData(event.currentTarget);
 
-            const response = await axios.post('/api/templates/create',
-        {
-                email: data.get('email'),
-                password: data.get('password'),
-            });
+        const token = localStorage.getItem('authToken');
+        const file = document.getElementById('contained-button-file').files[0];
 
-            if (response.status === 201) // Created
-            {
-                navigate('/templates-owned');
-            }
-            else
-            {
+        resizeImage(file, 300, 300, async (resizedImageUrl) => {
+            try {
+                const payload = {
+                    name: event.target.name.value,
+                    description: event.target.description.value,
+                    image: resizedImageUrl,  // Using the resized image here
+                    stampCardCategory: selectedCategory,
+                    stampCardSecurity: selectedSecurity,
+                    stampCardStatus: selectedStatus,
+                };
+
+                const response = await axios.post('/api/templates/new-template', payload, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 200) // Created
+                {
+                    navigate('/templates-owned');
+                } else {
+                    handleShake();
+                }
+            } catch (error) {
                 handleShake();
+                console.error('Error logging in:', error.response ? error.response.data : error.message);
             }
-        }
-        catch (error)
-        {
-            handleShake();
-            console.error('Error logging in:', error.response ? error.response.data : error.message);
-        }
+        });
     };
 
 return (
@@ -107,10 +154,10 @@ return (
     <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
 
         <Typography component="h1" variant="h5">
-            New Template for a Stamp Card
+            Create a Template for your Stamp Card
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 , mb : 2}}>
             <TextField margin="normal" required fullWidth
                        id="name"
                        label="name"
@@ -118,59 +165,87 @@ return (
                        autoComplete="name"
                        autoFocus/>
 
-            <TextField margin="normal" required fullWidth
-                       name="discription"
-                       label="discription"
-                       id="discription" />
+            <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
+                       name="description"
+                       label="description"
+                       id="description" />
 
-            <div>
-                <input type="file" accept="image/*" onChange={handleImageChange} />
-                {imageSrc && <img src={imageSrc} alt="Selected" style={{ maxWidth: '300px', marginTop: '20px' }} />}
-            </div>
+            <Divider sx={{ marginBottom: 2 }}/>
 
-            <div>
-                <label>
-                    Select a Category:
-                    <select value={selectedCategory} onChange={handleCategoryChange}>
-                        <option value="" disabled>Select a Category</option>
-                        {Category.map((category) => (
-                            <option key={category} value={category}>
-                                {category}
-                            </option>
-                        ))}
-                    </select>
+            <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <InputLabel id="category-wheel-lable-id">Category</InputLabel>
+            <Select
+                labelId="category-wheel-lable-id"
+                id="category-wheel-id"
+                value={selectedCategory}
+                label="Category"
+                onChange={handleCategoryChange}>
+
+                {Category.map((category, index) => (
+                    <MenuItem key={index} value={category}>{category}</MenuItem>
+                ))}
+
+            </Select>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                <InputLabel id="status-wheel-lable-id">Status</InputLabel>
+                <Select
+                    labelId="status-wheel-lable-id"
+                    id="category-wheel-id"
+                    value={selectedStatus}
+                    label="Category"
+                    onChange={handleStatusChanged}>
+
+                    {Status.map((status, index) => (
+                        <MenuItem key={index} value={status}>{status}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                <InputLabel id="security-wheel-lable-id">Security</InputLabel>
+                <Select
+                    labelId="security-wheel-lable-id"
+                    id="security-wheel-id"
+                    value={selectedSecurity}
+                    label="Security"
+                    onChange={handleSecurityChange}>
+
+                    {Security.map((security, index) => (
+                        <MenuItem key={index} value={security}>{security}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                <input
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="contained-button-file"
+                    type="file"
+                    onChange={handleImageChange}
+                />
+                <label htmlFor="contained-button-file">
+                    <Button variant="contained" color="primary" component="span">
+                        Upload Image
+                    </Button>
                 </label>
-            </div>
 
-            <div>
-                <label>
-                    Select a Security:
-                    <select value={selectedSecurity} onChange={handleSecurityChange}>
-                        <option value="" disabled>Select a Security</option>
-                        {Security.map((security) => (
-                            <option key={security} value={security}>
-                                {security}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-            </div>
-
-            <div>
-                <label>
-                    Select a Status:
-                    <select value={selectedStatus} onChange={handleStatusChanged}>
-                        <option value="" disabled>Select a Status</option>
-                        {Status.map((status) => (
-                            <option key={status} value={status}>
-                                {status}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-            </div>
-
-
+                {imageSrc && (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            mt: 2,
+                            height: 140,
+                            backgroundImage: `url(${imageSrc})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        }}
+                    ></Box>
+                )}
+            </FormControl>
 
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Generate Template
@@ -182,3 +257,5 @@ return (
 }
 
 export default TemplateForm;
+
+

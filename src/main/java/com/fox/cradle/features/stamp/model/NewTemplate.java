@@ -1,5 +1,6 @@
 package com.fox.cradle.features.stamp.model;
 
+import com.fox.cradle.features.appuser.model.AppUser;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
@@ -12,8 +13,8 @@ public class NewTemplate
 {
     private String name;
     private String description;
-    private String image;
 
+    private String image;
     private String createdBy;
 
     @Enumerated(EnumType.STRING)
@@ -24,4 +25,6 @@ public class NewTemplate
 
     @Enumerated(EnumType.STRING)
     private StampCardStatus stampCardStatus;
+
+    private AppUser appUser;
 }

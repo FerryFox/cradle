@@ -15,19 +15,20 @@ public class MapService
 
     public Template mapRequestToTemplate(NewTemplate dto)
     {
-        //AppUser not set
-        //Id not set
-        Template template = Template.builder()
+
+        String pictureId = pictureService.savePicture(dto.getImage()).getId();
+
+        return Template.builder()
                         .name(dto.getName())
                         .description(dto.getDescription())
-                        .image(dto.getImage())
+                        .image(pictureId)
+                        .appUser(dto.getAppUser())
                         .createdBy(dto.getCreatedBy())
+                        .createdDate(new java.util.Date().toInstant())
                         .stampCardCategory(dto.getStampCardCategory())
                         .stampCardSecurity(dto.getStampCardSecurity())
                         .stampCardStatus(dto.getStampCardStatus())
                         .build();
-
-        return template;
     }
 
     public TemplateResponse mapTemplateToResponse(Template template)
@@ -42,7 +43,7 @@ public class MapService
                 .stampCardStatus(template.getStampCardStatus())
                 .build();
 
-        //image is loaded from the database
+
         var image = pictureService.getPictureId(template.getImage());
         response.setImage(image);
 

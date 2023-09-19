@@ -1,14 +1,18 @@
 package com.fox.cradle.features.stamp.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
+import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stamp.model.*;
 import com.fox.cradle.features.stamp.service.TemplateService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,6 +24,7 @@ public class TemplateController
 {
     private final JwtService _jwtService;
     private final TemplateService _TemplateService;
+    private final PictureService _pictureService;
     private final AppUserService _appUserService;
 
     @GetMapping("/all")
@@ -43,17 +48,6 @@ public class TemplateController
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<TemplateResponse> register(@RequestBody NewTemplate request, HttpServletRequest httpServletRequest)
-    {
-        String email = _jwtService.extractUsernameFromRequest(httpServletRequest);
-        request.setCreatedBy(email);
-
-        TemplateResponse response = _TemplateService.createTemplate(request);
-        //not jet created
-        return ResponseEntity.ok(response);
-    }
-
     @GetMapping("/categories")
     public ResponseEntity<StampCardCategory[]> getTemplatesByCategory()
     {
@@ -70,6 +64,18 @@ public class TemplateController
     public ResponseEntity<StampCardStatus[]> getTemplatesByStatus()
     {
         return ResponseEntity.ok(StampCardStatus.values());
+    }
+
+    @PostMapping("/new-template")
+    public ResponseEntity<TemplateResponse> createTemplate(@RequestBody NewTemplate request, HttpServletRequest httpServletRequest) throws JsonProcessingException {
+        String email = _jwtService.extractUsernameFromRequest(httpServletRequest);
+        AppUser appUser = _appUserService.findUserByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
+        request.setCreatedBy(email);
+        request.setAppUser(appUser);
+
+        var savedTemplate = _TemplateService.createTemplate(request);
+        return ResponseEntity.ok(savedTemplate);
     }
 }
 

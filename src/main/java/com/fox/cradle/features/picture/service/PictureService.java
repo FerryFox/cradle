@@ -56,6 +56,16 @@ public class PictureService
         return savePicture(picture);
     }
 
+    public Picture savePicture(String base64Image)
+    {
+
+        Picture picture = new Picture();
+        picture.setName("no name");
+        picture.setImageData(base64ToBinary(base64Image));
+
+        return pictureRepository.save(picture);
+    }
+
 
     public String getPictureId(String id)
     {
@@ -71,6 +81,16 @@ public class PictureService
         Picture picture = new Picture();
         picture.setImageData(binaryData);
         return picture;
+    }
+
+    private Binary base64ToBinary(String base64)
+    {
+        if(base64.startsWith("data:image")) {
+            base64 = base64.split(",")[1];
+        }
+
+        byte[] bytes = Base64.getDecoder().decode(base64);
+        return new Binary(bytes);
     }
 
 }

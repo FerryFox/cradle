@@ -35,7 +35,7 @@ public class TemplateService
     public TemplateResponse createTemplate(NewTemplate request)
     {
         Template template = MapService.mapRequestToTemplate(request);
-        templateRepository.save(template);
+        template = templateRepository.save(template);
         return MapService.mapTemplateToResponse(template);
     }
 
@@ -44,8 +44,6 @@ public class TemplateService
         return templateRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Stamp card template not found"));
     }
-
-
 
 
     public Template save(Template template)

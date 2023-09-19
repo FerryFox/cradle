@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -37,13 +38,13 @@ public class TemplateController
     @GetMapping("/my")
     public ResponseEntity<List<TemplateResponse>> getMyTemplates(HttpServletRequest httpServletRequest)
     {
-        String email = _jwtService.extractUsernameFromRequest(httpServletRequest);
-        var OptionalAppUser =  _appUserService.findUserByEmail(email);
+        Optional<AppUser> AppUse =  _appUserService.
+                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
 
-        if (OptionalAppUser.isEmpty())
-            return ResponseEntity.badRequest().build();
-        else {
-            List<TemplateResponse> response = _TemplateService.getMyTemplates(OptionalAppUser.get());
+        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
+        else
+        {
+            List<TemplateResponse> response = _TemplateService.getMyTemplates(AppUse.get());
             return ResponseEntity.ok(response);
         }
     }
@@ -68,13 +69,12 @@ public class TemplateController
 
     @PostMapping("/new-template")
     public ResponseEntity<TemplateResponse> createTemplate(@RequestBody NewTemplate request, HttpServletRequest httpServletRequest) throws JsonProcessingException {
-        String email = _jwtService.extractUsernameFromRequest(httpServletRequest);
-        AppUser appUser = _appUserService.findUserByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<AppUser> AppUse =  _appUserService.
+                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
 
-        request.setCreatedBy(email);
-        request.setAppUser(appUser);
+        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        var savedTemplate = _TemplateService.createTemplate(request);
+        var savedTemplate = _TemplateService.createTemplate(request, AppUse.get());
         return ResponseEntity.ok(savedTemplate);
     }
 }

@@ -1,18 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import {Divider, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import CustomNumberInput from "../core/CustomNumberInput";
 
 function resizeImage(file, maxWidth, maxHeight, callback)
 {
@@ -59,6 +54,7 @@ function TemplateForm()
     const [imageSrc, setImageSrc] = useState(null);
     const navigate = useNavigate();
     const [isShaking, setIsShaking] = useState(false);
+    const [value, setValue] = useState(0);
 
     //values
     const [Category, setCategory] = useState([]);
@@ -127,6 +123,8 @@ function TemplateForm()
                     stampCardCategory: selectedCategory,
                     stampCardSecurity: selectedSecurity,
                     stampCardStatus: selectedStatus,
+                    fileName : file.name,
+                    defaultCount : value
                 };
 
                 const response = await axios.post('/api/templates/new-template', payload, {
@@ -169,6 +167,13 @@ return (
                        name="description"
                        label="description"
                        id="description" />
+
+            <CustomNumberInput
+                aria-label="Demo number input"
+                placeholder="set the default stamp count"
+                value={value}
+                onChange={(event, val) => setValue(val)}
+            />
 
             <Divider sx={{ marginBottom: 2 }}/>
 

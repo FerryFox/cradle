@@ -15,7 +15,8 @@ public class NewTemplate
     private String description;
 
     private String image;
-    private String createdBy;
+    private String fileName;
+    private int defaultCount;
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;

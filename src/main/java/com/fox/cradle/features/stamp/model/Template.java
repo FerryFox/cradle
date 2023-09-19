@@ -24,6 +24,7 @@ public class Template
     private String image;
 
     private String createdBy;
+    private int defaultCount;
 
     private Instant createdDate = Instant.now();
 

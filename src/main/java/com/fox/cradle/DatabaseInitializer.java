@@ -4,6 +4,7 @@ import com.fox.cradle.configuration.security.user.User;
 import com.fox.cradle.configuration.security.user.UserRepository;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
+import com.fox.cradle.features.picture.model.Picture;
 import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stamp.model.*;
 import com.fox.cradle.features.stamp.service.*;
@@ -29,15 +30,17 @@ public class DatabaseInitializer implements CommandLineRunner
     {
         //fill mongo db with some pictures
 /*
-        var ice = pictureService.loadPictureFromFile("ice");
+        Picture ice = pictureService.loadPictureFromFile("ice");
         pictureService.savePicture(ice);
 
-        var coffee = pictureService.loadPictureFromFile("coffee");
+        Picture coffee = pictureService.loadPictureFromFile("coffee");
         pictureService.savePicture(coffee);
 
-        var cinema = pictureService.loadPictureFromFile("cinema");
+        Picture cinema = pictureService.loadPictureFromFile("cinema");
         pictureService.savePicture(cinema);
-*/
+
+ */
+
 
 //create some users
     //User 1 with AppUser 1
@@ -74,7 +77,8 @@ public class DatabaseInitializer implements CommandLineRunner
 //Create some stamp card templates
         Template template_001 = new Template();
         template_001.setName("Ice Cream Card");
-        template_001.setImage("6505fc2aa54d6f41e4374591");
+        template_001.setImage("6509f026a96a17398d0e87ae");
+        template_001.setDefaultCount(10);
         template_001.setStampCardCategory(StampCardCategory.FOOD);
         template_001.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_001.setStampCardStatus(StampCardStatus.PUBLIC);
@@ -85,7 +89,8 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_002 = new Template();
         template_002.setName("Coffee Card");
-        template_002.setImage("6505fc2aa54d6f41e4374592");
+        template_002.setImage("6509f026a96a17398d0e87af");
+        template_002.setDefaultCount(10);
         template_002.setStampCardCategory(StampCardCategory.DRINK);
         template_002.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_002.setStampCardStatus(StampCardStatus.PUBLIC);
@@ -96,7 +101,8 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_003 = new Template();
         template_003.setName("Cinema Card");
-        template_003.setImage("6505fc2aa54d6f41e4374593");
+        template_003.setImage("6509f026a96a17398d0e87b0");
+        template_003.setDefaultCount(5);
         template_003.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
         template_003.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_003.setStampCardStatus(StampCardStatus.PUBLIC);
@@ -106,35 +112,17 @@ public class DatabaseInitializer implements CommandLineRunner
         templateService.save(template_003);
 
 
-//Create a stamp card and from a template and add it to AppUser 1
         AppUser bob = appUser2;
         stampCardService.createStampCard(template_001, bob);
-        //stampCardService.createStampCard(stampCardTemplate_002, appUser1);
-
-//test stamp card loading with template
 
 
-        var stampcard = stampCardService.getStampCardById(1);
-        System.out.println("-----Stampcard printing-----");
-        System.out.println(stampcard);
-
-        System.out.println("----Bob Print------");
-        System.out.println("Bob (AppUser) stamp cards");
-        bob.getMyStampCards().forEach(StampCard::smallPrint);
 
 //load bob new and check
         AppUser unknown = appUserService.getAppUserById(bob.getId());
-        System.out.println("----Bob2 Print------");
-        System.out.println("Bob2 (AppUser) s    tamp cards");
-        unknown.getMyStampCards().forEach(StampCard::smallPrint);
-
-//try stamp some card
         StampCard stampCard = unknown.getMyStampCards().get(0);
         stampService.stampACard(stampCard);
-        System.out.println("----Bob3 Print------");
-        System.out.println("Bo3 (AppUser) stamp cards");
-        unknown.getMyStampCards().forEach(x -> System.out.println(x));
 
+        System.out.println("done database init");
 
 
         }

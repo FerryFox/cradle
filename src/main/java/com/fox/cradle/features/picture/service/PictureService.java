@@ -5,6 +5,7 @@ import org.bson.types.Binary;
 import org.springframework.core.io.ClassPathResource;
 import java.nio.file.Files;
 import java.util.Base64;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,6 @@ public class PictureService
 {
     private final PictureRepository pictureRepository;
 
-    public byte[] loadImageAsBytesFromFile(String imageName) throws Exception
-    {
-        ClassPathResource resource = new ClassPathResource("images/" + imageName + ".jpg");
-        return Files.readAllBytes(resource.getFile().toPath());
-    }
 
     public Picture loadPictureFromFile(String imageName) throws Exception
     {
@@ -31,64 +27,33 @@ public class PictureService
         return picture;
     }
 
-    public Picture savePicture(Picture picture)
+    public Picture savePicture(String base64Image, String name)
     {
-        try
-        {
-            return pictureRepository.findById(picture.getId()).get();
-        }
-        catch (Exception e)
-        {
-            return pictureRepository.save(picture);
-        }
-    }
-
-    public Picture savePicture(byte [] imageData, String name)
-    {
-        Picture picture = byteToPicture(imageData);
-        picture.setName(name);
-        return savePicture(picture);
-    }
-
-    public Picture savePicture(byte [] imageData)
-    {
-        Picture picture = byteToPicture(imageData);
-        return savePicture(picture);
-    }
-
-    public Picture savePicture(String base64Image)
-    {
-
         Picture picture = new Picture();
-        picture.setName("no name");
+        picture.setName(name);
         picture.setImageData(base64ToBinary(base64Image));
-
         return pictureRepository.save(picture);
     }
 
-
-    public String getPictureId(String id)
+    public Picture savePicture(Picture picture)
     {
-         Picture picture =  pictureRepository.findById(id).get();
-         byte[] imageBytes = picture.getImageData().getData();
-         String encodedString = Base64.getEncoder().encodeToString(imageBytes);
-         return encodedString;
+        return pictureRepository.save(picture);
     }
 
-    private Picture byteToPicture( byte[] imageData )
+    public String getPictureByIdBase64Encoded(String id)
     {
-        Binary binaryData = new Binary(imageData);
-        Picture picture = new Picture();
-        picture.setImageData(binaryData);
-        return picture;
+         Optional<Picture> picture =  pictureRepository.findById(id);
+         if(picture.isEmpty()) return "";
+         byte[] imageBytes = picture.get().getImageData().getData();
+         return Base64.getEncoder().encodeToString(imageBytes);
     }
 
     private Binary base64ToBinary(String base64)
     {
-        if(base64.startsWith("data:image")) {
+        if(base64.startsWith("data:image"))
+        {
             base64 = base64.split(",")[1];
         }
-
         byte[] bytes = Base64.getDecoder().decode(base64);
         return new Binary(bytes);
     }

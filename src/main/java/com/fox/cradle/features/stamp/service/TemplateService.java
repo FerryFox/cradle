@@ -1,6 +1,7 @@
 package com.fox.cradle.features.stamp.service;
 
 import com.fox.cradle.features.appuser.model.AppUser;
+import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stamp.model.Template;
 import com.fox.cradle.features.stamp.model.NewTemplate;
 import com.fox.cradle.features.stamp.model.TemplateResponse;
@@ -16,6 +17,7 @@ public class TemplateService
 {
     private final MapService MapService;
     private final TemplateRepository templateRepository;
+    private final PictureService pictureService;
 
     public List<TemplateResponse> getAllTemplates()
     {
@@ -32,11 +34,13 @@ public class TemplateService
         return templates.stream().map(MapService::mapTemplateToResponse).collect(Collectors.toList());
     }
 
-    public TemplateResponse createTemplate(NewTemplate request)
+    public TemplateResponse createTemplate(NewTemplate request, AppUser appUser)
     {
-        Template template = MapService.mapRequestToTemplate(request);
-        template = templateRepository.save(template);
-        return MapService.mapTemplateToResponse(template);
+        String pictureId = pictureService.savePicture(request.getImage() , request.getFileName()).getId();
+
+        Template newTemplate = MapService.mapRequestToTemplate(request, appUser, pictureId);
+        Template savedTemplate = templateRepository.save(newTemplate);
+        return MapService.mapTemplateToResponse(savedTemplate);
     }
 
     public Template getStampCardTemplateById(Long id)

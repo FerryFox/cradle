@@ -1,5 +1,6 @@
 package com.fox.cradle.features.stamp.service;
 
+import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stamp.model.Template;
 import com.fox.cradle.features.stamp.model.NewTemplate;
@@ -13,17 +14,17 @@ public class MapService
 {
     private final PictureService pictureService;
 
-    public Template mapRequestToTemplate(NewTemplate dto)
+    public Template mapRequestToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
     {
-
-        String pictureId = pictureService.savePicture(dto.getImage()).getId();
+        String appUserEmail = appUser.getAppUserEmail();
 
         return Template.builder()
                         .name(dto.getName())
                         .description(dto.getDescription())
                         .image(pictureId)
-                        .appUser(dto.getAppUser())
-                        .createdBy(dto.getCreatedBy())
+                        .defaultCount(dto.getDefaultCount())
+                        .createdBy(appUserEmail)
+                        .appUser(appUser)
                         .createdDate(new java.util.Date().toInstant())
                         .stampCardCategory(dto.getStampCardCategory())
                         .stampCardSecurity(dto.getStampCardSecurity())
@@ -44,7 +45,7 @@ public class MapService
                 .build();
 
 
-        var image = pictureService.getPictureId(template.getImage());
+        var image = pictureService.getPictureByIdBase64Encoded(template.getImage());
         response.setImage(image);
 
         return response;

@@ -20,15 +20,6 @@ spring:
       uri: ${MONGO_URL}
       database: DeleteMeDb
 
-  hibernate:
-    ogm:
-      datastore:
-        provider: MONGODB
-        database: DeleteMeDb
-        host: localhost
-        username: ${MONGO_USER}
-        password: ${MONGO_PASSWORD}
-      create_database: true
 
 application:
   security:

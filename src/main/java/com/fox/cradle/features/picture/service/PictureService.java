@@ -5,6 +5,7 @@ import org.bson.types.Binary;
 import org.springframework.core.io.ClassPathResource;
 import java.nio.file.Files;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PictureService
 {
-
     private final PictureRepository pictureRepository;
-
 
     public Picture loadPictureFromFile(String imageName) throws Exception
     {
@@ -28,12 +27,22 @@ public class PictureService
         return picture;
     }
 
+    public List<Picture> getAllPictures()
+    {
+        return pictureRepository.findAll();
+    }
+
     public Picture savePicture(String base64Image, String name)
     {
         Picture picture = new Picture();
         picture.setName(name);
         picture.setImageData(base64ToBinary(base64Image));
         return pictureRepository.save(picture);
+    }
+
+    public void deletePictureById(String id)
+    {
+        pictureRepository.deleteById(id);
     }
 
     public Picture savePicture(Picture picture)
@@ -49,7 +58,7 @@ public class PictureService
          return Base64.getEncoder().encodeToString(imageBytes);
     }
 
-    private Binary base64ToBinary(String base64)
+    public Binary base64ToBinary(String base64)
     {
         if(base64.startsWith("data:image"))
         {
@@ -58,5 +67,4 @@ public class PictureService
         byte[] bytes = Base64.getDecoder().decode(base64);
         return new Binary(bytes);
     }
-
 }

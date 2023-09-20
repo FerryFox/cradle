@@ -123,7 +123,5 @@ public class DatabaseInitializer implements CommandLineRunner
         stampService.stampACard(stampCard);
 
         System.out.println("done database init");
-
-
         }
 }

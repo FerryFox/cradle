@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PictureService
 {
+
     private final PictureRepository pictureRepository;
 
 

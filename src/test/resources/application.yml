@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  data:
+    mongodb:
+      uri: ${MONGO_URL}
+      database: DeleteMeDb
+
+  hibernate:
+    ogm:
+      datastore:
+        provider: MONGODB
+        database: DeleteMeDb
+        host: localhost
+        username: ${MONGO_USER}
+        password: ${MONGO_PASSWORD}
+      create_database: true
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY}
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days

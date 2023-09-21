@@ -54,7 +54,7 @@ function TemplateForm()
     const [imageSrc, setImageSrc] = useState(null);
     const navigate = useNavigate();
     const [isShaking, setIsShaking] = useState(false);
-    const [value, setValue] = useState(0);
+    const [number, setValue] = useState(10);
 
     //values
     const [Category, setCategory] = useState([]);
@@ -124,7 +124,7 @@ function TemplateForm()
                     stampCardSecurity: selectedSecurity,
                     stampCardStatus: selectedStatus,
                     fileName : file.name,
-                    defaultCount : value
+                    defaultCount : number
                 };
 
                 const response = await axios.post('/api/templates/new-template', payload, {
@@ -168,11 +168,12 @@ return (
                        label="description"
                        id="description" />
 
-            <CustomNumberInput
-                aria-label="Demo number input"
-                placeholder="set the default stamp count"
-                value={value}
-                onChange={(event, val) => setValue(val)}
+            <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
+                label="Number"
+                variant="outlined"
+                type="number"
+                value={number}
+                onChange={(e) => setValue(e.target.value)}
             />
 
             <Divider sx={{ marginBottom: 2 }}/>

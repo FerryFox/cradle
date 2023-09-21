@@ -26,9 +26,9 @@ public class DatabaseInitializer implements CommandLineRunner
     private final PictureService pictureService;
 
     @Override
-    public void run(String... args) throws Exception
-    {
-        //fill mongo db with some pictures
+    public void run(String... args) throws Exception {
+        // Use this lines to insert some pictures into the mongo db
+        // Pictures are loaded from the static folder
 /*
         Picture ice = pictureService.loadPictureFromFile("ice");
         pictureService.savePicture(ice);
@@ -38,41 +38,68 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Picture cinema = pictureService.loadPictureFromFile("cinema");
         pictureService.savePicture(cinema);
-
  */
-
-
 //create some users
-    //User 1 with AppUser 1
-        User user1 = new User();
-        user1.setEmail("w@w");
-        user1.setPassword("1234");
-        user1.setReceiveNews(true);
-        user1.setFirstname("Ice cream man");
+        //User 1 with AppUser 1
+        User userIce = new User();
+        userIce.setEmail("w@w");
+        userIce.setPassword("1234");
+        userIce.setReceiveNews(true);
+        userIce.setFirstname("Ice Cream Company");
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        user1.setPassword(passwordEncoder.encode(user1.getPassword()));
-        userRepository.save(user1);
+        userIce.setPassword(passwordEncoder.encode(userIce.getPassword()));
+        userRepository.save(userIce);
 
-        AppUser appUser1 = new AppUser();
-        appUser1.setAppUserName("Ice cream man");
-        appUser1.setAppUserEmail("w@w");
-        appUser1.setReceiveNews(true);
-        appUserService.saveAppUser(appUser1);
+        AppUser appUserIceCompany = new AppUser();
+        appUserIceCompany.setAppUserName("Ice cream man");
+        appUserIceCompany.setAppUserEmail("w@w");
+        appUserIceCompany.setReceiveNews(true);
+        appUserService.saveAppUser(appUserIceCompany);
 
-    //User 2 with AppUser 2
-        User user2 = new User();
-        user2.setEmail("q@q");
-        user2.setPassword("123");
-        user2.setReceiveNews(true);
-        user2.setFirstname("Bob");
-        user2.setPassword(passwordEncoder.encode(user2.getPassword()));
-        userRepository.save(user2);
+        //User 2 with AppUser 2
+        User userBob = new User();
+        userBob.setEmail("q@q");
+        userBob.setPassword("1234");
+        userBob.setReceiveNews(true);
+        userBob.setFirstname("Bob");
+        userBob.setPassword(passwordEncoder.encode(userBob.getPassword()));
+        userRepository.save(userBob);
 
-        AppUser appUser2 = new AppUser();
-        appUser2.setAppUserName("Bob");
-        appUser2.setAppUserEmail("q@q");
-        appUser2.setReceiveNews(true);
-        appUserService.saveAppUser(appUser2);
+        AppUser appUserBob = new AppUser();
+        appUserBob.setAppUserName("Bob");
+        appUserBob.setAppUserEmail("q@q");
+        appUserBob.setReceiveNews(true);
+        appUserService.saveAppUser(appUserBob);
+
+        // User 3 with AppUser 3
+        User userCinema = new User();
+        userCinema.setEmail("e@e");
+        userCinema.setPassword("1234");
+        userCinema.setReceiveNews(true);
+        userCinema.setFirstname("Cinema");
+        userCinema.setPassword(passwordEncoder.encode(userCinema.getPassword()));
+        userRepository.save(userCinema);
+
+        AppUser appUserCinema = new AppUser();
+        appUserCinema.setAppUserName("Cinema");
+        appUserCinema.setAppUserEmail("e@e");
+        appUserCinema.setReceiveNews(true);
+        appUserService.saveAppUser(appUserCinema);
+
+        //User 2 with AppUser 2
+        User userAnna = new User();
+        userAnna.setEmail("r@r");
+        userAnna.setPassword("1234");
+        userAnna.setReceiveNews(false);
+        userAnna.setFirstname("Anna");
+        userAnna.setPassword(passwordEncoder.encode(userAnna.getPassword()));
+        userRepository.save(userAnna);
+
+        AppUser appUserAnna = new AppUser();
+        appUserAnna.setAppUserName("Anna");
+        appUserAnna.setAppUserEmail("r@r");
+        appUserAnna.setReceiveNews(false);
+        appUserService.saveAppUser(appUserAnna);
 
 //Create some stamp card templates
         Template template_001 = new Template();
@@ -83,8 +110,8 @@ public class DatabaseInitializer implements CommandLineRunner
         template_001.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_001.setStampCardStatus(StampCardStatus.PUBLIC);
         template_001.setDescription("Buy 10 ice creams and get one for free");
-        template_001.setCreatedBy(appUser1.getAppUserEmail());
-        template_001.setAppUser(appUser1);
+        template_001.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_001.setAppUser(appUserIceCompany);
         templateService.save(template_001);
 
         Template template_002 = new Template();
@@ -95,8 +122,8 @@ public class DatabaseInitializer implements CommandLineRunner
         template_002.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_002.setStampCardStatus(StampCardStatus.PUBLIC);
         template_002.setDescription("Buy 10 coffees and get one for free");
-        template_002.setCreatedBy(appUser2.getAppUserEmail());
-        template_002.setAppUser(appUser2);
+        template_002.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_002.setAppUser(appUserIceCompany);
         templateService.save(template_002);
 
         Template template_003 = new Template();
@@ -107,21 +134,11 @@ public class DatabaseInitializer implements CommandLineRunner
         template_003.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_003.setStampCardStatus(StampCardStatus.PUBLIC);
         template_003.setDescription("Visit the cinema 5 times to get a free ticket");
-        template_003.setCreatedBy(appUser2.getAppUserEmail());
-        template_003.setAppUser(appUser2);
+        template_003.setCreatedBy(appUserCinema.getAppUserEmail());
+        template_003.setAppUser(appUserCinema);
         templateService.save(template_003);
 
+        System.out.println("database initialized");
 
-        AppUser bob = appUser2;
-        stampCardService.createStampCard(template_001, bob);
-
-
-
-//load bob new and check
-        AppUser unknown = appUserService.getAppUserById(bob.getId());
-        StampCard stampCard = unknown.getMyStampCards().get(0);
-        stampService.stampACard(stampCard);
-
-        System.out.println("done database init");
-        }
+    }
 }

@@ -1,31 +1,32 @@
 package com.fox.cradle.configuration.security.jwt;
 
 
-import com.fox.cradle.configuration.security.auth.AuthenticationResponse;
 import com.fox.cradle.configuration.security.user.User;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import io.jsonwebtoken.Claims;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
-public class JwtServiceTest
+public class JwtServiceIntegrationTest
 {
-    public String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxQHEiLCJpYXQiOjE2OTM4OTY2MTIsImV4cCI6MTY5Mzk4MzAxMn0.qeYj6F57epQn-Hx3k_ZQF5hXKa_A-ghjiOYkyYblYE4";
+
+    //private String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxQHEiLCJpYXQiOjE2OTM4OTY2MTIsImV4cCI6MTY5Mzk4MzAxMn0.4zbMTNA9Q5-0vf-9L9UIDVU8NRL9HjYomQp9qQGLuwI";
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
@@ -33,63 +34,71 @@ public class JwtServiceTest
     @Autowired
     private  JwtService jwtService;
 
-    @Test
-    public void extractUsernameFromJwT()
+    @Container
+    static final MongoDBContainer mongoDBContainer = new MongoDBContainer();
+
+    @BeforeAll
+    static void setup()
     {
-        //given
-        String token = this.token;
+        mongoDBContainer.start();
+    }
 
-        //when : get the email from the user.getEmail()
-        String username = jwtService.extractUsername(token);
+    @AfterAll
+    static void cleanup()
+    {
+        mongoDBContainer.stop(); // stop the MongoDB container
+    }
 
-        //then
-        assert username.equals("q@q");
+    @DynamicPropertySource
+    static void setUrlDynamically(DynamicPropertyRegistry registry)
+    {
+        System.out.println( "MONGO_URL=" + mongoDBContainer.getReplicaSetUrl());
+        registry.add("MONGO_URL", () -> mongoDBContainer.getReplicaSetUrl());
     }
 
     @Test
-    public void extractUserNameClaimsFromToken()
+    public void extractUsernameFromJwT()
     {
-        //given
-        String token = this.token;
-
-        //when
-        String username = jwtService.extractClaim(token, Claims::getSubject);
-
-        //then
+        //GIVEN
+        User user = new User();
+        user.setEmail("q@q");
+        String token = jwtService.generateToken(user);
+        //WHEN
+        String username = jwtService.extractUsername(token);
+        //THEN
         assert username.equals("q@q");
     }
 
     @Test
     public void generateTokenWithUser()
     {
+        //GIVEN
         User user = new User();
         user.setEmail("q@q");
-        //given
         String token = jwtService.generateToken(user);
-        System.out.println(token);
-        //when
+        //WHEN
         boolean isValid = jwtService.isTokenValid(token, user);
-        //then
+        //THEN
         assert isValid;
         assert jwtService.extractUsername(token).equals(user.getEmail());
     }
 
     @Test
     public void generateTokenWithUserDetails() {
+        //Given
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
         UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername("q@q")
                 .password("q")
                 .authorities(authorities)
                 .build();
 
-        //given
         String token = jwtService.generateToken(userDetails);
         System.out.println(token);
 
-        //when
+        //WHEN
         boolean isValid = jwtService.isTokenValid(token, userDetails);
 
-        //then
+        //THEN
         assert isValid;
         assert jwtService.extractUsername(token).equals(userDetails.getUsername());
     }
@@ -107,7 +116,7 @@ public class JwtServiceTest
     @Test
     public void isTokenExpired()
     {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxQHEiLCJpYXQiOjE2OTI4OTk1OTYsImV4cCI6MTY5MzI4NTk5Nn0.BDjS-CO_VsjX7ogsgeEk3Py3oYXh8iXpD9rGS07zFRw";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxQHEiLCJpYXQiOjE2OTI4OTk1OTYsImV4cCI6MTY5MzI4NTk5Nn0.EgmaJWwFIpLHQVC_Q5Mxej_aelyzbLO_uYUunq-tZZo";
 
         try
         {
@@ -125,9 +134,13 @@ public class JwtServiceTest
     {
         User user = new User();
         user.setEmail("wrong@fail.de");
-        String token = this.token;
+        String token = jwtService.generateToken(user);
+
+        User user2 = new User();
+        user2.setEmail("f@f");
+
         String username = jwtService.extractUsername(token);
-        Assertions.assertFalse(user.getEmail().equals(username));
+        Assertions.assertFalse(user2.getEmail().equals(username));
     }
 
     @Test

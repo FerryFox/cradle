@@ -7,47 +7,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {Divider, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
-import CustomNumberInput from "../core/CustomNumberInput";
-
-function resizeImage(file, maxWidth, maxHeight, callback)
-{
-    const reader = new FileReader();
-
-    reader.onload = function(event) {
-        const img = new Image();
-
-        img.onload = function() {
-            const canvas = document.createElement('canvas');
-
-            let width = img.width;
-            let height = img.height;
-
-            if (width > height) {
-                if (width > maxWidth) {
-                    height *= maxWidth / width;
-                    width = maxWidth;
-                }
-            } else {
-                if (height > maxHeight) {
-                    width *= maxHeight / height;
-                    height = maxHeight;
-                }
-            }
-
-            canvas.width = width;
-            canvas.height = height;
-
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, width, height);
-
-            callback(canvas.toDataURL("image/jpeg"));
-        }
-
-        img.src = event.target.result;
-    }
-
-    reader.readAsDataURL(file);
-}
+import {resizeImage} from "../../assets/picture/resizeImage";
 
 function TemplateForm()
 {
@@ -136,7 +96,7 @@ function TemplateForm()
 
                 if (response.status === 200) // Created
                 {
-                    navigate('/templates-owned');
+                    navigate('/templates/owned');
                 } else {
                     handleShake();
                 }

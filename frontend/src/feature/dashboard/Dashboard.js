@@ -1,15 +1,8 @@
 import * as React from 'react';
-import Drawer from '@mui/material/Drawer';
 import {
-    Box, Toolbar, Typography, Divider, IconButton, Badge, Container,
-    Grid, Paper, Link, List, ListItem, ListItemIcon, ListItemText, styled, ListItemButton
+    Box, Toolbar, Container,
+    Grid, Paper,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import InboxIcon from '@mui/icons-material/Inbox';
-import MailIcon from '@mui/icons-material/Mail';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import {useNavigate} from "react-router-dom";
 import AppBarComponent from "../core/AppBarComponent";
 import DrawerComponent from "../core/DrawerComponent";

@@ -1,7 +1,6 @@
 package com.fox.cradle.features.stamp.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
@@ -12,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +46,12 @@ public class TemplateController
             List<TemplateResponse> response = _TemplateService.getMyTemplates(AppUse.get());
             return ResponseEntity.ok(response);
         }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteTemplate(@PathVariable Long id)
+    {
+        _TemplateService.deleteTemplate(id);
     }
 
     @GetMapping("/categories")

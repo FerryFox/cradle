@@ -29,7 +29,7 @@ public class DatabaseInitializer implements CommandLineRunner
     public void run(String... args) throws Exception {
         // Use this lines to insert some pictures into the mongo db
         // Pictures are loaded from the static folder
-/*
+
         Picture ice = pictureService.loadPictureFromFile("ice");
         pictureService.savePicture(ice);
 
@@ -38,7 +38,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Picture cinema = pictureService.loadPictureFromFile("cinema");
         pictureService.savePicture(cinema);
- */
+
 //create some users
         //User 1 with AppUser 1
         User userIce = new User();
@@ -104,7 +104,10 @@ public class DatabaseInitializer implements CommandLineRunner
 //Create some stamp card templates
         Template template_001 = new Template();
         template_001.setName("Ice Cream Card");
-        template_001.setImage("6509f026a96a17398d0e87ae");
+        if(ice != null)
+            template_001.setImage(ice.getId());
+        else
+            template_001.setImage("650d3bf63b4fbc0412f4e822");
         template_001.setDefaultCount(10);
         template_001.setStampCardCategory(StampCardCategory.FOOD);
         template_001.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
@@ -116,7 +119,10 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_002 = new Template();
         template_002.setName("Coffee Card");
-        template_002.setImage("6509f026a96a17398d0e87af");
+        if(coffee != null)
+            template_002.setImage(coffee.getId());
+        else
+            template_002.setImage("650d3bf63b4fbc0412f4e823");
         template_002.setDefaultCount(10);
         template_002.setStampCardCategory(StampCardCategory.DRINK);
         template_002.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
@@ -128,7 +134,10 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_003 = new Template();
         template_003.setName("Cinema Card");
-        template_003.setImage("6509f026a96a17398d0e87b0");
+        if(cinema != null)
+            template_003.setImage(cinema.getId());
+        else
+            template_003.setImage("650d3bf63b4fbc0412f4e824");
         template_003.setDefaultCount(5);
         template_003.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
         template_003.setStampCardSecurity(StampCardSecurity.TRUSTUSER);

@@ -21,6 +21,7 @@ public class MapService
     public Template mapRequestToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
     {
         String appUserEmail = appUser.getAppUserEmail();
+        Instant instant = Instant.now();
 
         return Template.builder()
                         .name(dto.getName())
@@ -29,7 +30,7 @@ public class MapService
                         .defaultCount(dto.getDefaultCount())
                         .createdBy(appUserEmail)
                         .appUser(appUser)
-                        .createdDate(new java.util.Date().toInstant())
+                        .createdDate(instant)
                         .stampCardCategory(dto.getStampCardCategory())
                         .stampCardSecurity(dto.getStampCardSecurity())
                         .stampCardStatus(dto.getStampCardStatus())

@@ -54,4 +54,9 @@ public class TemplateService
     {
         return templateRepository.save(template);
     }
+
+    public void deleteTemplate(Long id)
+    {
+        templateRepository.deleteById(id);
+    }
 }

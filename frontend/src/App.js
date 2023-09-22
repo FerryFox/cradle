@@ -13,6 +13,7 @@ import ResetPassword from "./feature/user/ResetPassword";
 import Templates from "./feature/template/Templates";
 import TemplatesOwned from "./feature/template/TemplatesOwned";
 import TemplateForm from "./feature/template/TemplateForm";
+import TemplateDetails from "./feature/template/TemplateDetails";
 import TemplateEdit from "./feature/template/TemplateEdit";
 
 function App() {
@@ -46,7 +47,8 @@ return (
                     <Route path="/templates" element={<Templates/>} />
                     <Route path="/templates/owned" element={<TemplatesOwned/>} />
                     <Route path="/template/form" element={<TemplateForm/>} />
-                    <Route path="/template/edit" element={<TemplateEdit/>}></Route>
+                    <Route path="/template/details" element={<TemplateDetails/>} />
+                    <Route path={"/template/edit"} element={<TemplateEdit/>}></Route>
                 </Routes>
             </Router>
     </ThemeProvider>

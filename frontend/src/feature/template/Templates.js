@@ -5,6 +5,7 @@ import Template from "./Template";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
+import { TemplateModel } from './models/TemplateModel';
 
 function Templates()
 {
@@ -44,7 +45,7 @@ function Templates()
                 {templates.map(t => (
                     <Grid item xs={12} sm={6} md={4} key={t.name}>
                         <Paper elevation={3} style={{ padding: '16px' }}>
-                            <Template template={t} />
+                            <Template TemplateModel={t} />
                         </Paper>
                     </Grid>
                 ))}

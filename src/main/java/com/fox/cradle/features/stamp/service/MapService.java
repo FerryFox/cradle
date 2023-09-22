@@ -8,6 +8,10 @@ import com.fox.cradle.features.stamp.model.TemplateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class MapService
@@ -34,20 +38,23 @@ public class MapService
 
     public TemplateResponse mapTemplateToResponse(Template template)
     {
+        String image = pictureService.getPictureByIdBase64Encoded(template.getImage());
+
+        ZoneId zoneId = ZoneId.of("Europe/Berlin");
+        String zonedDateTime = template.getCreatedDate().atZone(zoneId).toString();
+
         TemplateResponse response = TemplateResponse.builder()
                 .id(template.getId())
                 .name(template.getName())
-                .createdBy(template.getCreatedBy())
                 .description(template.getDescription())
+                .defaultCount(template.getDefaultCount())
+                .createdBy(template.getCreatedBy())
+                .image(image)
                 .stampCardCategory(template.getStampCardCategory())
                 .stampCardSecurity(template.getStampCardSecurity())
                 .stampCardStatus(template.getStampCardStatus())
+                .createdDate(zonedDateTime)
                 .build();
-
-
-        var image = pictureService.getPictureByIdBase64Encoded(template.getImage());
-        response.setImage(image);
-
         return response;
     }
 }

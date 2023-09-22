@@ -11,11 +11,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class StampCardResponse
 {
+    private long id;
     private String name;
     private String description;
-    private String image;
+    private int defaultCount;
     private String createdBy;
+    private String image;
     private StampCardCategory stampCardCategory;
     private StampCardSecurity stampCardSecurity;
     private StampCardStatus stampCardStatus;
+    private String createdDate;
 }

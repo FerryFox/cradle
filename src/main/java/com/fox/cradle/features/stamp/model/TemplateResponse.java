@@ -17,6 +17,7 @@ public class TemplateResponse
     private String image;
 
     private String createdBy;
+    private int defaultCount;
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;
@@ -26,4 +27,6 @@ public class TemplateResponse
 
     @Enumerated(EnumType.STRING)
     private StampCardStatus stampCardStatus;
+
+    private String createdDate;
 }

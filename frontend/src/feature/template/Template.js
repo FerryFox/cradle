@@ -7,7 +7,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-function Template({ template }) {
+function Template({ template })
+{
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
@@ -45,11 +46,13 @@ Template.propTypes = {
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
+        defaultCount: PropTypes.number.isRequired,
+        createdBy : PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
-        createdBy: PropTypes.string.isRequired,
         stampCardCategory: PropTypes.string.isRequired,
         stampCardSecurity: PropTypes.string.isRequired,
         stampCardStatus: PropTypes.string.isRequired,
+        createdDate : PropTypes.string.isRequired,
     }).isRequired,
 };
 

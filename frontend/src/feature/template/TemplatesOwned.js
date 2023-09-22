@@ -16,7 +16,6 @@ function TemplatesOwned()
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-
     useEffect(() =>
     {
         setLoading(true);
@@ -39,7 +38,6 @@ function TemplatesOwned()
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error loading data. Please try again later.</div>
 
-
     return (
         <Container>
             <h1>Your Templates</h1>
@@ -51,7 +49,7 @@ function TemplatesOwned()
                         component="div"
                         elevation={3}
                         style={{ height: '100%', backgroundColor: 'lightgray', cursor: 'pointer', padding: '16px' }}
-                        onClick={() => navigate('/templates/new')}>
+                        onClick={() => navigate('/template/edit')}>
                         Click to create new template
                     </Box>
                 </Grid>
@@ -59,8 +57,12 @@ function TemplatesOwned()
                 {templates.map(t => (
                 <Grid item xs={12} sm={6} md={4} key={t.name}>
                     <Paper elevation={3} style={{ padding: '16px' }}>
-                        <Template template={t} />
+                        <div onClick={() => navigate("")}>
+                            <Template template={t} />
+                        </div>
+
                     </Paper>
+
                 </Grid>
                 ))}
             </Grid>

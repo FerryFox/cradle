@@ -10,7 +10,7 @@ import {TemplateModel} from "./models/TemplateModel";
 function Template({ TemplateModel })
 {
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 300 , minWidth:300}}>
             <CardMedia
                 sx={{ height: 140 }}
                 image={`data:image/jpeg;base64,${TemplateModel.image}`}

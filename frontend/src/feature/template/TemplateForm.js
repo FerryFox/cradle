@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {Divider, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
-import {resizeImage} from "../../assets/picture/resizeImage";
+import {resizeAndCropImage} from "../../assets/picture/resizeAndCropImage";
 
 function TemplateForm()
 {
@@ -74,7 +74,7 @@ function TemplateForm()
         const token = localStorage.getItem('authToken');
         const file = document.getElementById('contained-button-file').files[0];
 
-        resizeImage(file, 300, 300, async (resizedImageUrl) => {
+        resizeAndCropImage(file, 300, 200, async (resizedImageUrl) => {
             try {
                 const payload = {
                     name: event.target.name.value,

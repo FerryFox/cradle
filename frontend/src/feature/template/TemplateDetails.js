@@ -28,9 +28,11 @@ function TemplateDetails()
 
 return (
 <Container>
-    <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid red'}}>
+    <Box display="flex" alignItems="center" justifyContent={"center"} >
         <Template TemplateModel={templateModel} />
     </Box>
+
+
 
     <Box sx={{marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid red'}}>
         <Typography  variant="body1">
@@ -59,8 +61,8 @@ return (
     <Box sx={{marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid red'}}>
 
         <Button onClick={() => navigate('/template/edit', { state: { templateModel: templateModel }})}
-            variant={"contained"}>
-                Edit
+                variant={"contained"}>
+            Edit
         </Button>
 
         <DeleteConfirmation onDelete={() => handleDelete(templateModel.id)} />

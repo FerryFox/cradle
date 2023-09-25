@@ -48,7 +48,7 @@ function TemplatesOwned()
                     <Box
                         component="div"
                         elevation={3}
-                        style={{ height: '100%', backgroundColor: 'lightgray', cursor: 'pointer', padding: '16px' }}
+                        style={{ height: '300px', backgroundColor: 'lightgray', cursor: 'pointer' }}
                         onClick={() => navigate('/template/form')}>
                         Click to create new template
                     </Box>
@@ -56,12 +56,9 @@ function TemplatesOwned()
 
                 {templates.map(t => (
                 <Grid item xs={12} sm={6} md={4} key={t.name}>
-                    <Paper elevation={3} style={{ padding: '16px' }}>
                         <div onClick={() => navigate("/template/details", { state: { templateModel: t }})}>
                             <Template TemplateModel={t} />
                         </div>
-                    </Paper>
-
                 </Grid>
                 ))}
             </Grid>

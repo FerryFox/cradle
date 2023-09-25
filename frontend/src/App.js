@@ -46,9 +46,9 @@ return (
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/templates" element={<Templates/>} />
                     <Route path="/templates/owned" element={<TemplatesOwned/>} />
+                    <Route path="/template/edit" element={<TemplateEdit/>} />
                     <Route path="/template/form" element={<TemplateForm/>} />
                     <Route path="/template/details" element={<TemplateDetails/>} />
-                    <Route path={"/template/edit"} element={<TemplateEdit/>}></Route>
                 </Routes>
             </Router>
     </ThemeProvider>

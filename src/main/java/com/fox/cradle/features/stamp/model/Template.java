@@ -26,7 +26,7 @@ public class Template
     private String createdBy;
     private int defaultCount;
 
-    private Instant createdDate = Instant.now();
+    private Instant createdDate;
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;

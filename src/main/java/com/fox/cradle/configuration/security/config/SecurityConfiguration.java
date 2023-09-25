@@ -37,8 +37,9 @@ public class SecurityConfiguration {
 
                     //permits POST for login
                     c.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll();
-                    c.requestMatchers(HttpMethod.GET , "/api/**").authenticated();
                     c.requestMatchers(HttpMethod.POST, "/api/**").permitAll();
+                    c.requestMatchers(HttpMethod.PUT, "/api/**").permitAll();
+                    c.requestMatchers(HttpMethod.GET , "/api/**").authenticated();
 
                     //serves REACT --> TODO make it more specific atm /static/**  dose not work
                     c.requestMatchers(HttpMethod.GET, "/**").permitAll();

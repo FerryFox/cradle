@@ -50,6 +50,13 @@ public class PictureService
         return pictureRepository.save(picture);
     }
 
+    public Picture updatePicutre(String id, String base64)
+    {
+        Picture picture = getPictureById(id);
+        picture.setImageData(base64ToBinary(base64));
+        return savePicture(picture);
+    }
+
     public String getPictureByIdBase64Encoded(String id)
     {
          Optional<Picture> picture =  pictureRepository.findById(id);
@@ -66,5 +73,20 @@ public class PictureService
         }
         byte[] bytes = Base64.getDecoder().decode(base64);
         return new Binary(bytes);
+    }
+
+    public Picture getPictureById(String id)
+    {
+        return pictureRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Picture not found"));
+    }
+
+    public String removePrefixFrom64(String base64)
+    {
+        if (base64.startsWith("data:image"))
+        {
+            base64 = base64.split(",")[1];
+        }
+        return base64;
     }
 }

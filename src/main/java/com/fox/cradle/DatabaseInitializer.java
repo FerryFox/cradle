@@ -114,6 +114,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_001.setStampCardStatus(StampCardStatus.PUBLIC);
         template_001.setDescription("Buy 10 ice creams and get one for free");
         template_001.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_001.setCreatedDate(java.time.Instant.now());
         template_001.setAppUser(appUserIceCompany);
         templateService.save(template_001);
 
@@ -129,6 +130,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_002.setStampCardStatus(StampCardStatus.PUBLIC);
         template_002.setDescription("Buy 10 coffees and get one for free");
         template_002.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_002.setCreatedDate(java.time.Instant.now());
         template_002.setAppUser(appUserIceCompany);
         templateService.save(template_002);
 
@@ -144,6 +146,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_003.setStampCardStatus(StampCardStatus.PUBLIC);
         template_003.setDescription("Visit the cinema 5 times to get a free ticket");
         template_003.setCreatedBy(appUserCinema.getAppUserEmail());
+        template_003.setCreatedDate(java.time.Instant.now());
         template_003.setAppUser(appUserCinema);
         templateService.save(template_003);
 

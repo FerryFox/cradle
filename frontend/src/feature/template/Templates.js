@@ -44,9 +44,7 @@ function Templates()
             <Grid container spacing={4} justifyContent="center">
                 {templates.map(t => (
                     <Grid item xs={12} sm={6} md={4} key={t.name}>
-                        <Paper elevation={3} style={{ padding: '16px' }}>
                             <Template TemplateModel={t} />
-                        </Paper>
                     </Grid>
                 ))}
             </Grid>

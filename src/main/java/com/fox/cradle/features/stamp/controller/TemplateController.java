@@ -54,6 +54,21 @@ public class TemplateController
         _TemplateService.deleteTemplate(id);
     }
 
+    @PutMapping()
+    public ResponseEntity<TemplateResponse> updateTemplate(@RequestBody TemplateEdit request, HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> AppUse =  _appUserService.
+                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
+        if (AppUse.get().getAppUserEmail().equals(request.getCreatedBy()))
+        {
+            TemplateResponse response = _TemplateService.updateTemplate(request);
+            return ResponseEntity.ok(response);
+        }
+        else return ResponseEntity.badRequest().build();
+    }
+
     @GetMapping("/categories")
     public ResponseEntity<StampCardCategory[]> getTemplatesByCategory()
     {

@@ -1,37 +1,61 @@
 package com.fox.cradle.features.stamp.service;
 
-import com.fox.cradle.features.stamp.model.StampCardTemplate;
-import com.fox.cradle.features.stamp.model.TemplateRequestDTO;
-import com.fox.cradle.features.stamp.model.TemplateResponseDTO;
+import com.fox.cradle.features.appuser.model.AppUser;
+import com.fox.cradle.features.picture.service.PictureService;
+import com.fox.cradle.features.stamp.model.Template;
+import com.fox.cradle.features.stamp.model.NewTemplate;
+import com.fox.cradle.features.stamp.model.TemplateResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
+@Service
+@RequiredArgsConstructor
 public class MapService
 {
-    private MapService()
+    private final PictureService pictureService;
+
+    public Template mapRequestToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
     {
-        throw new UnsupportedOperationException("StringUtil is a utility class and cannot be instantiated.");
+        String appUserEmail = appUser.getAppUserEmail();
+        Instant instant = Instant.now();
+
+        return Template.builder()
+                        .name(dto.getName())
+                        .description(dto.getDescription())
+                        .image(pictureId)
+                        .defaultCount(dto.getDefaultCount())
+                        .createdBy(appUserEmail)
+                        .appUser(appUser)
+                        .createdDate(instant)
+                        .stampCardCategory(dto.getStampCardCategory())
+                        .stampCardSecurity(dto.getStampCardSecurity())
+                        .stampCardStatus(dto.getStampCardStatus())
+                        .build();
     }
 
-    public static StampCardTemplate mapDTOToStemCardTemplate(TemplateRequestDTO dto)
+    public TemplateResponse mapTemplateToResponse(Template template)
     {
-        StampCardTemplate template = new StampCardTemplate();
-        template.setName(dto.getName());
-        template.setDescription(dto.getDescription());
-        template.setImage(dto.getImage());
-        template.setCreatedBy(dto.getCreatedBy());
-        template.setStampCardCategory(dto.getStampCardCategory());
-        template.setStampCardSecurity(dto.getStampCardSecurity());
-        return template;
-    }
+        String image = pictureService.getPictureByIdBase64Encoded(template.getImage());
 
-    public static TemplateResponseDTO mapStampCardTemplateToDTO(StampCardTemplate template)
-    {
-        TemplateResponseDTO response = new TemplateResponseDTO();
-        response.setName(template.getName());
-        response.setDescription(template.getDescription());
-        response.setImage(template.getImage());
-        response.setCreatedBy(template.getCreatedBy());
-        response.setStampCardCategory(template.getStampCardCategory());
-        response.setStampCardSecurity(template.getStampCardSecurity());
+        ZoneId zoneId = ZoneId.of("Europe/Berlin");
+        String zonedDateTime = template.getCreatedDate().atZone(zoneId).toString();
+
+        TemplateResponse response = TemplateResponse.builder()
+                .id(template.getId())
+                .name(template.getName())
+                .description(template.getDescription())
+                .defaultCount(template.getDefaultCount())
+                .createdBy(template.getCreatedBy())
+                .image(image)
+                .stampCardCategory(template.getStampCardCategory())
+                .stampCardSecurity(template.getStampCardSecurity())
+                .stampCardStatus(template.getStampCardStatus())
+                .createdDate(zonedDateTime)
+                .build();
         return response;
     }
 }

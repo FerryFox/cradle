@@ -7,17 +7,26 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TemplateRequestDTO
+@Builder
+public class TemplateResponse
 {
+    private long id;
+
     private String name;
     private String description;
     private String image;
 
     private String createdBy;
+    private int defaultCount;
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;
 
     @Enumerated(EnumType.STRING)
     private StampCardSecurity stampCardSecurity;
+
+    @Enumerated(EnumType.STRING)
+    private StampCardStatus stampCardStatus;
+
+    private String createdDate;
 }

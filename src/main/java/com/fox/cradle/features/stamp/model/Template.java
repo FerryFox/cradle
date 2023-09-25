@@ -12,7 +12,8 @@ import java.time.Instant;
 @ToString
 @EqualsAndHashCode
 @Entity
-public class StampCardTemplate
+@Builder
+public class Template
 {
     @Id
     @GeneratedValue
@@ -23,14 +24,18 @@ public class StampCardTemplate
     private String image;
 
     private String createdBy;
+    private int defaultCount;
 
-    private Instant createdDate = Instant.now();
+    private Instant createdDate;
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;
 
     @Enumerated(EnumType.STRING)
     private StampCardSecurity stampCardSecurity;
+
+    @Enumerated(EnumType.STRING)
+    private StampCardStatus stampCardStatus;
 
     @ManyToOne
     @JoinColumn(name="user_id")

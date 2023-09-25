@@ -14,8 +14,6 @@ import {useNavigate} from "react-router-dom";
 import { useState } from 'react';
 import axios from "axios";
 
-
-
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -39,6 +37,7 @@ function getUsername() {
 
 export default function SignIn()
 {
+    const [email, setEmail] = useState(getUsername() || '');
     const navigate = useNavigate();
     const [isShaking, setIsShaking] = useState(false);
 
@@ -97,7 +96,7 @@ return (
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email"
-                       autoComplete="email" value={getUsername()} autoFocus/>
+                       autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} autoFocus/>
 
             <TextField margin="normal" required fullWidth name="password" label="Password" type="password"
                        id="password" autoComplete="current-password"/>

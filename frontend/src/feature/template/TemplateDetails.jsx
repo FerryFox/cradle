@@ -45,8 +45,20 @@ function TemplateDetails()
 return (
 <Container>
 
-    <Box display="flex" alignItems="center" justifyContent={"center"} >
+    <Box display="flex" alignItems="center" justifyContent={"center"}  >
         <Template TemplateModel={templateModel} />
+    </Box>
+
+    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 2 }}>
+        <Button onClick={() => navigate('/template/edit', { state: { templateModel: templateModel }})}
+                variant={"contained"}>
+            Edit
+        </Button>
+
+        <Button variant={"contained"}>
+            Share
+        </Button>
+        <DeleteConfirmation onDelete={() => handleDelete(templateModel.id)} />
     </Box>
 
     <Card elevation={3} sx={{ mt: 2 }}>
@@ -54,9 +66,7 @@ return (
             <Typography variant="h5" component="div">
                 {templateModel.name}
             </Typography>
-
             <Divider sx={{ my: 1 }} />
-
             <Typography variant="body1" color="text.secondary">
                 {templateModel.description}
             </Typography>
@@ -89,18 +99,7 @@ return (
         </CardContent>
     </Card>
 
-    <Box sx={{marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid red'}}>
-        <ButtonGroup variant="contained" aria-label="outlined primary button group">
-            <Button onClick={() => navigate('/template/edit', { state: { templateModel: templateModel }})}
-                    variant={"contained"}>
-                Edit
-            </Button>
-            <Button>
-                Share
-            </Button>
-                <DeleteConfirmation onDelete={() => handleDelete(templateModel.id)} />
-        </ButtonGroup>
-    </Box>
+
 </Container>);
 }
 

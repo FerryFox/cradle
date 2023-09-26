@@ -10,7 +10,9 @@ import {TemplateModel} from "./models/TemplateModel";
 function Template({ TemplateModel })
 {
     return (
-        <Card sx={{ maxWidth: 300 , minWidth:300}}>
+        <Card sx={{
+            minWidth:"100%",
+            height: '40vh',}}>
             <CardMedia
                 sx={{ height: 140 }}
                 image={`data:image/jpeg;base64,${TemplateModel.image}`}
@@ -23,7 +25,7 @@ function Template({ TemplateModel })
                 <Typography variant="body2" color="text.secondary">
                     {TemplateModel.description}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary"  >
                      {TemplateModel.stampCardCategory}
                 </Typography>
             </CardContent>

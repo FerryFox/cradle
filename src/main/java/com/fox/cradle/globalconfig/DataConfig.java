@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = {
         "com.fox.cradle.features.picture",
         "com.fox.cradle.logging",
+        "com.fox.cradle.news",
 })
 public class DataConfig {
 }

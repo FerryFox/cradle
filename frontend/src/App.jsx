@@ -15,6 +15,7 @@ import TemplatesOwned from "./feature/template/TemplatesOwned";
 import TemplateForm from "./feature/template/TemplateForm";
 import TemplateDetails from "./feature/template/TemplateDetails";
 import TemplateEdit from "./feature/template/TemplateEdit";
+import StampCards from "./feature/stamp_card/StampCards";
 
 function App() {
 // Retrieve token
@@ -48,17 +49,22 @@ return (
     <CssBaseline enableColorScheme/>
             <Router>
                 <Routes>
+                    <Route path="*" element={<NotFoundPage />} />
                     <Route path="/" element={<HomePage />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+
                     <Route path="/signin" element={<SignInPage />} />
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/dashboard" element={<Dashboard/>} />
-                    <Route path="*" element={<NotFoundPage />} />
-                    <Route path="/reset-password" element={<ResetPassword />} />
+
                     <Route path="/templates" element={<Templates/>} />
                     <Route path="/templates/owned" element={<TemplatesOwned/>} />
                     <Route path="/template/edit" element={<TemplateEdit/>} />
                     <Route path="/template/form" element={<TemplateForm/>} />
                     <Route path="/template/details" element={<TemplateDetails/>} />
+
+                    <Route path="/stampcards" element={<StampCards/>} />
+
                 </Routes>
             </Router>
     </ThemeProvider>

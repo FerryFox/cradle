@@ -3,9 +3,9 @@ import {Box, CardHeader, Divider, Typography} from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 
-function IntroductionCard({ feature })
+function IntroductionCard({ feature, order  })
 {
-const isImageOnRight = feature.id % 2 === 0;
+const isImageOnRight = order % 2 === 0;
 
 return(
     <Card sx={{
@@ -17,7 +17,7 @@ return(
         <CardMedia
             component="img"
             sx={{ width: "40%", objectFit: 'cover' }}
-            image={feature.url}
+            image={feature.imageUrl}
             alt="Feature"
         />
 
@@ -25,7 +25,7 @@ return(
             <Typography  variant="h6">
                 {feature.title}
             </Typography>
-            <Divider sx={{ mb: 1 }}/>
+            <Divider sx={{ mb: 1 , height: '3px' }}/>
             <Typography variant="body2" color="text.secondary">
                 {feature.description}
             </Typography>

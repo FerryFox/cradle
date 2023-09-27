@@ -19,6 +19,4 @@ public class StampCardController
 {
     private final StampCardService stampCardService;
     private final JwtService _jwtService;
-
-
 }

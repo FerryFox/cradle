@@ -4,8 +4,8 @@ import {
     Grid, Paper,
 } from '@mui/material';
 import {useNavigate} from "react-router-dom";
-import AppBarComponent from "../core/AppBarComponent";
-import DrawerComponent from "../core/DrawerComponent";
+import AppBarComponent from "./AppBarComponent";
+import DrawerComponent from "./DrawerComponent";
 
 
 export default function Dashboard()

@@ -64,7 +64,7 @@ function DrawerComponent({ open, toggleDrawer, navigate })
             </List>
 
             <List>
-                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
+                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/stampcards')}>
                     <ListItemButton>
                         <ListItemIcon>
                             <ApprovalIcon />

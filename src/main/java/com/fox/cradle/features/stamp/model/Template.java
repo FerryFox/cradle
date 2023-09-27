@@ -27,6 +27,7 @@ public class Template
     private int defaultCount;
 
     private Instant createdDate;
+    private Instant lastModifiedDate;
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;

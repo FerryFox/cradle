@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
-import HomePage from './HomePage';
+import HomePage from './feature/core/HomePage';
 import Dashboard from './feature/dashboard/Dashboard';
 import SignInPage from './feature/user/SignInPage';
 import SignUpPage from './feature/user/SignUpPage';

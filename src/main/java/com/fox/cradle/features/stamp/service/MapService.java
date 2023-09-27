@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +17,7 @@ public class MapService
 {
     private final PictureService pictureService;
 
-    public Template mapRequestToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
+    public Template mapRequestNewToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
     {
         String appUserEmail = appUser.getAppUserEmail();
         Instant instant = Instant.now();
@@ -34,6 +33,7 @@ public class MapService
                         .stampCardCategory(dto.getStampCardCategory())
                         .stampCardSecurity(dto.getStampCardSecurity())
                         .stampCardStatus(dto.getStampCardStatus())
+                        .lastModifiedDate(instant)
                         .build();
     }
 
@@ -42,8 +42,16 @@ public class MapService
         String image = pictureService.getPictureByIdBase64Encoded(template.getImage());
 
         ZoneId zoneId = ZoneId.of("Europe/Berlin");
-        String zonedDateTime = template.getCreatedDate().atZone(zoneId).toString();
+        String zonedDateTimeCreated = template.getCreatedDate().atZone(zoneId).toString();
+        String zonedDateUpdated = "";
+        if (template.getLastModifiedDate() == null) {
+            zonedDateUpdated = zonedDateTimeCreated;
 
+        }
+        else
+        {
+            zonedDateUpdated = template.getLastModifiedDate().atZone(zoneId).toString();
+        }
         TemplateResponse response = TemplateResponse.builder()
                 .id(template.getId())
                 .name(template.getName())
@@ -54,8 +62,10 @@ public class MapService
                 .stampCardCategory(template.getStampCardCategory())
                 .stampCardSecurity(template.getStampCardSecurity())
                 .stampCardStatus(template.getStampCardStatus())
-                .createdDate(zonedDateTime)
+                .createdDate(zonedDateTimeCreated)
+                .lastModifiedDate(zonedDateUpdated)
                 .build();
+
         return response;
     }
 }

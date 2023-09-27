@@ -14,9 +14,6 @@ import Card from "@mui/material/Card";
 import * as PropTypes from "prop-types";
 import {green, red} from "@mui/material/colors";
 
-function IceCreamIcon() {
-    return null;
-}
 
 function SecurityIcon(props) {
     return null;
@@ -95,6 +92,10 @@ return (
 
             <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
                 Status: {templateModel.stampCardStatus}
+            </Typography>
+
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                updated ?: {templateModel.lastModifiedDate}
             </Typography>
         </CardContent>
     </Card>

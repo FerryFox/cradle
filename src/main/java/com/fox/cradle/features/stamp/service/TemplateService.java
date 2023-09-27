@@ -6,7 +6,6 @@ import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stamp.model.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.bson.types.Binary;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -40,7 +39,7 @@ public class TemplateService
     {
         String pictureId = pictureService.savePicture(request.getImage() , request.getFileName()).getId();
 
-        Template newTemplate = MapService.mapRequestToTemplate(request, appUser, pictureId);
+        Template newTemplate = MapService.mapRequestNewToTemplate(request, appUser, pictureId);
         newTemplate.setCreatedDate(Instant.now());
 
         Template savedTemplate = templateRepository.save(newTemplate);
@@ -86,6 +85,8 @@ public class TemplateService
         template.setStampCardCategory(StampCardCategory.valueOf(request.getStampCardCategory()));
         template.setStampCardSecurity(StampCardSecurity.valueOf(request.getStampCardSecurity()));
         template.setStampCardStatus(StampCardStatus.valueOf(request.getStampCardStatus()));
+
+        template.setLastModifiedDate(Instant.now());
 
         Template savedTemplate = templateRepository.save(template);
         return MapService.mapTemplateToResponse(savedTemplate);

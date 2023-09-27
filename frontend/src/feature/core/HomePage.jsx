@@ -7,7 +7,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import {useNavigate} from "react-router-dom";
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import IntroductionCard from "./feature/news/IntroductionCard";
+import IntroductionCard from "../news/IntroductionCard";
 
 function HomePage()
 {

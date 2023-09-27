@@ -1,8 +1,6 @@
 import {Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled} from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
-import InboxIcon from "@mui/icons-material/Inbox";
-import MailIcon from "@mui/icons-material/Mail";
 import Drawer from "@mui/material/Drawer";
 import * as React from "react";
 import AddCardIcon from '@mui/icons-material/AddCard';
@@ -10,7 +8,7 @@ import ApprovalIcon from '@mui/icons-material/Approval';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import MessageIcon from '@mui/icons-material/Message';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -38,7 +36,8 @@ function DrawerComponent({ open, toggleDrawer, navigate })
                 <IconButton onClick={toggleDrawer}><ChevronLeftIcon />
                 </IconButton>
             </DrawerHeader>
-            <Divider />
+
+            <Divider style={{ height: '5px',  }}/>
 
             <List>
                 <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates')}>
@@ -50,7 +49,8 @@ function DrawerComponent({ open, toggleDrawer, navigate })
                     </ListItemButton>
                 </ListItem>
             </List>
-            <Divider />
+
+            <Divider style={{ height: '5px',  }} />
 
             <List>
                 <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
@@ -73,7 +73,8 @@ function DrawerComponent({ open, toggleDrawer, navigate })
                     </ListItemButton>
                 </ListItem>
             </List>
-            <Divider />
+
+            <Divider style={{ height: '5px',  }} />
 
             <List>
                 <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
@@ -104,6 +105,18 @@ function DrawerComponent({ open, toggleDrawer, navigate })
                             <MessageIcon />
                         </ListItemIcon>
                         <ListItemText primary={'Messages'} secondary={''} />
+                    </ListItemButton>
+                </ListItem>
+            </List>
+
+            <Divider style={{ height: '5px',  }} />
+            <List>
+                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/')}>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <ArrowBackIosIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Back'} secondary={''} />
                     </ListItemButton>
                 </ListItem>
             </List>

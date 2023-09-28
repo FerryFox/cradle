@@ -1,6 +1,6 @@
-package com.fox.cradle.features.stamp.service;
+package com.fox.cradle.features.stamp.service.stamp;
 
-import com.fox.cradle.features.stamp.model.Stamp;
+import com.fox.cradle.features.stamp.model.stamp.Stamp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

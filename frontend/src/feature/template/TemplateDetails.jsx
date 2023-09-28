@@ -13,6 +13,7 @@ import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import * as PropTypes from "prop-types";
 import {green, red} from "@mui/material/colors";
+import TopController from "../core/TopController";
 
 
 function SecurityIcon(props) {
@@ -41,7 +42,7 @@ function TemplateDetails()
 
 return (
 <Container>
-
+    <TopController></TopController>
     <Box display="flex" alignItems="center" justifyContent={"center"}  >
         <Template TemplateModel={templateModel} />
     </Box>

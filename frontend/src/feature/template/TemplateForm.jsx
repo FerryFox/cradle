@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {Divider, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {resizeAndCropImage} from "../../assets/picture/resizeAndCropImage";
+import TopController from "../core/TopController";
 
 function TemplateForm()
 {
@@ -109,6 +110,7 @@ function TemplateForm()
 
 return (
     <Container className={isShaking ? 'shake' : ''} component="main" maxWidth="xs">
+    <TopController/>
     <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
 
         <Typography component="h1" variant="h5">

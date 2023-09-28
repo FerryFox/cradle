@@ -6,6 +6,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import AppBarComponent from "./AppBarComponent";
 import DrawerComponent from "./DrawerComponent";
+import BottomController from "../core/BottomController";
 
 
 export default function Dashboard()
@@ -17,7 +18,7 @@ export default function Dashboard()
 
 return (
 <Box sx={{ display: 'flex' }}>
-
+<BottomController/>
 <AppBarComponent toggleDrawer={toggleDrawer} />
 <DrawerComponent open={open} toggleDrawer={toggleDrawer} navigate={navigate} />
 

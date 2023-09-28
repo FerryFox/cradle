@@ -8,6 +8,11 @@ import Paper from "@mui/material/Paper";
 import Template from "./Template";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import TopController from "../core/TopController";
+import BottomController from "../core/BottomController";
+import NewTemplateButton from "./NewTemplateButton";
+import AppBarComponent from "../dashboard/AppBarComponent";
+import DrawerComponent from "../dashboard/DrawerComponent";
 
 function TemplatesOwned()
 {
@@ -38,31 +43,29 @@ function TemplatesOwned()
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error loading data. Please try again later.</div>
 
-    return (
-        <Container>
-            <h1>Your Templates</h1>
-            <p>Total templates: {templates.length}</p>
+return (
+    <Container>
+        <AppBarComponent/>
+        <DrawerComponent/>
+        <TopController/>
+        <BottomController/>
+        <h1>Your Templates</h1>
+        <p>Total templates: {templates.length}</p>
 
-            <Grid container spacing={4} justifyContent="center">
-                <Grid item xs={12} sm={6} md={4}>
-                    <Box
-                        component="div"
-                        elevation={3}
-                        style={{ height: '300px', backgroundColor: 'lightgray', cursor: 'pointer' }}
-                        onClick={() => navigate('/template/form')}>
-                        Click to create new template
-                    </Box>
-                </Grid>
+        <Grid container spacing={4} justifyContent="center">
+            <Grid item xs={6} sm={6} md={4} onClick={() => navigate('/template/form')} >
+                <NewTemplateButton ></NewTemplateButton>
+            </Grid>
 
-                {templates.map(t => (
-                <Grid item xs={12} sm={6} md={4} key={t.name}>
+            {templates.map(t => (
+                <Grid item xs={6} sm={6} md={4} key={t.name}>
                         <div onClick={() => navigate("/template/details", { state: { templateModel: t }})}>
                             <Template TemplateModel={t} />
                         </div>
                 </Grid>
-                ))}
-            </Grid>
-        </Container>
-    );
+            ))}
+        </Grid>
+    </Container>
+);
 }
 export default TemplatesOwned;

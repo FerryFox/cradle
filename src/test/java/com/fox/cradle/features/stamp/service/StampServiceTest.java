@@ -1,14 +1,9 @@
 package com.fox.cradle.features.stamp.service;
 
-import com.fox.cradle.features.appuser.model.AppUser;
-import com.fox.cradle.features.stamp.model.Stamp;
-import com.fox.cradle.features.stamp.model.StampCard;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import com.fox.cradle.features.stamp.service.stamp.IStampService;
+import com.fox.cradle.features.stamp.service.stamp.StampRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 public class StampServiceTest

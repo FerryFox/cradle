@@ -1,7 +1,8 @@
-package com.fox.cradle.features.stamp.service;
+package com.fox.cradle.features.stamp.service.stamp;
 
-import com.fox.cradle.features.stamp.model.Stamp;
-import com.fox.cradle.features.stamp.model.StampCard;
+import com.fox.cradle.features.stamp.model.stamp.Stamp;
+import com.fox.cradle.features.stamp.model.stampcard.StampCard;
+import com.fox.cradle.features.stamp.service.card.StampCardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

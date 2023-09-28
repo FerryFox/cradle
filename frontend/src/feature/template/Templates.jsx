@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useNavigate} from "react-router-dom";
 import Template from "./Template";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
-import { TemplateModel } from './models/TemplateModel';
+import BottomController from "../core/BottomController";
+import TopController from "../core/TopController";
+import {Typography} from "@mui/material";
 
 function Templates()
 {
-    const navigate = useNavigate();
     const [templates, setTemplates] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -38,16 +37,24 @@ function Templates()
 
     return (
         <Container>
-            <h1>Templates Page</h1>
-            <p>Total templates: {templates.length}</p>
+            <TopController/>
+            <BottomController/>
+
+            <Typography variant="h6">
+                Choose a Stamp Card
+            </Typography>
+            <Typography variant={"body2"}>
+                from a list of {templates.length} public templates to get started
+            </Typography>
 
             <Grid container spacing={4} justifyContent="center">
                 {templates.map(t => (
-                    <Grid item xs={12} sm={6} md={4} key={t.name}>
-                            <Template TemplateModel={t} />
+                    <Grid item xs={6} sm={6} md={4} key={t.id} >
+                        <Template TemplateModel={t} />
                     </Grid>
                 ))}
             </Grid>
+
         </Container>
     );
 }

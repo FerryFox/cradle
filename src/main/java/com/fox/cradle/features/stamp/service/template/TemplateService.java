@@ -1,9 +1,15 @@
-package com.fox.cradle.features.stamp.service;
+package com.fox.cradle.features.stamp.service.template;
 
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.picture.model.Picture;
 import com.fox.cradle.features.picture.service.PictureService;
-import com.fox.cradle.features.stamp.model.*;
+import com.fox.cradle.features.stamp.model.enums.StampCardCategory;
+import com.fox.cradle.features.stamp.model.enums.StampCardSecurity;
+import com.fox.cradle.features.stamp.model.enums.StampCardStatus;
+import com.fox.cradle.features.stamp.model.template.NewTemplate;
+import com.fox.cradle.features.stamp.model.template.Template;
+import com.fox.cradle.features.stamp.model.template.TemplateEdit;
+import com.fox.cradle.features.stamp.model.template.TemplateResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TemplateService
 {
-    private final MapService MapService;
+    private final com.fox.cradle.features.stamp.service.MapService MapService;
     private final TemplateRepository templateRepository;
     private final PictureService pictureService;
 

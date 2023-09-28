@@ -1,6 +1,6 @@
-package com.fox.cradle.features.stamp.service;
+package com.fox.cradle.features.stamp.service.card;
 
-import com.fox.cradle.features.stamp.model.StampCard;
+import com.fox.cradle.features.stamp.model.stampcard.StampCard;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

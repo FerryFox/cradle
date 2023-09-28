@@ -1,6 +1,9 @@
-package com.fox.cradle.features.stamp.model;
+package com.fox.cradle.features.stamp.model.template;
 
 import com.fox.cradle.features.appuser.model.AppUser;
+import com.fox.cradle.features.stamp.model.enums.StampCardCategory;
+import com.fox.cradle.features.stamp.model.enums.StampCardSecurity;
+import com.fox.cradle.features.stamp.model.enums.StampCardStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;

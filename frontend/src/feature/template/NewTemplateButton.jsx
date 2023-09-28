@@ -1,13 +1,13 @@
-import React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
+import Card from "@mui/material/Card";
+import React from "react";
 
-function Template({ TemplateModel })
+function NewTemplateButton()
 {
 
     return (
@@ -18,7 +18,7 @@ function Template({ TemplateModel })
             height: '25vh',}}>
             <CardMedia
                 sx={{ height: "15vh" }}
-                image={`data:image/jpeg;base64,${TemplateModel.image}`}
+                image={"https://images.nightcafe.studio/jobs/fZkzPhEQ5QOxvoZ7C20g/fZkzPhEQ5QOxvoZ7C20g--1--3xhzv.jpg?tr=w-1600,c-at_max"}
                 title="green iguana"
             />
 
@@ -29,7 +29,9 @@ function Template({ TemplateModel })
                         sm: '0.5rem',},
                     textAlign: 'left',
                 }} >
-                    {TemplateModel.name}
+
+                        Be creative
+
                 </Typography>
 
                 <Typography variant="body2" color="text.secondary" sx={{
@@ -38,7 +40,8 @@ function Template({ TemplateModel })
                         sm: '0.4rem',},
                     textAlign: 'left',
                 }} >
-                    {TemplateModel.description}
+
+                    Create a new template from scratch and share it with the world
 
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt :1,
@@ -47,19 +50,21 @@ function Template({ TemplateModel })
                         sm: '0.4rem',},
                     textAlign: 'left',
                 }} >
-                    {TemplateModel.stampCardCategory}
+
                 </Typography>
             </CardContent>
 
             <CardActions>
                 <Button onClick={() => {createStampCardFromTemplateId(template.id)}}
-                    variant={"contained"}
-                    size="small">
+                        variant={"contained"}
+                        size="small">
                     Get this Card
                 </Button>
             </CardActions>
         </Card>
+
+
     );
 }
 
-export default Template;
+export default NewTemplateButton;

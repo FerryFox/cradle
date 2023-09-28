@@ -1,4 +1,4 @@
-package com.fox.cradle.features.stamp.model;
+package com.fox.cradle.features.stamp.model.template;
 
 import lombok.Builder;
 import lombok.Data;

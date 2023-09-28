@@ -1,6 +1,7 @@
-package com.fox.cradle.features.stamp.model;
+package com.fox.cradle.features.stamp.model.stamp;
 
 import com.fox.cradle.features.appuser.model.AppUser;
+import com.fox.cradle.features.stamp.model.stampcard.StampCard;
 import jakarta.persistence.*;
 import lombok.*;
 

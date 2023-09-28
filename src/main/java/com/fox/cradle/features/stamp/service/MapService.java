@@ -2,9 +2,9 @@ package com.fox.cradle.features.stamp.service;
 
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.picture.service.PictureService;
-import com.fox.cradle.features.stamp.model.Template;
-import com.fox.cradle.features.stamp.model.NewTemplate;
-import com.fox.cradle.features.stamp.model.TemplateResponse;
+import com.fox.cradle.features.stamp.model.template.Template;
+import com.fox.cradle.features.stamp.model.template.NewTemplate;
+import com.fox.cradle.features.stamp.model.template.TemplateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

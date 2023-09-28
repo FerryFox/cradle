@@ -6,17 +6,23 @@ import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.picture.model.Picture;
 import com.fox.cradle.features.picture.service.PictureService;
-import com.fox.cradle.features.stamp.model.*;
-import com.fox.cradle.features.stamp.service.*;
+import com.fox.cradle.features.stamp.model.enums.StampCardCategory;
+import com.fox.cradle.features.stamp.model.enums.StampCardSecurity;
+import com.fox.cradle.features.stamp.model.enums.StampCardStatus;
+import com.fox.cradle.features.stamp.model.template.Template;
 import com.fox.cradle.features.news.model.News;
 import com.fox.cradle.features.news.model.NewsCategory;
 import com.fox.cradle.features.news.service.NewsService;
+import com.fox.cradle.features.stamp.service.card.StampCardService;
+import com.fox.cradle.features.stamp.service.stamp.StampService;
+import com.fox.cradle.features.stamp.service.template.TemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.List;
 
 @Component
@@ -33,13 +39,11 @@ public class DatabaseInitializer implements CommandLineRunner
 
     @Override
     public void run(String... args) throws Exception {
-
-        //initPictureMongoDb();
+    //MongoDb
+        initPictureMongoDb();
         //initNewsMongoDb();
 
-
-//create some users
-        //User 1 with AppUser 1
+    //SQL
         User userIce = new User();
         userIce.setEmail("w@w");
         userIce.setPassword("1234");
@@ -55,7 +59,6 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserIceCompany.setReceiveNews(true);
         appUserService.saveAppUser(appUserIceCompany);
 
-        //User 2 with AppUser 2
         User userBob = new User();
         userBob.setEmail("q@q");
         userBob.setPassword("1234");
@@ -70,7 +73,6 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserBob.setReceiveNews(true);
         appUserService.saveAppUser(appUserBob);
 
-        // User 3 with AppUser 3
         User userCinema = new User();
         userCinema.setEmail("e@e");
         userCinema.setPassword("1234");
@@ -85,7 +87,6 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserCinema.setReceiveNews(true);
         appUserService.saveAppUser(appUserCinema);
 
-        //User 2 with AppUser 2
         User userAnna = new User();
         userAnna.setEmail("r@r");
         userAnna.setPassword("1234");
@@ -100,52 +101,127 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserAnna.setReceiveNews(false);
         appUserService.saveAppUser(appUserAnna);
 
+        Instant time = java.time.Instant.now();
 //Create some stamp card templates
         Template template_001 = new Template();
-        template_001.setName("Ice Cream Card");
-        template_001.setImage("650d3bf63b4fbc0412f4e822");
+        template_001.setName("Ice Cream");
+        template_001.setImage("65154a35cdbe396e77ad09c4");
         template_001.setDefaultCount(10);
         template_001.setStampCardCategory(StampCardCategory.FOOD);
         template_001.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_001.setStampCardStatus(StampCardStatus.PUBLIC);
         template_001.setDescription("Buy 10 ice creams and get one for free");
         template_001.setCreatedBy(appUserIceCompany.getAppUserEmail());
-        template_001.setCreatedDate(java.time.Instant.now());
+        template_001.setCreatedDate(time);
         template_001.setAppUser(appUserIceCompany);
+        template_001.setLastModifiedDate(time);
         templateService.save(template_001);
 
         Template template_002 = new Template();
-        template_002.setName("Coffee Card");
-        template_002.setImage("650d3bf63b4fbc0412f4e823");
+        template_002.setName("Coffee");
+        template_002.setImage("65154a35cdbe396e77ad09c5");
         template_002.setDefaultCount(10);
         template_002.setStampCardCategory(StampCardCategory.DRINK);
         template_002.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_002.setStampCardStatus(StampCardStatus.PUBLIC);
         template_002.setDescription("Buy 10 coffees and get one for free");
         template_002.setCreatedBy(appUserIceCompany.getAppUserEmail());
-        template_002.setCreatedDate(java.time.Instant.now());
+        template_002.setCreatedDate(time);
+        template_002.setLastModifiedDate(time);
         template_002.setAppUser(appUserIceCompany);
         templateService.save(template_002);
 
         Template template_003 = new Template();
-        template_003.setName("Cinema Card");
-
-        template_003.setImage("650d3bf63b4fbc0412f4e824");
+        template_003.setName("Cinema");
+        template_003.setImage("65154a35cdbe396e77ad09c6");
         template_003.setDefaultCount(5);
         template_003.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
         template_003.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_003.setStampCardStatus(StampCardStatus.PUBLIC);
-        template_003.setDescription("Visit the cinema 5 times to get a free ticket");
+        template_003.setDescription("Visit the cinema x times to get a free ticket");
         template_003.setCreatedBy(appUserCinema.getAppUserEmail());
-        template_003.setCreatedDate(java.time.Instant.now());
+        template_003.setCreatedDate(time);
+        template_003.setLastModifiedDate(time);
         template_003.setAppUser(appUserCinema);
         templateService.save(template_003);
+
+        Template template_004 = new Template();
+        template_004.setName("Kebab");
+        template_004.setImage("65154a35cdbe396e77ad09c7");
+        template_004.setDefaultCount(10);
+        template_004.setStampCardCategory(StampCardCategory.FOOD);
+        template_004.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        template_004.setStampCardStatus(StampCardStatus.PUBLIC);
+        template_004.setDescription("Buy 10 kebabs and get one for free");
+        template_004.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_004.setCreatedDate(time);
+        template_004.setLastModifiedDate(time);
+        template_004.setAppUser(appUserIceCompany);
+        templateService.save(template_004);
+
+        Template template_005 = new Template();
+        template_005.setName("Sushi");
+        template_005.setImage("65154e3e8f36310e63f95291");
+        template_005.setDefaultCount(70);
+        template_005.setStampCardCategory(StampCardCategory.FOOD);
+        template_005.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        template_005.setStampCardStatus(StampCardStatus.PUBLIC);
+        template_005.setDescription("Buy 70 sushi and get one for free");
+        template_005.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_005.setCreatedDate(time);
+        template_005.setLastModifiedDate(time);
+        template_005.setAppUser(appUserIceCompany);
+        templateService.save(template_005);
+
+        Template template_006 = new Template();
+        template_006.setName("Roller Coaster");
+        template_006.setImage("65154f2302fcd52a916f5f76");
+        template_006.setDefaultCount(3);
+        template_006.setStampCardCategory(StampCardCategory.FOOD);
+        template_006.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        template_006.setStampCardStatus(StampCardStatus.PUBLIC);
+        template_006.setDescription("Visit the roller coaster 3 times and get a free ticket");
+        template_006.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_006.setCreatedDate(time);
+        template_006.setLastModifiedDate(time);
+        template_006.setAppUser(appUserIceCompany);
+        templateService.save(template_006);
+
+        Template template_007 = new Template();
+        template_007.setName("Vegetables");
+        template_007.setImage("6515521a3e4b2477e35ac574");
+        template_007.setDefaultCount(6);
+        template_007.setStampCardCategory(StampCardCategory.FOOD);
+        template_007.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        template_007.setStampCardStatus(StampCardStatus.PUBLIC);
+        template_007.setDescription("Buy 6 vegetables and get one for free");
+        template_007.setCreatedBy(appUserAnna.getAppUserEmail());
+        template_007.setCreatedDate(time);
+        template_007.setLastModifiedDate(time);
+        template_007.setAppUser(appUserAnna);
+        templateService.save(template_007);
+
+        Template template_008 = new Template();
+        template_008.setName("Skate");
+        template_008.setImage("6515521a3e4b2477e35ac573");
+        template_008.setDefaultCount(9);
+        template_008.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
+        template_008.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        template_008.setStampCardStatus(StampCardStatus.PUBLIC);
+        template_008.setDescription("Visit the skate park 9 times and get a free ticket");
+        template_008.setCreatedBy(appUserAnna.getAppUserEmail());
+        template_008.setCreatedDate(time);
+        template_008.setLastModifiedDate(time);
+        template_008.setAppUser(appUserAnna);
+        templateService.save(template_008);
 
 
         System.out.println("database initialized");
     }
 
     private void initPictureMongoDb() throws Exception {
+
+        /*
         Picture ice = pictureService.loadPictureFromFile("ice");
         pictureService.savePicture(ice);
 
@@ -154,6 +230,24 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Picture cinema = pictureService.loadPictureFromFile("cinema");
         pictureService.savePicture(cinema);
+
+        Picture kebab = pictureService.loadPictureFromFile("kebab");
+        pictureService.savePicture(kebab);
+
+
+        Picture sushi = pictureService.loadPictureFromFile("sushi");
+        pictureService.savePicture(sushi);
+
+        Picture roller  = pictureService.loadPictureFromFile("roller");
+        pictureService.savePicture(roller);
+
+        Picture skate = pictureService.loadPictureFromFile("skate");
+        pictureService.savePicture(skate);
+
+        Picture vegetables = pictureService.loadPictureFromFile("vegetables");
+        pictureService.savePicture(vegetables);
+
+         */
     }
     private void initNewsMongoDb()
     {

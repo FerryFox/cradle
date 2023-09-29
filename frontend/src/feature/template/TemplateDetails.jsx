@@ -8,12 +8,12 @@ import Template from "./Template";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import DeleteConfirmation from "../../assets/popups/DeleteWithConfirm";
-import {Badge, ButtonGroup, Divider} from "@mui/material";
+import {Badge, ButtonGroup, Divider, Toolbar} from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import * as PropTypes from "prop-types";
 import {green, red} from "@mui/material/colors";
-import TopController from "../core/TopController";
+import AppBarComponent from "../core/AppBarComponent";
 
 
 function SecurityIcon(props) {
@@ -42,7 +42,8 @@ function TemplateDetails()
 
 return (
 <Container>
-    <TopController></TopController>
+    <AppBarComponent showMenuButtonElseBack={false}/>
+    <Toolbar/>
     <Box display="flex" alignItems="center" justifyContent={"center"}  >
         <Template TemplateModel={templateModel} />
     </Box>

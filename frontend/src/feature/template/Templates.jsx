@@ -4,8 +4,8 @@ import Template from "./Template";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import BottomController from "../core/BottomController";
-import TopController from "../core/TopController";
-import {Typography} from "@mui/material";
+import {Toolbar, Typography} from "@mui/material";
+import AppBarComponent from "../core/AppBarComponent";
 
 function Templates()
 {
@@ -37,7 +37,8 @@ function Templates()
 
     return (
         <Container>
-            <TopController/>
+            <AppBarComponent showMenuButtonElseBack={false}/>
+            <Toolbar></Toolbar>
             <BottomController/>
 
             <Typography variant="h6">

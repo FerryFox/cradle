@@ -3,8 +3,9 @@ import {Box, IconButton, useTheme} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MessageIcon from '@mui/icons-material/Message';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import {useNavigate} from "react-router-dom";
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+
 
 
 function BottomController() {
@@ -12,6 +13,13 @@ function BottomController() {
     const [showController, setShowController] = useState(false);
     const navigate = useNavigate();
     const theme = useTheme();
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -30,10 +38,13 @@ function BottomController() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [lastScrollTop]);
 
+
 return (
 <div>
 {showController && (
     <Box sx={{
+        margin: 0,
+        padding: 0,
         position: 'fixed',
         bottom: 0,
         width: '100%',
@@ -41,7 +52,7 @@ return (
         backgroundColor: theme.palette.primary.main,
         display: 'flex',
         justifyContent: 'space-around',
-        padding: '10px'}}>
+     }}>
 
         <IconButton onClick={() => navigate(-1)}>
             <ArrowBackIcon/>
@@ -55,8 +66,8 @@ return (
             <MessageIcon/>
         </IconButton>
 
-        <IconButton>
-            <AccountBoxIcon/>
+        <IconButton onClick={() => scrollToTop()}>
+            <ArrowCircleUpIcon/>
         </IconButton>
     </Box>
 )}

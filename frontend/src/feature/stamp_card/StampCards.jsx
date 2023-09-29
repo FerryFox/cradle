@@ -1,10 +1,12 @@
-import TopController from "../core/TopController";
+import AppBarComponent from "../core/AppBarComponent";
+import {Toolbar} from "@mui/material";
 
 function StampCards()
 {
 return(
     <div>
-        <TopController></TopController>
+        <AppBarComponent showMenuButtonElseBack={false}/>
+        <Toolbar/>
 
             <h1>StampCards</h1>
         </div>

@@ -6,9 +6,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {Divider, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {Divider, FormControl, InputLabel, MenuItem, Select, Toolbar} from "@mui/material";
 import {resizeAndCropImage} from "../../assets/picture/resizeAndCropImage";
-import TopController from "../core/TopController";
+import AppBarComponent from "../core/AppBarComponent";
 
 function TemplateForm()
 {
@@ -110,7 +110,8 @@ function TemplateForm()
 
 return (
     <Container className={isShaking ? 'shake' : ''} component="main" maxWidth="xs">
-    <TopController/>
+        <AppBarComponent showMenuButtonElseBack={false}/>
+        <Toolbar/>
     <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
 
         <Typography component="h1" variant="h5">

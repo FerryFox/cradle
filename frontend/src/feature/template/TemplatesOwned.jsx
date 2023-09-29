@@ -1,18 +1,14 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
-import TemplateForm from "./TemplateForm";
 import {useNavigate} from "react-router-dom";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Template from "./Template";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import TopController from "../core/TopController";
 import BottomController from "../core/BottomController";
 import NewTemplateButton from "./NewTemplateButton";
-import AppBarComponent from "../dashboard/AppBarComponent";
-import DrawerComponent from "../dashboard/DrawerComponent";
+import AppBarComponent from "../core/AppBarComponent";
+
+import {Toolbar} from "@mui/material";
 
 function TemplatesOwned()
 {
@@ -45,10 +41,9 @@ function TemplatesOwned()
 
 return (
     <Container>
-        <AppBarComponent/>
-        <DrawerComponent/>
-        <TopController/>
+        <AppBarComponent showMenuButtonElseBack={false}/>
         <BottomController/>
+        <Toolbar></Toolbar>
         <h1>Your Templates</h1>
         <p>Total templates: {templates.length}</p>
 

@@ -1,6 +1,6 @@
 package com.fox.cradle.features.appuser.model;
 
-import com.fox.cradle.features.stamp.model.StampCard;
+import com.fox.cradle.features.stampSystem.model.stampcard.StampCard;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +24,6 @@ public class AppUser
     private boolean receiveNews;
 
     //Relationships
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<StampCard> myStampCards = new ArrayList<>();
 }

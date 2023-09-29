@@ -12,4 +12,5 @@ export const TemplateModel = PropTypes.shape(
         stampCardSecurity: PropTypes.string.isRequired,
         stampCardStatus: PropTypes.string.isRequired,
         createdDate : PropTypes.string.isRequired,
+        lastModifiedDate : PropTypes.string.isRequired,
     }).isRequired;

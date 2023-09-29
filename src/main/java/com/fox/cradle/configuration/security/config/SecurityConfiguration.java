@@ -37,6 +37,7 @@ public class SecurityConfiguration {
 
                     //permits POST for login
                     c.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll();
+                    c.requestMatchers(HttpMethod.GET, "/api/news/**").permitAll();
                     c.requestMatchers(HttpMethod.POST, "/api/**").permitAll();
                     c.requestMatchers(HttpMethod.PUT, "/api/**").permitAll();
                     c.requestMatchers(HttpMethod.GET , "/api/**").authenticated();

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,4 +33,17 @@ public class StampCardController
         StampCardResponse result = _stampCardService.createStampCard(templateId , AppUse.get());
         return ResponseEntity.created(null).body(result);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<StampCardResponse>> getAllStempCards(HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> AppUse =  _appUserService.
+                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
+
+        List<StampCardResponse> result = _stampCardService.getAllStampCards(AppUse.get());
+        return ResponseEntity.ok(result);
+    }
+
 }

@@ -7,9 +7,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
 
-function Template({ TemplateModel })
+function Template({ templateModel })
 {
-
     return (
         <Card sx={{
             p: 0,
@@ -18,7 +17,7 @@ function Template({ TemplateModel })
             height: '25vh',}}>
             <CardMedia
                 sx={{ height: "15vh" }}
-                image={`data:image/jpeg;base64,${TemplateModel.image}`}
+                image={`data:image/jpeg;base64,${templateModel.image}`}
                 title="green iguana"
             />
 
@@ -29,7 +28,7 @@ function Template({ TemplateModel })
                         sm: '0.5rem',},
                     textAlign: 'left',
                 }} >
-                    {TemplateModel.name}
+                    {templateModel.name}
                 </Typography>
 
                 <Typography variant="body2" color="text.secondary" sx={{
@@ -38,21 +37,21 @@ function Template({ TemplateModel })
                         sm: '0.4rem',},
                     textAlign: 'left',
                 }} >
-                    {TemplateModel.description}
+                    {templateModel.description}
 
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mt :1,
+                <Typography  variant="body2" color="text.secondary" sx={{ mt :1,
                     fontSize: {
                         xs: '0.5rem', // Adjust as needed
                         sm: '0.4rem',},
                     textAlign: 'left',
                 }} >
-                    {TemplateModel.stampCardCategory}
+                    {templateModel.stampCardCategory}
                 </Typography>
             </CardContent>
 
             <CardActions>
-                <Button onClick={() => {createStampCardFromTemplateId(template.id)}}
+                <Button
                     variant={"contained"}
                     size="small">
                     Get this Card

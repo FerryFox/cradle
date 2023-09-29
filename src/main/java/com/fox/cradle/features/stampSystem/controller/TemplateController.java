@@ -39,6 +39,13 @@ public class TemplateController
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/all/public")
+    public ResponseEntity<List<TemplateResponse>> getAllPublicTemplates()
+    {
+        List<TemplateResponse> response = _TemplateService.getAllPublic();
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/my")
     public ResponseEntity<List<TemplateResponse>> getMyTemplates(HttpServletRequest httpServletRequest)
     {

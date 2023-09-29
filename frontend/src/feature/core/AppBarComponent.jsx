@@ -6,7 +6,10 @@ import * as React from "react";
 import {useNavigate} from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-function AppBarComponent({ toggleDrawer , showMenuButtonElseBack = true}) {
+function AppBarComponent({  toggleDrawer,
+                            showMenuButtonElseBack = true,
+                            title = "Dashboard"},)
+{
     const navigate = useNavigate();
 
     return (
@@ -23,7 +26,7 @@ function AppBarComponent({ toggleDrawer , showMenuButtonElseBack = true}) {
                 }
 
                 <Typography component="h1" variant="h6" color="inherit" noWrap>
-                    Dashboard
+                    {title}
                 </Typography>
 
                 <IconButton color="inherit">

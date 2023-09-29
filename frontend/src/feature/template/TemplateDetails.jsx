@@ -8,19 +8,12 @@ import Template from "./Template";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import DeleteConfirmation from "../../assets/popups/DeleteWithConfirm";
-import {Badge, ButtonGroup, Divider, Toolbar} from "@mui/material";
+import {Badge, Divider, Toolbar} from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
-import * as PropTypes from "prop-types";
-import {green, red} from "@mui/material/colors";
 import AppBarComponent from "../core/AppBarComponent";
 
 
-function SecurityIcon(props) {
-    return null;
-}
-
-SecurityIcon.propTypes = {color: PropTypes.any};
 
 function TemplateDetails()
 {
@@ -45,7 +38,7 @@ return (
     <AppBarComponent showMenuButtonElseBack={false}/>
     <Toolbar/>
     <Box display="flex" alignItems="center" justifyContent={"center"}  >
-        <Template TemplateModel={templateModel} />
+        <Template templateModel={templateModel} />
     </Box>
 
     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 2 }}>
@@ -86,7 +79,6 @@ return (
             </Typography>
 
             <Box alignItems="center" justifyContent="center" sx={{ display: 'flex', mt: 2 }}>
-                <SecurityIcon color={templateModel.stampCardSecurity === "TRUSTUSER" ? green[500] : red[500]} />
                 <Typography variant="body2" sx={{ ml: 1, fontWeight: 'normal' }}>
                     Security: {templateModel.stampCardSecurity}
                 </Typography>
@@ -94,10 +86,6 @@ return (
 
             <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
                 Status: {templateModel.stampCardStatus}
-            </Typography>
-
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-                updated ?: {templateModel.lastModifiedDate}
             </Typography>
         </CardContent>
     </Card>

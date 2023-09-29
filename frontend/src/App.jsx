@@ -17,6 +17,7 @@ import TemplateDetails from "./feature/template/TemplateDetails";
 import TemplateEdit from "./feature/template/TemplateEdit";
 import StampCards from "./feature/stamp_card/StampCards";
 import BottomController from "./feature/core/BottomController";
+import StempCardDetails from "./feature/stamp_card/StempCardDetails";
 
 function App() {
 // Retrieve token
@@ -24,8 +25,6 @@ function App() {
     if (token) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     }
-
-
 
     const darkTheme = createTheme({
         breakpoints: {
@@ -44,8 +43,6 @@ function App() {
         },
     });
 
-    //view
-    //<PrivateRoute path={"/dashboard"} isLoggedIn={true} element={<Dashboard />}></PrivateRoute>
 return (
 <div className="App">
     <ThemeProvider theme={darkTheme}>
@@ -67,9 +64,9 @@ return (
                     <Route path="/template/details" element={<TemplateDetails/>} />
 
                     <Route path="/stampcards" element={<StampCards/>} />
+                    <Route path="/stampcard/details" element={<StempCardDetails/>} />
                 </Routes>
             </Router>
-
     </ThemeProvider>
 </div>
     );

@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import {Box, IconButton, useTheme} from "@mui/material";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MessageIcon from '@mui/icons-material/Message';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import {useNavigate} from "react-router-dom";
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 
 
@@ -54,8 +54,8 @@ return (
         justifyContent: 'space-around',
      }}>
 
-        <IconButton onClick={() => navigate(-1)}>
-            <ArrowBackIcon/>
+        <IconButton onClick={() => navigate("/dashboard")}>
+            <DashboardIcon/>
         </IconButton>
 
         <IconButton>

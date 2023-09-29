@@ -161,7 +161,7 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_005 = new Template();
         template_005.setName("Sushi");
         template_005.setImage("65154e3e8f36310e63f95291");
-        template_005.setDefaultCount(70);
+        template_005.setDefaultCount(8);
         template_005.setStampCardCategory(StampCardCategory.FOOD);
         template_005.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_005.setStampCardStatus(StampCardStatus.PUBLIC);
@@ -206,7 +206,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_008.setDefaultCount(9);
         template_008.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
         template_008.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
-        template_008.setStampCardStatus(StampCardStatus.PUBLIC);
+        template_008.setStampCardStatus(StampCardStatus.PRIVATE);
         template_008.setDescription("Visit the skate park 9 times and get a free ticket");
         template_008.setCreatedBy(appUserAnna.getAppUserEmail());
         template_008.setCreatedDate(time);

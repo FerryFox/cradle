@@ -1,4 +1,4 @@
-package com.fox.cradle.features.stamp.model.enums;
+package com.fox.cradle.features.stampSystem.model.enums;
 
 public enum StampCardSecurity
 {

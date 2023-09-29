@@ -97,4 +97,13 @@ public class TemplateService
         Template savedTemplate = templateRepository.save(template);
         return MapService.mapTemplateToResponse(savedTemplate);
     }
+
+    public List<TemplateResponse> getAllPublic()
+    {
+        List<Template> templates = templateRepository.findAll().stream()
+                    .filter( template -> template.getStampCardStatus().equals(StampCardStatus.PUBLIC))
+                    .toList();
+
+        return templates.stream().map(MapService::mapTemplateToResponse).collect(Collectors.toList());
+    }
 }

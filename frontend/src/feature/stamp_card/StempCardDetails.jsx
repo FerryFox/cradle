@@ -14,7 +14,6 @@ function StempCardDetails()
     const location = useLocation();
     const stampCardModel = location.state?.stampCardModel;
 
-
 return(
     <div>
         <BottomController/>
@@ -24,16 +23,15 @@ return(
 
             <Grid container spacing={4} justifyContent="center" sx={{mt :1}}>
                 <Grid item xs={6} key={stampCardModel.id} >
-                    <Template templateModel={stampCardModel.templateResponse} />
+                    <Template templateModel={stampCardModel.templateModel} />
                 </Grid>
                 <Grid item xs={6}>
                     <p> Stamp Card Details</p>
                 </Grid>
                 <Grid item xs={12}>
-                   <StampField stamps={stampCardModel.stamps}/>
+                    <StampField count={stampCardModel.templateModel.defaultCount} />
                 </Grid>
             </Grid>
-             
         </Container>
     </div>
     )

@@ -87,7 +87,7 @@ public class MapService
         return StampCardResponse.builder()
                 .id(stampCard.getId())
                 .createdDate(stampCard.getCreatedDate().toString())
-                .templateResponse(templateResponse)
+                .templateModel(templateResponse)
                 .build();
     }
 }

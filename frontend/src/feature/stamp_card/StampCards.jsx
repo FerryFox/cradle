@@ -46,7 +46,7 @@ return(
             {stempCards.map( (card) => (
 
                 <Grid item xs={6}  key={card.id} >
-                    <Template templateModel={card.templateResponse} />
+                    <Template templateModel={card.templateModel} />
                     <Button variant={"contained"}
                             onClick={() => { navigator(`/stampcard/details` , { state: { stampCardModel: card }} )}}
                     >

@@ -3,6 +3,8 @@ package com.fox.cradle.features.stampSystem.controller;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
+import com.fox.cradle.features.stampSystem.model.stamp.StampField;
+import com.fox.cradle.features.stampSystem.model.stamp.StampFieldResponse;
 import com.fox.cradle.features.stampSystem.model.stampcard.StampCardResponse;
 import com.fox.cradle.features.stampSystem.service.card.StampCardService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +34,7 @@ public class StampCardController
         if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
 
         StampCardResponse result = _stampCardService.createStampCard(templateId , AppUse.get());
+
         return ResponseEntity.created(null).body(result);
     }
 
@@ -42,8 +46,18 @@ public class StampCardController
 
         if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        List<StampCardResponse> result = _stampCardService.getAllStampCards(AppUse.get());
-        return ResponseEntity.ok(result);
+        List<StampCardResponse> results = _stampCardService.getAllStampCards(AppUse.get());
+
+        return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/fields/{stampCardId}")
+    public ResponseEntity<List<StampFieldResponse>> getAllStampFields(@PathVariable Long stampCardId)
+    {
+        System.out.println("stampCardId: " + stampCardId);
+        List<StampFieldResponse> results = _stampCardService.getStampFields(stampCardId);
+
+        return ResponseEntity.ok(results);
     }
 
 }

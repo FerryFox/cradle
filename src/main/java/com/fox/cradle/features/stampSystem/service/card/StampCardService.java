@@ -2,6 +2,7 @@ package com.fox.cradle.features.stampSystem.service.card;
 
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.stampSystem.model.stamp.StampField;
+import com.fox.cradle.features.stampSystem.model.stamp.StampFieldResponse;
 import com.fox.cradle.features.stampSystem.model.stampcard.StampCard;
 import com.fox.cradle.features.stampSystem.model.stampcard.StampCardResponse;
 import com.fox.cradle.features.stampSystem.model.template.Template;
@@ -14,8 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 @Service
 @RequiredArgsConstructor
@@ -39,30 +41,25 @@ public class StampCardService
                 .owner(appUser)
                 .template(template)
                 .build();
-
-        if (template != null)
-        {
-            for(int i = 1; i <= template.getDefaultCount() ; i++)
-            {
-                StampField stampField = StampField.builder()
-                        .isStamped(false)
-                        .Index(i)
-                        .stampCard(stampCard)
-                        .emptyImageUrl("https://images.nightcafe.studio/jobs/Ku1vjoHEHrx5OGqbtgxL/Ku1vjoHEHrx5OGqbtgxL--1--cyx7c.jpg?tr=w-640,c-at_max")
-                        .stampedImageUrl("https://images.nightcafe.studio/jobs/V2aM8TZ6j9k0fqwhELQn/V2aM8TZ6j9k0fqwhELQn--1--8qhsy.jpg?tr=w-1600,c-at_max")
-                        .build();
-                stampFieldRepository.save(stampField);
-            }
-        }
+        
 
         appUser.getMyStampCards().add(stampCard);
-        stampCardRepository.save(stampCard);
-        //prepare response
+        StampCard savedCard = stampCardRepository.save(stampCard);
 
-        if(template == null)
+
+        for(int i = 1; i <= template.getDefaultCount() ; i++)
         {
-            return null;
+            StampField stampField = StampField.builder()
+                    .isStamped(false)
+                    .Index(i)
+                    .stampCardId(savedCard.getId())
+                    .emptyImageUrl("https://images.nightcafe.studio/jobs/Ku1vjoHEHrx5OGqbtgxL/Ku1vjoHEHrx5OGqbtgxL--1--cyx7c.jpg?tr=w-640,c-at_max")
+                    .stampedImageUrl("https://images.nightcafe.studio/jobs/c2EI3ymfZvoZHuTyjhos/c2EI3ymfZvoZHuTyjhos--1--vylwa.jpg?tr=w-1600,c-at_max")
+                    .build();
+
+            stampFieldRepository.save(stampField);
         }
+
         TemplateResponse templateResponse = mapService.mapTemplateToResponse(template);
 
         return StampCardResponse.builder()
@@ -79,7 +76,30 @@ public class StampCardService
 
     public List<StampCardResponse> getAllStampCards(AppUser appUser)
     {
-        var result = appUser.getMyStampCards();
-        return mapService.mapStampCardsToResponse(result);
+       var result = appUser.getMyStampCards();
+
+       return mapService.mapStampCardsToResponse(result);
+    }
+
+    public List<StampFieldResponse> getStampFields(Long stampCardId)
+    {
+        List<StampField> stampfields =  stampFieldRepository.findByStampCardId(stampCardId);
+        System.out.println("stampfields: " + stampfields.size());
+
+        List<StampFieldResponse> result = new ArrayList<>();
+        for(StampField item : stampfields)
+        {
+            StampFieldResponse sfr = StampFieldResponse.builder()
+                    .stampedImageUrl(item.getStampedImageUrl())
+                    .emptyImageUrl(item.getEmptyImageUrl())
+                    .isStamped(item.isStamped())
+                    .index(item.getIndex())
+                    .id(item.getId())
+                    .stampCardId(item.getStampCardId())
+                    .build();
+            
+            result.add(sfr);
+        }
+        return result;
     }
 }

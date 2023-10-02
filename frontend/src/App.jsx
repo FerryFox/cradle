@@ -16,8 +16,7 @@ import TemplateForm from "./feature/template/TemplateForm";
 import TemplateDetails from "./feature/template/TemplateDetails";
 import TemplateEdit from "./feature/template/TemplateEdit";
 import StampCards from "./feature/stamp_card/StampCards";
-import BottomController from "./feature/core/BottomController";
-import StempCardDetails from "./feature/stamp_card/StempCardDetails";
+import StampCardDetails from "./feature/stamp_card/StempCardDetails";
 
 function App() {
 // Retrieve token
@@ -64,7 +63,7 @@ return (
                     <Route path="/template/details" element={<TemplateDetails/>} />
 
                     <Route path="/stampcards" element={<StampCards/>} />
-                    <Route path="/stampcard/details" element={<StempCardDetails/>} />
+                    <Route path="/stampcard/details" element={<StampCardDetails/>} />
                 </Routes>
             </Router>
     </ThemeProvider>

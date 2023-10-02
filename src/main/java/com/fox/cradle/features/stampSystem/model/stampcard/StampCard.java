@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -34,6 +34,4 @@ public class StampCard
     @JoinColumn(name="template_id")
     private Template template;
 
-    @OneToMany(mappedBy = "stampCard", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<StampField> stampFields;
 }

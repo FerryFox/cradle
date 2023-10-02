@@ -6,13 +6,44 @@ import {useLocation, useNavigate} from "react-router-dom";
 import Template from "../template/Template";
 import Grid from "@mui/material/Grid";
 import StampField from "./StampField";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 
 
-function StempCardDetails()
+function StampCardDetails()
 {
-    const location = useLocation();
-    const stampCardModel = location.state?.stampCardModel;
+        const location = useLocation();
+        const stampCardModel = location.state?.stampCardModel;
+        const [stampFields, setStampFields] = useState([]);
+        const [loading, setLoading] = useState(false);
+        const [error, setError] = useState(null);
+
+        function onStampAttempt(stampField)
+        {
+            setStampFields((prevFields) =>
+                prevFields.map((field) =>
+                    field.id === stampField.id ? { ...field, isStamped: true } : field)
+            );
+        }
+
+    useEffect(() => {
+        if (stampCardModel) {
+            setLoading(true);
+            setError(null);
+
+            axios.get('/api/stampcard/fields/' + stampCardModel.id)
+                .then(response => {
+                    setStampFields(response.data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    setError(error);
+                    setLoading(false);
+                });
+        }
+    }, []);
 
 return(
     <div>
@@ -29,7 +60,7 @@ return(
                     <p> Stamp Card Details</p>
                 </Grid>
                 <Grid item xs={12}>
-                    <StampField count={stampCardModel.templateModel.defaultCount} />
+                    <StampField stampFields={stampFields} onStampAttempt={onStampAttempt} />
                 </Grid>
             </Grid>
         </Container>
@@ -37,4 +68,4 @@ return(
     )
 }
 
-export default StempCardDetails;
+export default StampCardDetails;

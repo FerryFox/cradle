@@ -25,5 +25,5 @@ public class AppUser
 
     //Relationships
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<StampCard> myStampCards = new ArrayList<>();
+    private List<StampCard> myStampCards;
 }

@@ -22,7 +22,7 @@ public class Stamp
     private Instant createdDate = Instant.now();
 
     @OneToOne
-    @JoinColumn(name = "stamp_field_id")
+    @JoinColumn(name="stamp_field_id")
     private StampField stampField;
 
     @ManyToOne

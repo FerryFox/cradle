@@ -1,25 +1,44 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 
-function StempField( {count, stamps} )
+function StempField( {stampFields,  onStampAttempt} )
 {
   return (
       <div>
           <Grid container spacing={2}>
-              {Array.from({ length: count }, (_, index) => (
-                  <Grid item xs={4} key={index}>
-                      <Box sx={{
-                          backgroundImage: `url("https://images.nightcafe.studio/jobs/Ku1vjoHEHrx5OGqbtgxL/Ku1vjoHEHrx5OGqbtgxL--1--cyx7c.jpg?tr=w-1600,c-at_max")`,
-                          backgroundPosition: 'center',
-                          backgroundSize: 'cover',
-                          backgroundRepeat: 'no-repeat',
-                          height: "12vh",
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                      }}>
-                          <p>{index + 1}</p>
-                      </Box>
+              {stampFields &&stampFields.map ((stampField) =>
+                  (
+                  <Grid item xs={4} key={stampField.id}>
+                      {
+                          stampField.isStamped ? (
+                              <Box sx={{
+                                  backgroundImage: `url(${stampField.stampedImageUrl})`,
+                                  backgroundPosition: 'center',
+                                  backgroundSize: 'cover',
+                                  backgroundRepeat: 'no-repeat',
+                                  height: "12vh",
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center'}}>
+
+                                  <p>{stampField.index}</p>
+                              </Box>
+                        ) :
+                        (
+                          <Box onClick={() => onStampAttempt(stampField)} sx={{
+                              backgroundImage: `url(${stampField.emptyImageUrl})`,
+                              backgroundPosition: 'center',
+                              backgroundSize: 'cover',
+                              backgroundRepeat: 'no-repeat',
+                              height: "12vh",
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'}}>
+
+                              <p>{stampField.index}</p>
+                          </Box>
+                        )
+                      }
                   </Grid>
               ))}
           </Grid>

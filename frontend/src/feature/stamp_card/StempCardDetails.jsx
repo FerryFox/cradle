@@ -9,41 +9,43 @@ import StampField from "./StampField";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-
-
 function StampCardDetails()
 {
         const location = useLocation();
-        const stampCardModel = location.state?.stampCardModel;
-        const [stampFields, setStampFields] = useState([]);
-        const [loading, setLoading] = useState(false);
-        const [error, setError] = useState(null);
+        const initialStampCardModel = location.state?.stampCardModel;
+        const [stampCardModel, setStampCardModel] = useState(initialStampCardModel);
+
 
         function onStampAttempt(stampField)
         {
-            setStampFields((prevFields) =>
-                prevFields.map((field) =>
-                    field.id === stampField.id ? { ...field, isStamped: true } : field)
-            );
-        }
+            const token = localStorage.getItem('authToken');
 
-    useEffect(() => {
-        if (stampCardModel) {
-            setLoading(true);
-            setError(null);
-
-            axios.get('/api/stampcard/fields/' + stampCardModel.id)
+            //security check
+            const response = axios.post('/api/stamp/stampThisCard' , stampCardModel
+            ,{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }})
                 .then(response => {
-                    setStampFields(response.data);
-                    setLoading(false);
+                    if (response.data === true) {
+                        const updatedFields = stampCardModel.stampFields.map((field) =>
+                            field.id === stampField.id ? { ...field, isStamped: true } : field
+                        );
+
+                        const updatedModel = {
+                            ...stampCardModel,
+                            stampFields: updatedFields
+                        };
+                        setStampCardModel(updatedModel);
+                    }
                 })
                 .catch(error => {
-                    console.error("Error fetching data:", error);
-                    setError(error);
-                    setLoading(false);
+                    console.error("Error during stamping:", error);
+                    // Handle the error appropriately
                 });
+
         }
-    }, []);
 
 return(
     <div>
@@ -60,7 +62,7 @@ return(
                     <p> Stamp Card Details</p>
                 </Grid>
                 <Grid item xs={12}>
-                    <StampField stampFields={stampFields} onStampAttempt={onStampAttempt} />
+                    <StampField stampFields={stampCardModel.stampFields} onStampAttempt={onStampAttempt} />
                 </Grid>
             </Grid>
         </Container>

@@ -2,6 +2,8 @@ package com.fox.cradle.features.stampSystem.service;
 
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.picture.service.PictureService;
+import com.fox.cradle.features.stampSystem.model.stamp.StampField;
+import com.fox.cradle.features.stampSystem.model.stamp.StampFieldResponse;
 import com.fox.cradle.features.stampSystem.model.stampcard.StampCard;
 import com.fox.cradle.features.stampSystem.model.stampcard.StampCardResponse;
 import com.fox.cradle.features.stampSystem.model.template.Template;
@@ -88,6 +90,26 @@ public class MapService
                 .id(stampCard.getId())
                 .createdDate(stampCard.getCreatedDate().toString())
                 .templateModel(templateResponse)
+                .build();
+    }
+
+    public List<StampFieldResponse> mapStampFieldsToResponse(List<StampField> fields)
+    {
+        return fields
+                .stream()
+                .map(this::mapStampFieldToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public StampFieldResponse mapStampFieldToResponse(StampField stampField)
+    {
+        return StampFieldResponse.builder()
+                .id(stampField.getId())
+                .stampedImageUrl(stampField.getStampedImageUrl())
+                .emptyImageUrl(stampField.getEmptyImageUrl())
+                .isStamped(stampField.isStamped())
+                .index(stampField.getIndex())
+                .stampCardId(stampField.getStampCardId())
                 .build();
     }
 }

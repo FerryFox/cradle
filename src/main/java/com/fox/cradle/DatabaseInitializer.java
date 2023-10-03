@@ -107,7 +107,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_001.setImage("65154a35cdbe396e77ad09c4");
         template_001.setDefaultCount(10);
         template_001.setStampCardCategory(StampCardCategory.FOOD);
-        template_001.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        template_001.setStampCardSecurity(StampCardSecurity.TIMEGATE);
         template_001.setStampCardStatus(StampCardStatus.PUBLIC);
         template_001.setDescription("Buy 10 ice creams and get one for free");
         template_001.setCreatedBy(appUserIceCompany.getAppUserEmail());

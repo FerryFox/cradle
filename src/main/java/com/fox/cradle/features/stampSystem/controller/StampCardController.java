@@ -48,13 +48,18 @@ public class StampCardController
 
         List<StampCardResponse> results = _stampCardService.getAllStampCards(AppUse.get());
 
+        for (StampCardResponse item : results)
+        {
+            List<StampFieldResponse>  fields  = _stampCardService.getStampFields(item.getId());
+            item.setStampFields(fields);
+        }
+
         return ResponseEntity.ok(results);
     }
 
     @GetMapping("/fields/{stampCardId}")
     public ResponseEntity<List<StampFieldResponse>> getAllStampFields(@PathVariable Long stampCardId)
     {
-        System.out.println("stampCardId: " + stampCardId);
         List<StampFieldResponse> results = _stampCardService.getStampFields(stampCardId);
 
         return ResponseEntity.ok(results);

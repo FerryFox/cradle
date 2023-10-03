@@ -46,7 +46,7 @@ public class StampCardService
         appUser.getMyStampCards().add(stampCard);
         StampCard savedCard = stampCardRepository.save(stampCard);
 
-
+        List<StampField> fields = new ArrayList<>();
         for(int i = 1; i <= template.getDefaultCount() ; i++)
         {
             StampField stampField = StampField.builder()
@@ -56,9 +56,11 @@ public class StampCardService
                     .emptyImageUrl("https://images.nightcafe.studio/jobs/Ku1vjoHEHrx5OGqbtgxL/Ku1vjoHEHrx5OGqbtgxL--1--cyx7c.jpg?tr=w-640,c-at_max")
                     .stampedImageUrl("https://images.nightcafe.studio/jobs/c2EI3ymfZvoZHuTyjhos/c2EI3ymfZvoZHuTyjhos--1--vylwa.jpg?tr=w-1600,c-at_max")
                     .build();
-
+            fields.add(stampField);
             stampFieldRepository.save(stampField);
         }
+
+        List<StampFieldResponse> stampFieldResponses = mapService.mapStampFieldsToResponse(fields);
 
         TemplateResponse templateResponse = mapService.mapTemplateToResponse(template);
 
@@ -66,6 +68,7 @@ public class StampCardService
                 .id(stampCard.getId())
                 .createdDate(stampCard.getCreatedDate().toString())
                 .templateModel(templateResponse)
+                .stampFields(stampFieldResponses)
                 .build();
     }
 
@@ -83,11 +86,10 @@ public class StampCardService
 
     public List<StampFieldResponse> getStampFields(Long stampCardId)
     {
-        List<StampField> stampfields =  stampFieldRepository.findByStampCardId(stampCardId);
-        System.out.println("stampfields: " + stampfields.size());
+        List<StampField> stampFields =  stampFieldRepository.findByStampCardId(stampCardId);
 
         List<StampFieldResponse> result = new ArrayList<>();
-        for(StampField item : stampfields)
+        for(StampField item : stampFields)
         {
             StampFieldResponse sfr = StampFieldResponse.builder()
                     .stampedImageUrl(item.getStampedImageUrl())

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -56,6 +57,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserIceCompany.setAppUserName("Ice cream man");
         appUserIceCompany.setAppUserEmail("w@w");
         appUserIceCompany.setReceiveNews(true);
+        appUserIceCompany.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserIceCompany);
 
         User userBob = new User();
@@ -70,6 +72,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserBob.setAppUserName("Bob");
         appUserBob.setAppUserEmail("q@q");
         appUserBob.setReceiveNews(true);
+        appUserBob.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserBob);
 
         User userCinema = new User();
@@ -84,6 +87,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserCinema.setAppUserName("Cinema");
         appUserCinema.setAppUserEmail("e@e");
         appUserCinema.setReceiveNews(true);
+        appUserCinema.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserCinema);
 
         User userAnna = new User();
@@ -98,6 +102,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserAnna.setAppUserName("Anna");
         appUserAnna.setAppUserEmail("r@r");
         appUserAnna.setReceiveNews(false);
+        appUserAnna.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserAnna);
 
         Instant time = java.time.Instant.now();

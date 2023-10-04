@@ -22,6 +22,8 @@ public class AppUser
     private String appUserName;
     private String appUserEmail;
     private boolean receiveNews;
+    private String nameIdentifier;
+
 
     //Relationships
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

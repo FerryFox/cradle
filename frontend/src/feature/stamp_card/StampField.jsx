@@ -1,16 +1,16 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 
-function StempField( {stampFields,  onStampAttempt} )
+function StampField( {stampFields,  onStampAttempt} )
 {
   return (
       <div>
           <Grid container spacing={2}>
-              {stampFields &&stampFields.map ((stampField) =>
+              {stampFields && stampFields.map ((stampField) =>
                   (
                   <Grid item xs={4} key={stampField.id}>
                       {
-                          stampField.isStamped ? (
+                          stampField.stamped ? (
                               <Box sx={{
                                   backgroundImage: `url(${stampField.stampedImageUrl})`,
                                   backgroundPosition: 'center',
@@ -46,4 +46,4 @@ function StempField( {stampFields,  onStampAttempt} )
   );
 }
 
-export default StempField;
+export default StampField;

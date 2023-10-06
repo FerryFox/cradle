@@ -3,6 +3,8 @@ package com.fox.cradle.features.stampSystem.controller;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
+import com.fox.cradle.features.stampSystem.model.stamp.StampFieldResponse;
+import com.fox.cradle.features.stampSystem.model.stamp.StampThisResponse;
 import com.fox.cradle.features.stampSystem.model.stampcard.StampCardResponse;
 import com.fox.cradle.features.stampSystem.service.stamp.StampService;
 
@@ -23,14 +25,29 @@ public class StampController
     private final JwtService _jwtService;
 
     @PostMapping("/stampThisCard")
-    public ResponseEntity<Boolean> attemptToStamp(@RequestBody StampCardResponse stampCardResponse, HttpServletRequest httpServletRequest)
+    public ResponseEntity<StampThisResponse> attemptToStamp(@RequestBody StampFieldResponse stampFieldResponse, HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> AppUse =  _appUserService.
+                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
+        if(stampFieldResponse.isStamped()) return ResponseEntity.badRequest().build();
+
+        StampThisResponse stamping = stampService.stampThisCard(stampFieldResponse);
+        return ResponseEntity.ok(stamping);
+    }
+
+    //security is missing
+    @PostMapping("/completeThisCard")
+    public ResponseEntity<StampCardResponse> attemptToComplete(@RequestBody long id, HttpServletRequest httpServletRequest)
     {
         Optional<AppUser> AppUse =  _appUserService.
                 findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
 
         if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        boolean isStampAble = stampService.stampThisCard(stampCardResponse);
-        return ResponseEntity.ok(isStampAble);
+        StampCardResponse completed = stampService.completeThisCard(id);
+        return ResponseEntity.ok(completed);
     }
+
 }

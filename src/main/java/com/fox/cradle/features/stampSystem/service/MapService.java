@@ -90,6 +90,8 @@ public class MapService
                 .id(stampCard.getId())
                 .createdDate(stampCard.getCreatedDate().toString())
                 .templateModel(templateResponse)
+                .isCompleted(stampCard.isCompleted())
+                .isRedeemed(stampCard.isRedeemed())
                 .build();
     }
 

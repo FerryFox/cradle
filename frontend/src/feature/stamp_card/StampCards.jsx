@@ -48,7 +48,7 @@ return(
                 <Grid item xs={6}  key={card.id} >
                     <Template templateModel={card.templateModel} />
                     <Button variant={"contained"}
-                            onClick={() => { navigator(`/stampcard/details` , { state: { stampCardModel: card }} )}}
+                            onClick={() => { navigator(`/stampcard/details/${card.id}` )}}
                     >
                         Stamp this card  </Button>
                 </Grid>

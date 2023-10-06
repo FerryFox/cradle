@@ -6,10 +6,13 @@ import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardCategory;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardStatus;
+import com.fox.cradle.features.stampSystem.model.stamp.TimeGateSecurity;
 import com.fox.cradle.features.stampSystem.model.template.NewTemplate;
 import com.fox.cradle.features.stampSystem.model.template.Template;
 import com.fox.cradle.features.stampSystem.model.template.TemplateEdit;
 import com.fox.cradle.features.stampSystem.model.template.TemplateResponse;
+import com.fox.cradle.features.stampSystem.service.MapService;
+import com.fox.cradle.features.stampSystem.service.stamp.StampService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,14 +25,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TemplateService
 {
-    private final com.fox.cradle.features.stampSystem.service.MapService MapService;
+    private final MapService mapService;
     private final TemplateRepository templateRepository;
     private final PictureService pictureService;
+    private final StampService stampService;
 
     public List<TemplateResponse> getAllTemplates()
     {
         List<Template> templates = templateRepository.findAll();
-        return templates.stream().map(MapService::mapTemplateToResponse).collect(Collectors.toList());
+        return templates.stream().map(mapService::mapTemplateToResponse).collect(Collectors.toList());
+    }
+
+    public Template getTemplateById(Long id)
+    {
+        return templateRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Stamp card template not found"));
     }
 
     public List<TemplateResponse> getMyTemplates(AppUser appUser)
@@ -38,18 +48,24 @@ public class TemplateService
                 filter( template -> template.getCreatedBy().equals(appUser.getAppUserEmail()))
                 .toList();
 
-        return templates.stream().map(MapService::mapTemplateToResponse).collect(Collectors.toList());
+        return templates.stream().map(mapService::mapTemplateToResponse).collect(Collectors.toList());
     }
 
     public TemplateResponse createTemplate(NewTemplate request, AppUser appUser)
     {
         String pictureId = pictureService.savePicture(request.getImage() , request.getFileName()).getId();
 
-        Template newTemplate = MapService.mapRequestNewToTemplate(request, appUser, pictureId);
+        Template newTemplate = mapService.mapRequestNewToTemplate(request, appUser, pictureId);
         newTemplate.setCreatedDate(Instant.now());
 
+        if(newTemplate.getStampCardSecurity().equals(StampCardSecurity.TIMEGATE))
+        {
+        TimeGateSecurity timeGateSecurity = stampService.createTimeGate(request, newTemplate);
+        newTemplate.setTimeGateSecurity(timeGateSecurity);
+        }
+
         Template savedTemplate = templateRepository.save(newTemplate);
-        return MapService.mapTemplateToResponse(savedTemplate);
+        return mapService.mapTemplateToResponse(savedTemplate);
     }
 
     public Template getStampCardTemplateById(Long id)
@@ -95,7 +111,7 @@ public class TemplateService
         template.setLastModifiedDate(Instant.now());
 
         Template savedTemplate = templateRepository.save(template);
-        return MapService.mapTemplateToResponse(savedTemplate);
+        return mapService.mapTemplateToResponse(savedTemplate);
     }
 
     public List<TemplateResponse> getAllPublic()
@@ -104,6 +120,6 @@ public class TemplateService
                     .filter( template -> template.getStampCardStatus().equals(StampCardStatus.PUBLIC))
                     .toList();
 
-        return templates.stream().map(MapService::mapTemplateToResponse).collect(Collectors.toList());
+        return templates.stream().map(mapService::mapTemplateToResponse).collect(Collectors.toList());
     }
 }

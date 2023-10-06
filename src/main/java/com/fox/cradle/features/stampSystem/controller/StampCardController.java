@@ -57,6 +57,14 @@ public class StampCardController
         return ResponseEntity.ok(results);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<StampCardResponse> getStampCard(@PathVariable Long id)
+    {
+        StampCardResponse result = _stampCardService.getStampCard(id);
+
+        return ResponseEntity.ok(result);
+    }
+
     @GetMapping("/fields/{stampCardId}")
     public ResponseEntity<List<StampFieldResponse>> getAllStampFields(@PathVariable Long stampCardId)
     {

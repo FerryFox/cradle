@@ -16,6 +16,7 @@ function TemplateForm()
     const navigate = useNavigate();
     const [isShaking, setIsShaking] = useState(false);
     const [number, setValue] = useState(10);
+    const [timeGate, setTimeGate] = useState(0);
 
     //values
     const [Category, setCategory] = useState([]);
@@ -85,7 +86,8 @@ function TemplateForm()
                     stampCardSecurity: selectedSecurity,
                     stampCardStatus: selectedStatus,
                     fileName : file.name,
-                    defaultCount : number
+                    defaultCount : number,
+                    securityTimeGateDuration :  `PT${timeGate}H`
                 };
 
                 const response = await axios.post('/api/templates/new-template', payload, {
@@ -185,6 +187,16 @@ return (
                         <MenuItem key={index} value={security}>{security}</MenuItem>
                     ))}
                 </Select>
+
+                {selectedSecurity === 'TIMEGATE' &&
+                    <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
+                                                                label="Hours"
+                                                                variant="outlined"
+                                                                type="number"
+                                                                value={timeGate}
+                                                                onChange={(e) => setTimeGate(e.target.value)}
+                />
+                }
             </FormControl>
 
             <FormControl fullWidth sx={{ marginBottom: 2 }}>

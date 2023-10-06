@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
-import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardCategory;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardStatus;
@@ -28,21 +27,20 @@ import java.util.Optional;
 public class TemplateController
 {
     private final JwtService _jwtService;
-    private final TemplateService _TemplateService;
-    private final PictureService _pictureService;
+    private final TemplateService _templateService;
     private final AppUserService _appUserService;
 
     @GetMapping("/all")
     public ResponseEntity<List<TemplateResponse>> getAllTemplates()
     {
-        List<TemplateResponse> response = _TemplateService.getAllTemplates();
+        List<TemplateResponse> response = _templateService.getAllTemplates();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/all/public")
     public ResponseEntity<List<TemplateResponse>> getAllPublicTemplates()
     {
-        List<TemplateResponse> response = _TemplateService.getAllPublic();
+        List<TemplateResponse> response = _templateService.getAllPublic();
         return ResponseEntity.ok(response);
     }
 
@@ -55,7 +53,7 @@ public class TemplateController
         if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
         else
         {
-            List<TemplateResponse> response = _TemplateService.getMyTemplates(AppUse.get());
+            List<TemplateResponse> response = _templateService.getMyTemplates(AppUse.get());
             return ResponseEntity.ok(response);
         }
     }
@@ -63,7 +61,7 @@ public class TemplateController
     @DeleteMapping("/delete/{id}")
     public void deleteTemplate(@PathVariable Long id)
     {
-        _TemplateService.deleteTemplate(id);
+        _templateService.deleteTemplate(id);
     }
 
     @PutMapping()
@@ -75,7 +73,7 @@ public class TemplateController
         if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
         if (AppUse.get().getAppUserEmail().equals(request.getCreatedBy()))
         {
-            TemplateResponse response = _TemplateService.updateTemplate(request);
+            TemplateResponse response = _templateService.updateTemplate(request);
             return ResponseEntity.ok(response);
         }
         else return ResponseEntity.badRequest().build();
@@ -106,7 +104,8 @@ public class TemplateController
 
         if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        var savedTemplate = _TemplateService.createTemplate(request, AppUse.get());
+        TemplateResponse savedTemplate = _templateService.createTemplate(request, AppUse.get());
+
         return ResponseEntity.ok(savedTemplate);
     }
 }

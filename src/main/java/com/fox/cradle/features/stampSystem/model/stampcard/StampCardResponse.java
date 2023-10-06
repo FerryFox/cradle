@@ -20,4 +20,7 @@ public class StampCardResponse
     private String createdDate;
     private TemplateResponse templateModel;
     private List<StampFieldResponse> stampFields;
+
+    private boolean isCompleted;
+    private boolean isRedeemed;
  }

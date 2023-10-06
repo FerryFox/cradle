@@ -63,7 +63,7 @@ return (
                     <Route path="/template/details" element={<TemplateDetails/>} />
 
                     <Route path="/stampcards" element={<StampCards/>} />
-                    <Route path="/stampcard/details" element={<StampCardDetails/>} />
+                    <Route path="/stampcard/details/:id" element={<StampCardDetails/>} />
                 </Routes>
             </Router>
     </ThemeProvider>

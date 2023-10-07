@@ -5,11 +5,9 @@ import com.fox.cradle.features.stampSystem.model.stampcard.StampCard;
 import com.fox.cradle.features.stampSystem.model.stampcard.StampCardResponse;
 import com.fox.cradle.features.stampSystem.model.template.NewTemplate;
 import com.fox.cradle.features.stampSystem.model.template.Template;
-import com.fox.cradle.features.stampSystem.model.template.TemplateResponse;
 import com.fox.cradle.features.stampSystem.service.MapService;
 import com.fox.cradle.features.stampSystem.service.card.StampCardRepository;
 
-import com.fox.cradle.features.stampSystem.service.template.TemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -118,8 +116,8 @@ public class StampService
             stampCard.setCompleted(true);
             stampCardRepository.save(stampCard);
 
-            return mapService.mapStampCardToResponse(stampCard);
+            return mapService.mapStampCardToResponseNoStampFields(stampCard);
         }
-        else return mapService.mapStampCardToResponse(stampCard);
+        else return mapService.mapStampCardToResponseNoStampFields(stampCard);
     }
 }

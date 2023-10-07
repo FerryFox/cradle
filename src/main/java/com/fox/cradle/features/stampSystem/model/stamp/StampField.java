@@ -24,7 +24,9 @@ public class StampField
     private String stampedImageUrl;
     private int Index;
 
-    private Long stampCardId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="stamp_card_id")
+    private StampCard stampCard;
 
     @OneToOne(mappedBy = "stampField", cascade = CascadeType.ALL, orphanRemoval = true)
     private Stamp stamp;

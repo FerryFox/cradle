@@ -75,15 +75,15 @@ public class MapService
         return response;
     }
 
-    public List<StampCardResponse> mapStampCardsToResponse(List<StampCard> stampCards)
+    public List<StampCardResponse> mapStampCardsToResponseNoFields(List<StampCard> stampCards)
     {
      return stampCards
                 .stream()
-                .map(this::mapStampCardToResponse)
+                .map(this::mapStampCardToResponseNoStampFields)
                 .collect(Collectors.toList());
     }
 
-    public StampCardResponse mapStampCardToResponse(StampCard stampCard)
+    public StampCardResponse mapStampCardToResponseNoStampFields(StampCard stampCard)
     {
         TemplateResponse templateResponse = mapTemplateToResponse(stampCard.getTemplate());
         return StampCardResponse.builder()
@@ -111,7 +111,7 @@ public class MapService
                 .emptyImageUrl(stampField.getEmptyImageUrl())
                 .isStamped(stampField.isStamped())
                 .index(stampField.getIndex())
-                .stampCardId(stampField.getStampCardId())
+                .stampCardId(stampField.getStampCard().getId())
                 .build();
     }
 }

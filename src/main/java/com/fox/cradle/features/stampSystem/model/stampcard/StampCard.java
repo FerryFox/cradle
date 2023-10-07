@@ -2,12 +2,14 @@ package com.fox.cradle.features.stampSystem.model.stampcard;
 
 import com.fox.cradle.features.appuser.model.AppUser;
 
+import com.fox.cradle.features.stampSystem.model.stamp.StampField;
 import com.fox.cradle.features.stampSystem.model.stamp.TimeGateSecurity;
 import com.fox.cradle.features.stampSystem.model.template.Template;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -37,4 +39,7 @@ public class StampCard
     @JoinColumn(name="template_id")
     private Template template;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name="stamp_card_id") // This column will be on the StampField table
+    private List<StampField> stampFields;
 }

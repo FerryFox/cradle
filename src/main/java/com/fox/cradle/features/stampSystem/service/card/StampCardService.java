@@ -53,7 +53,7 @@ public class StampCardService
             StampField stampField = StampField.builder()
                     .isStamped(false)
                     .Index(i)
-                    .stampCardId(savedCard.getId())
+                    .stampCard(savedCard)
                     .emptyImageUrl("https://images.nightcafe.studio/jobs/Ku1vjoHEHrx5OGqbtgxL/Ku1vjoHEHrx5OGqbtgxL--1--cyx7c.jpg?tr=w-640,c-at_max")
                     .stampedImageUrl("https://images.nightcafe.studio/jobs/c2EI3ymfZvoZHuTyjhos/c2EI3ymfZvoZHuTyjhos--1--vylwa.jpg?tr=w-1600,c-at_max")
                     .build();
@@ -73,24 +73,22 @@ public class StampCardService
                 .build();
     }
 
-    public StampCard getStampCardById(long id)
+    public List<StampCardResponse> getAllStampCardsNoFields(AppUser appUser)
     {
-        return stampCardRepository.findById(id).orElse(null);
-    }
+       var stampCards = appUser.getMyStampCards();
 
-    public List<StampCardResponse> getAllStampCards(AppUser appUser)
-    {
-       var result = appUser.getMyStampCards();
-
-       return mapService.mapStampCardsToResponse(result);
+       return mapService.mapStampCardsToResponseNoFields(stampCards);
     }
 
     public List<StampFieldResponse> getStampFields(Long stampCardId)
     {
-        List<StampField> stampFields =  stampFieldRepository.findByStampCardId(stampCardId);
+        StampCard stampCard = new StampCard();
+        stampCard.setId(stampCardId);
+
+        List<StampField> fields = stampCard.getStampFields();
 
         List<StampFieldResponse> result = new ArrayList<>();
-        for(StampField item : stampFields)
+        for(StampField item : fields)
         {
             StampFieldResponse sfr = StampFieldResponse.builder()
                     .stampedImageUrl(item.getStampedImageUrl())
@@ -98,7 +96,7 @@ public class StampCardService
                     .isStamped(item.isStamped())
                     .index(item.getIndex())
                     .id(item.getId())
-                    .stampCardId(item.getStampCardId())
+                    .stampCardId(stampCard.getId())
                     .build();
             
             result.add(sfr);

@@ -114,4 +114,20 @@ public class MapService
                 .stampCardId(stampField.getStampCard().getId())
                 .build();
     }
+
+
+    public StampCardResponse mapStampCardToResponse(StampCard stampCard)
+    {
+        TemplateResponse templateResponse = mapTemplateToResponse(stampCard.getTemplate());
+        List<StampFieldResponse> stampFieldResponses = mapStampFieldsToResponse(stampCard.getStampFields());
+
+        return StampCardResponse.builder()
+                .id(stampCard.getId())
+                .createdDate(stampCard.getCreatedDate().toString())
+                .isRedeemed(stampCard.isRedeemed())
+                .isCompleted(stampCard.isCompleted())
+                .templateModel(templateResponse)
+                .stampFields(stampFieldResponses)
+                .build();
+    }
 }

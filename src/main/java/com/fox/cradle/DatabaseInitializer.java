@@ -8,12 +8,14 @@ import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardCategory;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardStatus;
+import com.fox.cradle.features.stampSystem.model.stamp.TimeGateSecurity;
 import com.fox.cradle.features.stampSystem.model.template.Template;
 import com.fox.cradle.features.news.model.News;
 import com.fox.cradle.features.news.model.NewsCategory;
 import com.fox.cradle.features.news.service.NewsService;
 import com.fox.cradle.features.stampSystem.service.card.StampCardService;
 import com.fox.cradle.features.stampSystem.service.stamp.StampService;
+import com.fox.cradle.features.stampSystem.service.stamp.TimeGateRepository;
 import com.fox.cradle.features.stampSystem.service.template.TemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -36,6 +38,7 @@ public class DatabaseInitializer implements CommandLineRunner
     private final StampService stampService;
     private final PictureService pictureService;
     private final NewsService newsService;
+    private final TimeGateRepository timeGateRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -113,6 +116,11 @@ public class DatabaseInitializer implements CommandLineRunner
         template_001.setDefaultCount(10);
         template_001.setStampCardCategory(StampCardCategory.FOOD);
         template_001.setStampCardSecurity(StampCardSecurity.TIMEGATE);
+
+        TimeGateSecurity timeGateSecurity = new TimeGateSecurity();
+        timeGateSecurity.setTimeGateDuration(java.time.Duration.ofSeconds(30));
+        template_001.setTimeGateSecurity(timeGateSecurity);
+
         template_001.setStampCardStatus(StampCardStatus.PUBLIC);
         template_001.setDescription("Buy 10 ice creams and get one for free");
         template_001.setCreatedBy(appUserIceCompany.getAppUserEmail());

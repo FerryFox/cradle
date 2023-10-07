@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -105,19 +104,18 @@ public class StampService
         stampRepository.save(stamp);
     }
 
-    public StampCardResponse completeThisCard(long id)
+    public StampCardResponse setCompleteForThisCard(long id)
     {
         StampCard stampCard = stampCardRepository.findById(id).orElseThrow();
 
-        List<StampField> stampFields = stampFieldRepository.findByStampCardId(id);
 
-        if(stampFields.stream().allMatch(StampField::isStamped))
+        if(stampCard.getStampFields().stream().allMatch(StampField::isStamped))
         {
             stampCard.setCompleted(true);
             stampCardRepository.save(stampCard);
 
-            return mapService.mapStampCardToResponseNoStampFields(stampCard);
+            return mapService.mapStampCardToResponse(stampCard);
         }
-        else return mapService.mapStampCardToResponseNoStampFields(stampCard);
+        else return mapService.mapStampCardToResponse(stampCard);
     }
 }

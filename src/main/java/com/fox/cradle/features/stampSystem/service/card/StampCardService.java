@@ -18,7 +18,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class StampCardService
@@ -107,17 +106,6 @@ public class StampCardService
     public StampCardResponse getStampCard(Long id)
     {
         StampCard stampCard = stampCardRepository.findById(id).orElse(null);
-
-        TemplateResponse templateResponse = mapService.mapTemplateToResponse(stampCard.getTemplate());
-
-        List<StampField> fields = stampFieldRepository.findByStampCardId(id);
-        List<StampFieldResponse> stampFieldResponses = mapService.mapStampFieldsToResponse(fields);
-
-        return StampCardResponse.builder()
-                .id(stampCard.getId())
-                .createdDate(stampCard.getCreatedDate().toString())
-                .templateModel(templateResponse)
-                .stampFields(stampFieldResponses)
-                .build();
+        return mapService.mapStampCardToResponse(stampCard);
     }
 }

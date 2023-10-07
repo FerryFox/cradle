@@ -28,17 +28,15 @@ function StampCardDetails()
     }, [id]);
 
 
-    function onStampAttempt(stampField)
-    {
+    function onStampAttempt(stampField) {
         const token = localStorage.getItem('authToken');
 
-        //security check
-        const response = axios.post('/api/stamp/stampThisCard' , stampField
-        ,{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }})
+        axios.post('/api/stamp/stampThisCard', stampField, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
             .then(response => {
                 if (response.data.stampAble === true) {
                     const updatedFields = stampCardModel.stampFields.map((field) =>
@@ -50,12 +48,31 @@ function StampCardDetails()
                         stampFields: updatedFields
                     };
                     setStampCardModel(updatedModel);
+
+                    // Check if all stampFields are stamped
+                    if (updatedFields.every(field => field.stamped)) {
+                        // All stampFields are stamped, mark the StampCard as complete
+                        axios.post('/api/stamp/markStampCardAsComplete', id , {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            }
+                        })
+                            .then(response => {
+                                if(response.status === 200)
+                                {
+                                    setStampCardModel(response.data);  // update stampCardModel with the returned response
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error marking StampCard as complete:", error);
+                            });
+                    }
                 }
                 setMessage(response.data.stampMessage);
             })
             .catch(error => {
                 console.error("Error during stamping:", error);
-                // Handle the error appropriately
             });
     }
 

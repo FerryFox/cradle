@@ -30,7 +30,7 @@ public class StampController
         Optional<AppUser> AppUse =  _appUserService.
                 findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
 
-        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
+        if(AppUse.isEmpty()) return ResponseEntity.badRequest().build();
         if(stampFieldResponse.isStamped()) return ResponseEntity.badRequest().build();
 
         StampThisResponse stamping = stampService.stampThisCard(stampFieldResponse);
@@ -38,7 +38,7 @@ public class StampController
     }
 
     //security is missing
-    @PostMapping("/completeThisCard")
+    @PostMapping("/markStampCardAsComplete")
     public ResponseEntity<StampCardResponse> attemptToComplete(@RequestBody long id, HttpServletRequest httpServletRequest)
     {
         Optional<AppUser> AppUse =  _appUserService.
@@ -46,8 +46,9 @@ public class StampController
 
         if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        StampCardResponse completed = stampService.completeThisCard(id);
-        return ResponseEntity.ok(completed);
+        StampCardResponse result = stampService.setCompleteForThisCard(id);
+        if(result.isCompleted()) return ResponseEntity.ok(result);
+        else return ResponseEntity.badRequest().build();
     }
 
 }

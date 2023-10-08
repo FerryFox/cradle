@@ -25,26 +25,56 @@ function App() {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     }
 
-    const darkTheme = createTheme({
-        breakpoints: {
-            values: {
-                xs: 0,
-                sm: 600,
-                md: 900,
-                lg: 1200,
-                xl: 1536,
+    const darkTheme = createTheme(
+{
+            breakpoints:
+            {
+                values:
+                    {
+                    xs: 0,
+                    sm: 600,
+                    md: 900,
+                    lg: 1200,
+                    xl: 1536,
+                    },
             },
-        },
-        palette: {
-            mode: 'dark',
-        },
-        typography: {
-        },
-    });
+            palette:
+                {
+                    mode: 'dark',
+                    primary: {main: '#85DCB0'},
+                    secondary: {main: '#E27D60'},
+                }
+        }
+    );
+
+    const lightTheme = createTheme(
+        {
+            breakpoints:
+                {
+                    values:
+                        {
+                            xs: 0,
+                            sm: 600,
+                            md: 900,
+                            lg: 1200,
+                            xl: 1536,
+                        },
+                },
+            palette:
+                {
+                    primary: {main: '#85DCB0'},
+                    secondary: {main: '#E27D60'},
+                    info: {main: '#E8A97C'},
+                    success: {main: '#41B3A3'},
+                    warning: {main: '#C38D9E'},
+                    error: {main: '#e040fb'},
+                }
+        }
+    );
 
 return (
 <div className="App">
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={lightTheme}>
     <CssBaseline enableColorScheme/>
             <Router>
                 <Routes>

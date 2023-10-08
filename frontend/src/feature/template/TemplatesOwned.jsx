@@ -36,26 +36,30 @@ function TemplatesOwned()
             });
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return(
+        <Container>
+            <AppBarComponent showMenuButtonElseBack={false} title="Your Templates"/>
+            <Toolbar></Toolbar>
+        </Container>);
+
     if (error) return <div>Error loading data. Please try again later.</div>
 
 return (
     <Container>
-        <AppBarComponent showMenuButtonElseBack={false}/>
-        <BottomController/>
+        <AppBarComponent showMenuButtonElseBack={false} title="Your Templates"/>
         <Toolbar></Toolbar>
-        <h1>Your Templates</h1>
-        <p>Total templates: {templates.length}</p>
+        <BottomController/>
 
-        <Grid container spacing={4} justifyContent="center">
+
+        <Grid container spacing={4} justifyContent="center" sx={{mt :1}}>
             <Grid item xs={6} sm={6} md={4} onClick={() => navigate('/template/form')} >
                 <NewTemplateButton ></NewTemplateButton>
             </Grid>
 
             {templates.map(t => (
-                <Grid item xs={6} sm={6} md={4} key={t.name}>
+                <Grid item xs={6} key={t.name}>
                         <div onClick={() => navigate("/template/details", { state: { templateModel: t }})}>
-                            <Template TemplateModel={t} />
+                            <Template templateModel={t} />
                         </div>
                 </Grid>
             ))}

@@ -8,7 +8,6 @@ import AppBarComponent from "../core/AppBarComponent";
 import DrawerComponent from "../core/DrawerComponent";
 import BottomController from "../core/BottomController";
 
-
 export default function Dashboard()
 {
     const navigate = useNavigate();
@@ -17,42 +16,42 @@ export default function Dashboard()
 };
 
 return (
+
 <Box sx={{ display: 'flex' }}>
-<BottomController/>
-<AppBarComponent toggleDrawer={toggleDrawer} />
-<DrawerComponent open={open} toggleDrawer={toggleDrawer} navigate={navigate} />
+    <BottomController/>
+    <AppBarComponent toggleDrawer={toggleDrawer} />
+    <DrawerComponent open={open} toggleDrawer={toggleDrawer} navigate={navigate} />
 
-    <Box component="main" sx={{backgroundColor: (theme) =>
-        theme.palette.mode === 'light'
-            ? theme.palette.grey[100]
-            : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',}}>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
 
-        <Toolbar />
-
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-            <Grid item xs={12} md={8} lg={9}>
-                <Paper sx={{ p: 2 }}>
-                    Chart Placeholder
+    <Toolbar />
+        <Grid container spacing={3} >
+            <Grid item xs={12} >
+                <Paper sx={{ p: 2 }} onClick={() => navigate("/stampcards")}>
+                   See your cards
                 </Paper>
             </Grid>
 
-            <Grid item xs={12} md={4} lg={3}>
-                <Paper sx={{ p: 2 }}>
-                    Deposits Placeholder
+            <Grid item xs={12} >
+                <Paper sx={{ p: 2 }} onClick={() => navigate("/templates")}>
+                   Find the newest cards
+                </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+                <Paper sx={{ p: 2 }} onClick={() => navigate("/template/form")}>
+                    Create a new Stampcard
                 </Paper>
             </Grid>
 
             <Grid item xs={12}>
                 <Paper sx={{ p: 2 }}>
-                    Orders Placeholder
+                   Read the latest news
+                    <p> load news from the server</p>
                 </Paper>
             </Grid>
         </Grid>
     </Container>
 </Box>
-</Box>
+
 );}

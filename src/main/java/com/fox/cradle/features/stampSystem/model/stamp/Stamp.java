@@ -21,11 +21,14 @@ public class Stamp
 
     private Instant createdDate = Instant.now();
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="stamp_card_id")
-    private StampCard stampCard;
+    @OneToOne
+    @JoinColumn(name="stamp_field_id")
+    private StampField stampField;
 
     @ManyToOne
     @JoinColumn(name="issuer_id")
     private AppUser issuer;
+
+
+
 }

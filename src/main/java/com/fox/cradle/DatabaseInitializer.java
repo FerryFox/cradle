@@ -8,12 +8,14 @@ import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardCategory;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampSystem.model.enums.StampCardStatus;
+import com.fox.cradle.features.stampSystem.model.stamp.TimeGateSecurity;
 import com.fox.cradle.features.stampSystem.model.template.Template;
 import com.fox.cradle.features.news.model.News;
 import com.fox.cradle.features.news.model.NewsCategory;
 import com.fox.cradle.features.news.service.NewsService;
 import com.fox.cradle.features.stampSystem.service.card.StampCardService;
 import com.fox.cradle.features.stampSystem.service.stamp.StampService;
+import com.fox.cradle.features.stampSystem.service.stamp.TimeGateRepository;
 import com.fox.cradle.features.stampSystem.service.template.TemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -35,6 +38,7 @@ public class DatabaseInitializer implements CommandLineRunner
     private final StampService stampService;
     private final PictureService pictureService;
     private final NewsService newsService;
+    private final TimeGateRepository timeGateRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -56,6 +60,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserIceCompany.setAppUserName("Ice cream man");
         appUserIceCompany.setAppUserEmail("w@w");
         appUserIceCompany.setReceiveNews(true);
+        appUserIceCompany.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserIceCompany);
 
         User userBob = new User();
@@ -70,6 +75,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserBob.setAppUserName("Bob");
         appUserBob.setAppUserEmail("q@q");
         appUserBob.setReceiveNews(true);
+        appUserBob.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserBob);
 
         User userCinema = new User();
@@ -84,6 +90,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserCinema.setAppUserName("Cinema");
         appUserCinema.setAppUserEmail("e@e");
         appUserCinema.setReceiveNews(true);
+        appUserCinema.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserCinema);
 
         User userAnna = new User();
@@ -98,6 +105,7 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserAnna.setAppUserName("Anna");
         appUserAnna.setAppUserEmail("r@r");
         appUserAnna.setReceiveNews(false);
+        appUserAnna.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserAnna);
 
         Instant time = java.time.Instant.now();
@@ -107,7 +115,12 @@ public class DatabaseInitializer implements CommandLineRunner
         template_001.setImage("65154a35cdbe396e77ad09c4");
         template_001.setDefaultCount(10);
         template_001.setStampCardCategory(StampCardCategory.FOOD);
-        template_001.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
+        template_001.setStampCardSecurity(StampCardSecurity.TIMEGATE);
+
+        TimeGateSecurity timeGateSecurity = new TimeGateSecurity();
+        timeGateSecurity.setTimeGateDuration(java.time.Duration.ofSeconds(30));
+        template_001.setTimeGateSecurity(timeGateSecurity);
+
         template_001.setStampCardStatus(StampCardStatus.PUBLIC);
         template_001.setDescription("Buy 10 ice creams and get one for free");
         template_001.setCreatedBy(appUserIceCompany.getAppUserEmail());
@@ -161,7 +174,7 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_005 = new Template();
         template_005.setName("Sushi");
         template_005.setImage("65154e3e8f36310e63f95291");
-        template_005.setDefaultCount(70);
+        template_005.setDefaultCount(8);
         template_005.setStampCardCategory(StampCardCategory.FOOD);
         template_005.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_005.setStampCardStatus(StampCardStatus.PUBLIC);
@@ -206,7 +219,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_008.setDefaultCount(9);
         template_008.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
         template_008.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
-        template_008.setStampCardStatus(StampCardStatus.PUBLIC);
+        template_008.setStampCardStatus(StampCardStatus.PRIVATE);
         template_008.setDescription("Visit the skate park 9 times and get a free ticket");
         template_008.setCreatedBy(appUserAnna.getAppUserEmail());
         template_008.setCreatedDate(time);

@@ -6,6 +6,8 @@ import Container from '@mui/material/Container';
 import BottomController from "../core/BottomController";
 import {Toolbar, Typography} from "@mui/material";
 import AppBarComponent from "../core/AppBarComponent";
+import Button from "@mui/material/Button";
+import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
 
 function Templates()
 {
@@ -18,7 +20,7 @@ function Templates()
         setLoading(true);
         setError(null);
 
-        axios.get('/api/templates/all')
+        axios.get('/api/templates/all/public')
             .then(response =>
             {
                 setTemplates(response.data);
@@ -32,31 +34,31 @@ function Templates()
             });
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return(
+        <Container>
+            <AppBarComponent showMenuButtonElseBack={false} title="Public Cards"/>
+            <Toolbar></Toolbar>
+        </Container>);
+
     if (error) return <div>Error loading data. Please try again later.</div>
 
     return (
+    <div>
+        <BottomController/>
         <Container>
-            <AppBarComponent showMenuButtonElseBack={false}/>
+            <AppBarComponent showMenuButtonElseBack={false} title="Public Cards"/>
             <Toolbar></Toolbar>
-            <BottomController/>
 
-            <Typography variant="h6">
-                Choose a Stamp Card
-            </Typography>
-            <Typography variant={"body2"}>
-                from a list of {templates.length} public templates to get started
-            </Typography>
-
-            <Grid container spacing={4} justifyContent="center">
+            <Grid container spacing={4} justifyContent="center" sx={{mt : 1}}>
                 {templates.map(t => (
                     <Grid item xs={6} sm={6} md={4} key={t.id} >
-                        <Template TemplateModel={t} />
+                        <Template templateModel={t}  />
+                        <Button onClick={() => createStampCardFromTemplateId(t.id) }> Get </Button>
                     </Grid>
                 ))}
             </Grid>
-
         </Container>
+    </div>
     );
 }
 

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class SecurityHook
@@ -23,7 +25,15 @@ public class SecurityHook
         appUser.setAppUserName(user.getFirstname());
         appUser.setAppUserEmail(user.getEmail());
         appUser.setReceiveNews(user.isReceiveNews());
+        appUser.setNameIdentifier(generateAppUserIdentifier());
 
         appUserService.saveAppUser(appUser);
+    }
+
+    private String generateAppUserIdentifier()
+    {
+        UUID id = UUID.randomUUID();
+
+        return  id.toString();
     }
 }

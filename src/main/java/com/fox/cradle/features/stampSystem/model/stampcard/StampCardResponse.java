@@ -1,14 +1,14 @@
 package com.fox.cradle.features.stampSystem.model.stampcard;
 
-import com.fox.cradle.features.stampSystem.model.stamp.Stamp;
-import com.fox.cradle.features.stampSystem.model.template.Template;
+import com.fox.cradle.features.stampSystem.model.stamp.StampField;
+import com.fox.cradle.features.stampSystem.model.stamp.StampFieldResponse;
+import com.fox.cradle.features.stampSystem.model.template.TemplateResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Data
 @NoArgsConstructor
@@ -18,6 +18,9 @@ public class StampCardResponse
 {
     private long id;
     private String createdDate;
-    private Template template;
-    private List<Stamp> stamps = new ArrayList<>();
-}
+    private TemplateResponse templateModel;
+    private List<StampFieldResponse> stampFields;
+
+    private boolean isCompleted;
+    private boolean isRedeemed;
+ }

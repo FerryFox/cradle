@@ -16,7 +16,7 @@ import TemplateForm from "./feature/template/TemplateForm";
 import TemplateDetails from "./feature/template/TemplateDetails";
 import TemplateEdit from "./feature/template/TemplateEdit";
 import StampCards from "./feature/stamp_card/StampCards";
-import BottomController from "./feature/core/BottomController";
+import StampCardDetails from "./feature/stamp_card/StempCardDetails";
 
 function App() {
 // Retrieve token
@@ -25,30 +25,56 @@ function App() {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     }
 
-
-
-    const darkTheme = createTheme({
-        breakpoints: {
-            values: {
-                xs: 0,
-                sm: 600,
-                md: 900,
-                lg: 1200,
-                xl: 1536,
+    const darkTheme = createTheme(
+{
+            breakpoints:
+            {
+                values:
+                    {
+                    xs: 0,
+                    sm: 600,
+                    md: 900,
+                    lg: 1200,
+                    xl: 1536,
+                    },
             },
-        },
-        palette: {
-            mode: 'dark',
-        },
-        typography: {
-        },
-    });
+            palette:
+                {
+                    mode: 'dark',
+                    primary: {main: '#85DCB0'},
+                    secondary: {main: '#E27D60'},
+                }
+        }
+    );
 
-    //view
-    //<PrivateRoute path={"/dashboard"} isLoggedIn={true} element={<Dashboard />}></PrivateRoute>
+    const lightTheme = createTheme(
+        {
+            breakpoints:
+                {
+                    values:
+                        {
+                            xs: 0,
+                            sm: 600,
+                            md: 900,
+                            lg: 1200,
+                            xl: 1536,
+                        },
+                },
+            palette:
+                {
+                    primary: {main: '#85DCB0'},
+                    secondary: {main: '#E27D60'},
+                    info: {main: '#E8A97C'},
+                    success: {main: '#41B3A3'},
+                    warning: {main: '#C38D9E'},
+                    error: {main: '#e040fb'},
+                }
+        }
+    );
+
 return (
 <div className="App">
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={lightTheme}>
     <CssBaseline enableColorScheme/>
             <Router>
                 <Routes>
@@ -67,9 +93,9 @@ return (
                     <Route path="/template/details" element={<TemplateDetails/>} />
 
                     <Route path="/stampcards" element={<StampCards/>} />
+                    <Route path="/stampcard/details/:id" element={<StampCardDetails/>} />
                 </Routes>
             </Router>
-
     </ThemeProvider>
 </div>
     );

@@ -31,4 +31,6 @@ public class NewTemplate
     private StampCardStatus stampCardStatus;
 
     private AppUser appUser;
+
+    private String securityTimeGateDuration;
 }

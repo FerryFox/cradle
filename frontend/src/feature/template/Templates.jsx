@@ -4,7 +4,7 @@ import Template from "./Template";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import BottomController from "../core/BottomController";
-import {Toolbar, Typography} from "@mui/material";
+import {Toolbar} from "@mui/material";
 import AppBarComponent from "../core/AppBarComponent";
 import Button from "@mui/material/Button";
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";

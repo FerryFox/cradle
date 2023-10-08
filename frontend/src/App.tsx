@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from 'react';
 import './App.css';
-import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
-import HomePage from './feature/core/HomePage';
+import axios from "axios";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import { CssBaseline, ThemeProvider} from "@mui/material";
+import { lightTheme } from "./assets/themes/theme";
+
+import HomePage from './feature/home/HomePage';
 import Dashboard from './feature/dashboard/Dashboard';
 import SignInPage from './feature/user/SignInPage';
 import SignUpPage from './feature/user/SignUpPage';
 import NotFoundPage from './NotFoundPage';
-import axios from "axios";
-import './assets/animation/css/Shake.css';
 import ResetPassword from "./feature/user/ResetPassword";
 import Templates from "./feature/template/Templates";
 import TemplatesOwned from "./feature/template/TemplatesOwned";
@@ -18,59 +20,14 @@ import TemplateEdit from "./feature/template/TemplateEdit";
 import StampCards from "./feature/stamp_card/StampCards";
 import StampCardDetails from "./feature/stamp_card/StempCardDetails";
 
-function App() {
-// Retrieve token
+export default function App()
+{
     const token = localStorage.getItem('authToken');
-    if (token) {
+    if (token)
+    {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     }
 
-    const darkTheme = createTheme(
-{
-            breakpoints:
-            {
-                values:
-                    {
-                    xs: 0,
-                    sm: 600,
-                    md: 900,
-                    lg: 1200,
-                    xl: 1536,
-                    },
-            },
-            palette:
-                {
-                    mode: 'dark',
-                    primary: {main: '#85DCB0'},
-                    secondary: {main: '#E27D60'},
-                }
-        }
-    );
-
-    const lightTheme = createTheme(
-        {
-            breakpoints:
-                {
-                    values:
-                        {
-                            xs: 0,
-                            sm: 600,
-                            md: 900,
-                            lg: 1200,
-                            xl: 1536,
-                        },
-                },
-            palette:
-                {
-                    primary: {main: '#85DCB0'},
-                    secondary: {main: '#E27D60'},
-                    info: {main: '#E8A97C'},
-                    success: {main: '#41B3A3'},
-                    warning: {main: '#C38D9E'},
-                    error: {main: '#e040fb'},
-                }
-        }
-    );
 
 return (
 <div className="App">
@@ -101,4 +58,4 @@ return (
     );
 }
 
-export default App;
+

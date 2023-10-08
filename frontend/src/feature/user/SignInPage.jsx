@@ -13,6 +13,9 @@ import Container from '@mui/material/Container';
 import {useNavigate} from "react-router-dom";
 import { useState } from 'react';
 import axios from "axios";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import {IconButton} from "@mui/material";
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 function Copyright(props) {
     return (
@@ -85,10 +88,23 @@ export default function SignIn()
 
 return (
 <Container className={isShaking ? 'shake' : ''} component="main" maxWidth="xs">
-    <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-        </Avatar>
+    <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        {/* Use Grid for layout */}
+        <Grid container spacing={1}>
+            {/* Column for IconButton */}
+            <Grid item xs={1}>
+                <IconButton color="primary" onClick={() => navigate("/")}>
+                    <ArrowBackIosIcon/>
+                </IconButton>
+            </Grid>
+
+            {/* Center column for Avatar */}
+            <Grid item xs={10} display="flex" justifyContent="center">
+                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <LockOpenIcon />
+                </Avatar>
+            </Grid>
+        </Grid>
 
         <Typography component="h1" variant="h5">
             Sign in
@@ -128,7 +144,7 @@ return (
                         textTransform: 'none',
                     }}>
                         <Typography variant="body2" color="primary">
-                            Don't have an account? Sign Up
+                            Don't have an account?
                         </Typography>
                     </Button>
                 </Grid>

@@ -19,7 +19,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
 }));
 
-function DrawerComponent({ open, toggleDrawer, navigate })
+type DrawerComponentProps = {
+    open: boolean,
+    toggleDrawer: () => void,
+    navigate: (path: string) => void,
+}
+
+function DrawerComponent({ open, toggleDrawer, navigate} : DrawerComponentProps)
 {
     const drawerWidth = 240;
 

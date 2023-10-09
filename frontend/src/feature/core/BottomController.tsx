@@ -1,3 +1,4 @@
+import React from "react";
 import {useEffect, useState} from "react";
 import {Box, IconButton, useTheme} from "@mui/material";
 import MessageIcon from '@mui/icons-material/Message';
@@ -8,7 +9,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 
 
 
-function BottomController() {
+export default function BottomController() {
     const [lastScrollTop, setLastScrollTop] = useState(0);
     const [showController, setShowController] = useState(false);
     const navigate = useNavigate();
@@ -75,4 +76,4 @@ return (
 );
 }
 
-export default BottomController;
+

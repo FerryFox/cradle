@@ -8,6 +8,8 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 import BottomController from "../core/BottomController";
+import * as React from "react";
+import DrawerComponent from "../core/DrawerComponent";
 
 function StampCards()
 {
@@ -15,6 +17,10 @@ function StampCards()
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const navigator = useNavigate();
+
+    const navigate = useNavigate();
+    const [open, setOpen] = React.useState(false);
+    const toggleDrawer = () => {setOpen(!open);}
 
     useEffect(() =>
     {
@@ -39,7 +45,8 @@ return(
 <div>
     <BottomController/>
     <Container>
-        <AppBarComponent showMenuButtonElseBack={false} title="Your Stamp Cards"/>
+        <AppBarComponent showMenuButtonElseBack={true} title="Your Stamp Cards"/>
+        <DrawerComponent open={open} toggleDrawer={toggleDrawer} navigate={navigate} />
         <Toolbar/>
 
         <Grid container spacing={4} justifyContent="center" sx={{mt : 1}} >

@@ -8,6 +8,8 @@ import {Toolbar} from "@mui/material";
 import AppBarComponent from "../core/AppBarComponent";
 import Button from "@mui/material/Button";
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
+import AppController from "../core/Controller";
+import Controller from "../core/Controller";
 
 function Templates()
 {
@@ -36,17 +38,15 @@ function Templates()
 
     if (loading) return(
         <Container>
-            <AppBarComponent showMenuButtonElseBack={false} title="Public Cards"/>
-            <Toolbar></Toolbar>
+          <p>loading</p>
         </Container>);
 
     if (error) return <div>Error loading data. Please try again later.</div>
 
     return (
     <div>
-        <BottomController/>
+     <Controller title={"Templates"} />
         <Container>
-            <AppBarComponent showMenuButtonElseBack={false} title="Public Cards"/>
             <Toolbar></Toolbar>
 
             <Grid container spacing={4} justifyContent="center" sx={{mt : 1}}>

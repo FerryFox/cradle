@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import StampCardExtraInfo from "./StampCardExtraInfo";
+import Controller from "../core/Controller";
 
 function StampCardDetails()
 {
@@ -82,9 +83,9 @@ function StampCardDetails()
 
 return(
     <div>
-        <BottomController/>
+        <Controller title="Details"/>
         <Container maxWidth={false}>
-            <AppBarComponent showMenuButtonElseBack={false} title="Details"/>
+
             <Toolbar/>
 
             <Grid container spacing={4} justifyContent="center" sx={{mt :1}}>

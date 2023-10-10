@@ -123,7 +123,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         template_001.setStampCardStatus(StampCardStatus.PUBLIC);
         template_001.setDescription("Buy 10 ice creams and get one for free");
-        template_001.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_001.setCreatedBy(appUserIceCompany.getAppUserName() + "#" + appUserIceCompany.getNameIdentifier());
         template_001.setCreatedDate(time);
         template_001.setAppUser(appUserIceCompany);
         template_001.setLastModifiedDate(time);
@@ -137,7 +137,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_002.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_002.setStampCardStatus(StampCardStatus.PUBLIC);
         template_002.setDescription("Buy 10 coffees and get one for free");
-        template_002.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_002.setCreatedBy(appUserIceCompany.getAppUserName() + "#" + appUserIceCompany.getNameIdentifier());
         template_002.setCreatedDate(time);
         template_002.setLastModifiedDate(time);
         template_002.setAppUser(appUserIceCompany);
@@ -151,7 +151,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_003.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_003.setStampCardStatus(StampCardStatus.PUBLIC);
         template_003.setDescription("Visit the cinema x times to get a free ticket");
-        template_003.setCreatedBy(appUserCinema.getAppUserEmail());
+        template_003.setCreatedBy(appUserCinema.getAppUserName() + "#" + appUserCinema.getNameIdentifier());
         template_003.setCreatedDate(time);
         template_003.setLastModifiedDate(time);
         template_003.setAppUser(appUserCinema);
@@ -165,7 +165,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_004.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_004.setStampCardStatus(StampCardStatus.PUBLIC);
         template_004.setDescription("Buy 10 kebabs and get one for free");
-        template_004.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_004.setCreatedBy(appUserIceCompany.getAppUserName() + "#" + appUserIceCompany.getNameIdentifier());
         template_004.setCreatedDate(time);
         template_004.setLastModifiedDate(time);
         template_004.setAppUser(appUserIceCompany);
@@ -179,7 +179,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_005.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_005.setStampCardStatus(StampCardStatus.PUBLIC);
         template_005.setDescription("Buy 70 sushi and get one for free");
-        template_005.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_005.setCreatedBy(appUserIceCompany.getAppUserName() + "#" + appUserIceCompany.getNameIdentifier());
         template_005.setCreatedDate(time);
         template_005.setLastModifiedDate(time);
         template_005.setAppUser(appUserIceCompany);
@@ -193,7 +193,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_006.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_006.setStampCardStatus(StampCardStatus.PUBLIC);
         template_006.setDescription("Visit the roller coaster 3 times and get a free ticket");
-        template_006.setCreatedBy(appUserIceCompany.getAppUserEmail());
+        template_006.setCreatedBy(appUserIceCompany.getAppUserName() + "#" + appUserIceCompany.getNameIdentifier());;
         template_006.setCreatedDate(time);
         template_006.setLastModifiedDate(time);
         template_006.setAppUser(appUserIceCompany);
@@ -207,7 +207,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_007.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_007.setStampCardStatus(StampCardStatus.PUBLIC);
         template_007.setDescription("Buy 6 vegetables and get one for free");
-        template_007.setCreatedBy(appUserAnna.getAppUserEmail());
+        template_007.setCreatedBy(appUserAnna.getAppUserName() + "#" + appUserAnna.getNameIdentifier());
         template_007.setCreatedDate(time);
         template_007.setLastModifiedDate(time);
         template_007.setAppUser(appUserAnna);
@@ -221,7 +221,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_008.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_008.setStampCardStatus(StampCardStatus.PRIVATE);
         template_008.setDescription("Visit the skate park 9 times and get a free ticket");
-        template_008.setCreatedBy(appUserAnna.getAppUserEmail());
+        template_007.setCreatedBy(appUserAnna.getAppUserName() + "#" + appUserAnna.getNameIdentifier());
         template_008.setCreatedDate(time);
         template_008.setLastModifiedDate(time);
         template_008.setAppUser(appUserAnna);

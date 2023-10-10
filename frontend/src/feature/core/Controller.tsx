@@ -8,9 +8,10 @@ type ControllerProps = {
     title: string;
     showBackButton?: boolean;
     showSecondLine?: boolean;
+    function?: () => void;
 };
 
-export default function Controller({ title, showBackButton = false , showSecondLine = false} :  ControllerProps )
+export default function Controller({ title, showBackButton = false , showSecondLine = false } :  ControllerProps )
 {
     const navigateTo = useNavigate();
     const [open, setOpen] = React.useState(false);

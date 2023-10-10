@@ -22,7 +22,6 @@ public class TemplateResponse
     private String createdBy;
     private int defaultCount;
 
-
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;
 

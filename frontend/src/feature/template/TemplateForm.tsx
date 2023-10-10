@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Container from "@mui/material/Container";
@@ -6,28 +6,26 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {Divider, FormControl, InputLabel, MenuItem, Select, Toolbar} from "@mui/material";
+import {Divider, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Toolbar} from "@mui/material";
 import {resizeAndCropImage} from "../../assets/picture/resizeAndCropImage";
-import AppBarComponent from "../core/AppBarComponent";
+import Controller from "../core/Controller";
 
 function TemplateForm()
 {
-    const [imageSrc, setImageSrc] = useState(null);
+    const [imageSrc, setImageSrc] = useState<string | null>(null);
     const navigate = useNavigate();
-    const [isShaking, setIsShaking] = useState(false);
-    const [number, setValue] = useState(10);
-    const [timeGate, setTimeGate] = useState(0);
+    const [isShaking, setIsShaking] = useState<boolean>(false);
+    const [number, setValue] = useState<number>(10);
+    const [timeGate, setTimeGate] = useState<number>(0);
 
     //values
-    const [Category, setCategory] = useState([]);
+    const [Category, setCategory] = useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     useEffect(() => {
         axios('/api/templates/categories')
             .then((response) => setCategory(response.data))
     }, []);
-    const handleCategoryChange = (event) => {
-        setSelectedCategory(event.target.value);
-    };
+
 
     const [Security, setSecurity] = useState([]);
     const [selectedSecurity, setSelectedSecurity] = useState('');
@@ -35,9 +33,7 @@ function TemplateForm()
         axios('/api/templates/security')
             .then((response) => setSecurity(response.data));
     }, []);
-    const handleSecurityChange = (event) => {
-        setSelectedSecurity(event.target.value);
-    };
+
 
     const [Status, setStatus] = useState([]);
     const [selectedStatus, setSelectedStatus] = useState('');
@@ -46,9 +42,7 @@ function TemplateForm()
             .then((response) => setStatus(response.data))
            ;
     }, []);
-    const handleStatusChanged = (event) => {
-        setSelectedStatus(event.target.value);
-    };
+
 
     const handleShake = () => {
         setIsShaking(true);
@@ -57,37 +51,46 @@ function TemplateForm()
         }, 820);  // match the duration of the shake animation
     };
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
+    const handleImageChange = (e :ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files && e.target.files[0];
 
         if (file) {
             const reader = new FileReader();
 
-            reader.onload = function(event) {
-                setImageSrc(event.target.result);
+            reader.onload = function(event: ProgressEvent<FileReader>) {
+                if (typeof event.target!.result === 'string') {
+                    setImageSrc(event.target!.result);
+                }
             };
             reader.readAsDataURL(file);
         }
-    };
+    }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event : React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const token = localStorage.getItem('authToken');
-        const file = document.getElementById('contained-button-file').files[0];
+        const fileInput = document.getElementById('contained-button-file') as HTMLInputElement;
+        const file = fileInput?.files?.[0];
 
-        resizeAndCropImage(file, 300, 200, async (resizedImageUrl) => {
+        const formData = new FormData(event.currentTarget);
+        const nameValue = formData.get('name') as string;
+
+        if (!file) return;
+
+        resizeAndCropImage(file, 300, 200, async (resizedImageUrl :string) => {
             try {
                 const payload = {
-                    name: event.target.name.value,
-                    description: event.target.description.value,
+                    name: nameValue,
+                    promise: event.currentTarget.promise.value,
+                    description: event.currentTarget.description.value,
                     image: resizedImageUrl,  // Using the resized image here
                     stampCardCategory: selectedCategory,
                     stampCardSecurity: selectedSecurity,
                     stampCardStatus: selectedStatus,
                     fileName : file.name,
                     defaultCount : number,
-                    securityTimeGateDuration :  `PT${timeGate}H`
+                    securityTimeGateDuration : `PT${timeGate}H`
                 };
 
                 const response = await axios.post('/api/templates/new-template', payload, {
@@ -105,22 +108,26 @@ function TemplateForm()
                 }
             } catch (error) {
                 handleShake();
-                console.error('Error logging in:', error.response ? error.response.data : error.message);
             }
         });
     };
 
 return (
+<>
+<Controller title={'Create a Template'}/>
     <Container className={isShaking ? 'shake' : ''} component="main" maxWidth="xs">
-        <AppBarComponent showMenuButtonElseBack={false}/>
-        <Toolbar/>
+    <Toolbar/>
+
     <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
 
-        <Typography component="h1" variant="h5">
-            Create a Template for your Stamp Card
-        </Typography>
-
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 , mb : 2}}>
+
+            <Typography variant={"h5"} align="right">
+                Basic  Information
+            </Typography>
+
+            <Divider color={"error"} sx={{ marginBottom: 2 }}/>
+
             <TextField margin="normal" required fullWidth
                        id="name"
                        label="name"
@@ -129,19 +136,28 @@ return (
                        autoFocus/>
 
             <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
+                       name="promise"
+                       label="promise"
+                       id="promise" />
+
+            <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
                        name="description"
                        label="description"
                        id="description" />
 
             <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
-                label="Number"
+                label="Stamps per Card"
                 variant="outlined"
                 type="number"
                 value={number}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e : React.ChangeEvent<HTMLInputElement>) => setValue(Number(e.target.value))}
             />
 
-            <Divider sx={{ marginBottom: 2 }}/>
+            <Typography variant={"h5"} align="right">
+                Security & Category
+            </Typography>
+            <Divider color={"error"} sx={{ marginBottom: 2 }}/>
+
 
             <FormControl fullWidth sx={{ marginBottom: 2 }}>
             <InputLabel id="category-wheel-lable-id">Category</InputLabel>
@@ -150,12 +166,11 @@ return (
                 id="category-wheel-id"
                 value={selectedCategory}
                 label="Category"
-                onChange={handleCategoryChange}>
+                onChange={(event: SelectChangeEvent) => setSelectedCategory(event.target.value)}>
 
                 {Category.map((category, index) => (
                     <MenuItem key={index} value={category}>{category}</MenuItem>
                 ))}
-
             </Select>
             </FormControl>
 
@@ -166,7 +181,7 @@ return (
                     id="category-wheel-id"
                     value={selectedStatus}
                     label="Category"
-                    onChange={handleStatusChanged}>
+                    onChange={(event: SelectChangeEvent) => setSelectedStatus(event.target.value)}>
 
                     {Status.map((status, index) => (
                         <MenuItem key={index} value={status}>{status}</MenuItem>
@@ -181,7 +196,7 @@ return (
                     id="security-wheel-id"
                     value={selectedSecurity}
                     label="Security"
-                    onChange={handleSecurityChange}>
+                    onChange={(event: SelectChangeEvent) => setSelectedSecurity(event.target.value)}>
 
                     {Security.map((security, index) => (
                         <MenuItem key={index} value={security}>{security}</MenuItem>
@@ -189,15 +204,22 @@ return (
                 </Select>
 
                 {selectedSecurity === 'TIMEGATE' &&
-                    <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
-                                                                label="Hours"
-                                                                variant="outlined"
-                                                                type="number"
-                                                                value={timeGate}
-                                                                onChange={(e) => setTimeGate(e.target.value)}
-                />
+                    <TextField margin="normal"
+                               required
+                               fullWidth
+                               label="Hours"
+                               variant="outlined"
+                               type="number"
+                               value={timeGate}
+                               onChange={(e : ChangeEvent<HTMLInputElement>) => setTimeGate(Number(e.target.value))}
+                               sx={{ marginBottom: 2 }}/>
                 }
             </FormControl>
+
+            <Typography variant={"h5"} align="right">
+               Set Picture
+            </Typography>
+            <Divider color={"error"} sx={{ marginBottom: 2 }}/>
 
             <FormControl fullWidth sx={{ marginBottom: 2 }}>
                 <input
@@ -208,7 +230,7 @@ return (
                     onChange={handleImageChange}
                 />
                 <label htmlFor="contained-button-file">
-                    <Button variant="contained" color="primary" component="span">
+                    <Button variant="contained" color={"secondary"} component="span">
                         Upload Image
                     </Button>
                 </label>
@@ -234,6 +256,7 @@ return (
         </Box>
     </Box>
 </Container>
+</>
 );
 }
 

@@ -10,6 +10,7 @@ import {useNavigate} from "react-router-dom";
 import BottomController from "../core/BottomController";
 import * as React from "react";
 import DrawerComponent from "../core/DrawerComponent";
+import Controller from "../core/Controller";
 
 function StampCards()
 {
@@ -43,10 +44,9 @@ function StampCards()
 
 return(
 <div>
-    <BottomController/>
+    <Controller title="Stamp Cards"/>
     <Container>
-        <AppBarComponent showMenuButtonElseBack={true} title="Your Stamp Cards"/>
-        <DrawerComponent open={open} toggleDrawer={toggleDrawer} navigate={navigate} />
+
         <Toolbar/>
 
         <Grid container spacing={4} justifyContent="center" sx={{mt : 1}} >

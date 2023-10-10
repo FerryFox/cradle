@@ -9,6 +9,7 @@ import NewTemplateButton from "./NewTemplateButton";
 import AppBarComponent from "../core/AppBarComponent";
 
 import {Toolbar} from "@mui/material";
+import Controller from "../core/Controller";
 
 function TemplatesOwned()
 {
@@ -45,12 +46,10 @@ function TemplatesOwned()
     if (error) return <div>Error loading data. Please try again later.</div>
 
 return (
+    <>
+    <Controller title={"Your Templates"} showSecondLine={false} />
     <Container>
-        <AppBarComponent showMenuButtonElseBack={false} title="Your Templates"/>
         <Toolbar></Toolbar>
-        <BottomController/>
-
-
         <Grid container spacing={4} justifyContent="center" sx={{mt :1}}>
             <Grid item xs={6} sm={6} md={4} onClick={() => navigate('/template/form')} >
                 <NewTemplateButton ></NewTemplateButton>
@@ -65,6 +64,7 @@ return (
             ))}
         </Grid>
     </Container>
+    </>
 );
 }
 export default TemplatesOwned;

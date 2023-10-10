@@ -1,11 +1,13 @@
 import AppBar from "@mui/material/AppBar";
-import {Badge, IconButton, Input, Stack, Toolbar, Typography} from "@mui/material";
+import {Badge, IconButton, Input, InputAdornment, Stack, Toolbar, Typography} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import * as React from "react";
 import {useNavigate} from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import TextField from "@mui/material/TextField";
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 
 type AppBarComponentProps = {
     toggleDrawer?: () => void,
@@ -14,7 +16,7 @@ type AppBarComponentProps = {
     showSecondLine: boolean
 };
 
-function AppBarComponent({  toggleDrawer,
+export default function AppBarComponent({  toggleDrawer,
                             title,
                             showBackButton,
                             showSecondLine} : AppBarComponentProps,)
@@ -59,9 +61,19 @@ return (
                     <ArrowBackIcon />
                 </IconButton>
 
-                <Typography>
-                    Searchbar
-                </Typography>
+                <TextField id="search-string"
+                           label="Search"
+                           variant="filled"
+                           InputProps={{
+                               startAdornment: (
+                                   <InputAdornment position="start">
+                                       <QuestionMarkIcon />
+                                   </InputAdornment>
+                               ),
+                           }}
+                           style={{ backgroundColor: 'white',
+                                    borderRadius: '5px',}}
+                           />
 
                 <IconButton>
                     <FilterAltIcon/>
@@ -72,4 +84,3 @@ return (
         </AppBar>
     );
 }
-export default AppBarComponent;

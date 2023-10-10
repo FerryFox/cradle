@@ -53,6 +53,7 @@ return (
         backgroundColor: theme.palette.primary.main,
         display: 'flex',
         justifyContent: 'space-around',
+        zIndex: 1000,
      }}>
 
         <IconButton onClick={() => navigate("/dashboard")}>

@@ -1,6 +1,7 @@
 package com.fox.cradle.features.stampSystem.service;
 
 import com.fox.cradle.features.appuser.model.AppUser;
+import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stampSystem.model.stamp.StampField;
 import com.fox.cradle.features.stampSystem.model.stamp.StampFieldResponse;
@@ -22,10 +23,15 @@ import java.util.stream.Collectors;
 public class MapService
 {
     private final PictureService pictureService;
+    private final AppUserService appUserService;
 
     public Template mapRequestNewToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
     {
-        String appUserEmail = appUser.getAppUserEmail();
+        String uniqueUserName =
+                appUser.getAppUserName() +
+                "#" +
+                appUser.getNameIdentifier();
+
         Instant instant = Instant.now();
 
         return Template.builder()
@@ -33,7 +39,7 @@ public class MapService
                         .description(dto.getDescription())
                         .image(pictureId)
                         .defaultCount(dto.getDefaultCount())
-                        .createdBy(appUserEmail)
+                        .createdBy(uniqueUserName)
                         .appUser(appUser)
                         .createdDate(instant)
                         .stampCardCategory(dto.getStampCardCategory())
@@ -49,10 +55,10 @@ public class MapService
 
         ZoneId zoneId = ZoneId.of("Europe/Berlin");
         String zonedDateTimeCreated = template.getCreatedDate().atZone(zoneId).toString();
+
         String zonedDateUpdated = "";
         if (template.getLastModifiedDate() == null) {
             zonedDateUpdated = zonedDateTimeCreated;
-
         }
         else
         {

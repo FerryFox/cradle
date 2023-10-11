@@ -98,7 +98,8 @@ public class TemplateController
     }
 
     @PostMapping("/new-template")
-    public ResponseEntity<TemplateResponse> createTemplate(@RequestBody NewTemplate request, HttpServletRequest httpServletRequest) throws JsonProcessingException {
+    public ResponseEntity<TemplateResponse> createTemplate(@RequestBody NewTemplate request, HttpServletRequest httpServletRequest)
+    {
         Optional<AppUser> AppUse =  _appUserService.
                 findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
 
@@ -106,7 +107,7 @@ public class TemplateController
 
         TemplateResponse savedTemplate = _templateService.createTemplate(request, AppUse.get());
 
-        return ResponseEntity.ok(savedTemplate);
+        return ResponseEntity.created(null).body(savedTemplate);
     }
 }
 

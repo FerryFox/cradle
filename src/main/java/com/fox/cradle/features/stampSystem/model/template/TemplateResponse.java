@@ -16,11 +16,15 @@ public class TemplateResponse
     private long id;
 
     private String name;
+    private String promise;
     private String description;
     private String image;
 
     private String createdBy;
     private int defaultCount;
+
+    private String expirationDate;
+
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;

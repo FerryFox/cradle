@@ -9,9 +9,17 @@ import Button from "@mui/material/Button";
 import {Divider, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Toolbar} from "@mui/material";
 import {resizeAndCropImage} from "../../assets/picture/resizeAndCropImage";
 import Controller from "../core/Controller";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
-function TemplateForm()
+export default function TemplateForm()
 {
+    const currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() + 1);
+    const [selectedDate, setSelectedDate] = useState(currentDate);
+
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const navigate = useNavigate();
     const [isShaking, setIsShaking] = useState<boolean>(false);
@@ -68,30 +76,41 @@ function TemplateForm()
 
     const handleSubmit = async (event : React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        console.log("handleSubmit triggered");
         const token = localStorage.getItem('authToken');
         const fileInput = document.getElementById('contained-button-file') as HTMLInputElement;
         const file = fileInput?.files?.[0];
 
         const formData = new FormData(event.currentTarget);
         const nameValue = formData.get('name') as string;
+        const promiseValue = formData.get('promise') as string;
+        const descriptionValue = formData.get('description') as string;
+
+        const date = selectedDate.toISOString();
 
         if (!file) return;
-
+        console.log("file found");
         resizeAndCropImage(file, 300, 200, async (resizedImageUrl :string) => {
             try {
-                const payload = {
+                console.log("resizeAndCropImage triggered");
+                const payload =
+                    {
                     name: nameValue,
-                    promise: event.currentTarget.promise.value,
-                    description: event.currentTarget.description.value,
-                    image: resizedImageUrl,  // Using the resized image here
+                    promise: promiseValue,
+                    description: descriptionValue,
+                    image: resizedImageUrl,
+                    fileName : file.name,
+                    defaultCount : number,
+
                     stampCardCategory: selectedCategory,
                     stampCardSecurity: selectedSecurity,
                     stampCardStatus: selectedStatus,
-                    fileName : file.name,
-                    defaultCount : number,
-                    securityTimeGateDuration : `PT${timeGate}H`
-                };
+
+                    securityTimeGateDuration : `PT${timeGate}H`,
+                    expirationDate : date
+                    }
+
+
 
                 const response = await axios.post('/api/templates/new-template', payload, {
                     headers: {
@@ -99,21 +118,24 @@ function TemplateForm()
                         'Authorization': `Bearer ${token}`
                     }
                 });
+                console.log("axios.post triggered");
+                console.log(payload);
 
-                if (response.status === 200) // Created
+                if (response.status === 201) // Created
                 {
                     navigate('/templates/owned');
                 } else {
                     handleShake();
                 }
             } catch (error) {
+                console.log(error);
                 handleShake();
             }
         });
     };
 
 return (
-<>
+<LocalizationProvider dateAdapter={AdapterDateFns}>
 <Controller title={'Create a Template'}/>
     <Container className={isShaking ? 'shake' : ''} component="main" maxWidth="xs">
     <Toolbar/>
@@ -126,7 +148,7 @@ return (
                 Basic  Information
             </Typography>
 
-            <Divider color={"error"} sx={{ marginBottom: 2 }}/>
+            <Divider color={"primary"} sx={{ marginBottom: 2 }}/>
 
             <TextField margin="normal" required fullWidth
                        id="name"
@@ -156,8 +178,18 @@ return (
             <Typography variant={"h5"} align="right">
                 Security & Category
             </Typography>
-            <Divider color={"error"} sx={{ marginBottom: 2 }}/>
+            <Divider color={"primary"} sx={{ marginBottom: 2 }}/>
 
+
+            <DatePicker
+                label="Expiration Date"
+                openTo="year"
+                value={selectedDate}
+                onChange={(newDate) => setSelectedDate(newDate as Date)}
+                components={{
+                    TextField: (props) => <TextField {...props} fullWidth sx={{mb : 2}}/>
+                }}
+            />
 
             <FormControl fullWidth sx={{ marginBottom: 2 }}>
             <InputLabel id="category-wheel-lable-id">Category</InputLabel>
@@ -219,7 +251,7 @@ return (
             <Typography variant={"h5"} align="right">
                Set Picture
             </Typography>
-            <Divider color={"error"} sx={{ marginBottom: 2 }}/>
+            <Divider color={"primary"} sx={{ marginBottom: 2 }}/>
 
             <FormControl fullWidth sx={{ marginBottom: 2 }}>
                 <input
@@ -256,10 +288,10 @@ return (
         </Box>
     </Box>
 </Container>
-</>
+</LocalizationProvider>
 );
 }
 
-export default TemplateForm;
+
 
 

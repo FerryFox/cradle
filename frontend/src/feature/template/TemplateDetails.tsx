@@ -1,31 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Template from "./Template";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 import DeleteConfirmation from "../../assets/popups/DeleteWithConfirm";
 import {Badge, Divider, Toolbar} from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
-import AppBarComponent from "../core/AppBarComponent";
+import {TemplateModel} from "./model/models";
+import Controller from "../core/Controller";
+import Grid from "@mui/material/Grid";
 
-
-
-function TemplateDetails()
+export default function TemplateDetails()
 {
     const location = useLocation();
-    const templateModel = location.state?.templateModel;
+    const [templateModel] = useState<TemplateModel>(location.state?.templateModel);
     const navigate = useNavigate();
 
-
-    const handleDelete = (id) => {
+    const handleDelete = (id : number) => {
         axios
             .delete(`/api/templates/delete/${id}`)
-            .then((response) => {
+            .then(() => {
                 navigate('/templates/owned')
             })
             .catch((error) => {
@@ -34,12 +32,17 @@ function TemplateDetails()
     };
 
 return (
-<Container>
-    <AppBarComponent showMenuButtonElseBack={false}/>
-    <Toolbar/>
-    <Box display="flex" alignItems="center" justifyContent={"center"}  >
-        <Template templateModel={templateModel} />
-    </Box>
+<>
+<Controller title={"Template Details"} showSecondLine={false}/>
+<Toolbar/>
+    <Container>
+
+    <Grid container spacing={2} justifyContent="center" sx={{mt : 2}}>
+            <Grid item xs={6} sm={6} md={4} >
+                <Template templateModel={templateModel} />
+            </Grid>
+    </Grid>
+
 
     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 2 }}>
         <Button onClick={() => navigate('/template/edit', { state: { templateModel: templateModel }})}
@@ -89,9 +92,6 @@ return (
             </Typography>
         </CardContent>
     </Card>
-
-
-</Container>);
+</Container>
+</>);
 }
-
-export default TemplateDetails;

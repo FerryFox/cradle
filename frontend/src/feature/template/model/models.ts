@@ -2,6 +2,7 @@
 export type TemplateModel = {
     id: number;
     name : string;
+    promise : string;
     description : string;
     image : string;
     createdBy : string;
@@ -11,4 +12,5 @@ export type TemplateModel = {
     stampCardStatus : string;
     createdDate : string;
     lastModifiedDate : string;
+    expirationDate : Date;
 };

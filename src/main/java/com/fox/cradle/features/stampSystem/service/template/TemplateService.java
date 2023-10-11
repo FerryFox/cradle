@@ -45,7 +45,7 @@ public class TemplateService
     public List<TemplateResponse> getMyTemplates(AppUser appUser)
     {
         List<Template> templates = templateRepository.findAll().stream().
-                filter( template -> template.getCreatedBy().equals(appUser.getAppUserEmail()))
+                filter( template -> template.getAppUser().getId().equals(appUser.getId()))
                 .toList();
 
         return templates.stream().map(mapService::mapTemplateToResponse).collect(Collectors.toList());
@@ -53,18 +53,19 @@ public class TemplateService
 
     public TemplateResponse createTemplate(NewTemplate request, AppUser appUser)
     {
+        //picture Saving
         String pictureId = pictureService.savePicture(request.getImage() , request.getFileName()).getId();
 
-        Template newTemplate = mapService.mapRequestNewToTemplate(request, appUser, pictureId);
-        newTemplate.setCreatedDate(Instant.now());
+        Template createdTemplate = mapService.mapNewToTemplate(request, appUser, pictureId);
+        createdTemplate.setCreatedDate(Instant.now());
 
-        if(newTemplate.getStampCardSecurity().equals(StampCardSecurity.TIMEGATE))
+        if(createdTemplate.getStampCardSecurity().equals(StampCardSecurity.TIMEGATE))
         {
-        TimeGateSecurity timeGateSecurity = stampService.createTimeGate(request, newTemplate);
-        newTemplate.setTimeGateSecurity(timeGateSecurity);
+        TimeGateSecurity timeGateSecurity = stampService.createTimeGate(request, createdTemplate);
+        createdTemplate.setTimeGateSecurity(timeGateSecurity);
         }
 
-        Template savedTemplate = templateRepository.save(newTemplate);
+        Template savedTemplate = templateRepository.save(createdTemplate);
         return mapService.mapTemplateToResponse(savedTemplate);
     }
 

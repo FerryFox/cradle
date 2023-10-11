@@ -25,7 +25,7 @@ public class MapService
     private final PictureService pictureService;
     private final AppUserService appUserService;
 
-    public Template mapRequestNewToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
+    public Template mapNewToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
     {
         String uniqueUserName =
                 appUser.getAppUserName() +
@@ -36,12 +36,14 @@ public class MapService
 
         return Template.builder()
                         .name(dto.getName())
+                        .promise(dto.getPromise())
                         .description(dto.getDescription())
                         .image(pictureId)
                         .defaultCount(dto.getDefaultCount())
                         .createdBy(uniqueUserName)
                         .appUser(appUser)
                         .createdDate(instant)
+                        .expirationDate(dto.getExpirationDate())
                         .stampCardCategory(dto.getStampCardCategory())
                         .stampCardSecurity(dto.getStampCardSecurity())
                         .stampCardStatus(dto.getStampCardStatus())
@@ -67,10 +69,12 @@ public class MapService
         TemplateResponse response = TemplateResponse.builder()
                 .id(template.getId())
                 .name(template.getName())
+                .promise(template.getPromise())
                 .description(template.getDescription())
                 .defaultCount(template.getDefaultCount())
                 .createdBy(template.getCreatedBy())
                 .image(image)
+                .expirationDate(template.getExpirationDate())
                 .stampCardCategory(template.getStampCardCategory())
                 .stampCardSecurity(template.getStampCardSecurity())
                 .stampCardStatus(template.getStampCardStatus())

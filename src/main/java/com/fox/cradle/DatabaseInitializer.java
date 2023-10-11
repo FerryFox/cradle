@@ -113,6 +113,8 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_001 = new Template();
         template_001.setName("Ice Cream");
         template_001.setImage("65154a35cdbe396e77ad09c4");
+        template_001.setExpirationDate("2024-10-11T06:39:11.609Z");
+        template_001.setPromise("Free Ice Cream");
         template_001.setDefaultCount(10);
         template_001.setStampCardCategory(StampCardCategory.FOOD);
         template_001.setStampCardSecurity(StampCardSecurity.TIMEGATE);
@@ -132,6 +134,8 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_002 = new Template();
         template_002.setName("Coffee");
         template_002.setImage("65154a35cdbe396e77ad09c5");
+        template_002.setExpirationDate("2024-10-11T06:39:11.609Z");
+        template_002.setPromise("Free Coffee");
         template_002.setDefaultCount(10);
         template_002.setStampCardCategory(StampCardCategory.DRINK);
         template_002.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
@@ -146,6 +150,8 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_003 = new Template();
         template_003.setName("Cinema");
         template_003.setImage("65154a35cdbe396e77ad09c6");
+        template_003.setExpirationDate("2024-10-11T06:39:11.609Z");
+        template_003.setPromise("Free Ticket");
         template_003.setDefaultCount(5);
         template_003.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
         template_003.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
@@ -160,6 +166,8 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_004 = new Template();
         template_004.setName("Kebab");
         template_004.setImage("65154a35cdbe396e77ad09c7");
+        template_004.setExpirationDate("2024-10-11T06:39:11.609Z");
+        template_004.setPromise("Free Kebab");
         template_004.setDefaultCount(10);
         template_004.setStampCardCategory(StampCardCategory.FOOD);
         template_004.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
@@ -174,6 +182,8 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_005 = new Template();
         template_005.setName("Sushi");
         template_005.setImage("65154e3e8f36310e63f95291");
+        template_005.setExpirationDate("2024-10-11T06:39:11.609Z");
+        template_005.setPromise("Free Sushi");
         template_005.setDefaultCount(8);
         template_005.setStampCardCategory(StampCardCategory.FOOD);
         template_005.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
@@ -188,6 +198,8 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_006 = new Template();
         template_006.setName("Roller Coaster");
         template_006.setImage("65154f2302fcd52a916f5f76");
+        template_006.setExpirationDate("2024-10-11T06:39:11.609Z");
+        template_006.setPromise("Free Ticket");
         template_006.setDefaultCount(3);
         template_006.setStampCardCategory(StampCardCategory.FOOD);
         template_006.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
@@ -202,6 +214,8 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_007 = new Template();
         template_007.setName("Vegetables");
         template_007.setImage("6515521a3e4b2477e35ac574");
+        template_007.setExpirationDate("2024-10-11T06:39:11.609Z");
+        template_007.setPromise("Free Vegetables");
         template_007.setDefaultCount(6);
         template_007.setStampCardCategory(StampCardCategory.FOOD);
         template_007.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
@@ -216,6 +230,8 @@ public class DatabaseInitializer implements CommandLineRunner
         Template template_008 = new Template();
         template_008.setName("Skate");
         template_008.setImage("6515521a3e4b2477e35ac573");
+        template_008.setExpirationDate("2024-10-11T06:39:11.609Z");
+        template_008.setPromise("Free Ticket");
         template_008.setDefaultCount(9);
         template_008.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
         template_008.setStampCardSecurity(StampCardSecurity.TRUSTUSER);

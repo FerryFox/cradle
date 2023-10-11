@@ -4,17 +4,16 @@ import {useNavigate} from "react-router-dom";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Template from "./Template";
-import BottomController from "../core/BottomController";
 import NewTemplateButton from "./NewTemplateButton";
-import AppBarComponent from "../core/AppBarComponent";
 
 import {Toolbar} from "@mui/material";
 import Controller from "../core/Controller";
+import {TemplateModel} from "./model/models";
 
 function TemplatesOwned()
 {
     const navigate = useNavigate();
-    const [templates, setTemplates] = useState([]);
+    const [templates, setTemplates] = useState<TemplateModel[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -39,8 +38,7 @@ function TemplatesOwned()
 
     if (loading) return(
         <Container>
-            <AppBarComponent showMenuButtonElseBack={false} title="Your Templates"/>
-            <Toolbar></Toolbar>
+            <Controller title={"Your Templates"} showSecondLine={false}/>
         </Container>);
 
     if (error) return <div>Error loading data. Please try again later.</div>
@@ -55,10 +53,10 @@ return (
                 <NewTemplateButton ></NewTemplateButton>
             </Grid>
 
-            {templates.map(t => (
-                <Grid item xs={6} key={t.name}>
-                        <div onClick={() => navigate("/template/details", { state: { templateModel: t }})}>
-                            <Template templateModel={t} />
+            {templates.map(template => (
+                <Grid item xs={6} key={template.id}>
+                        <div onClick={() => navigate("/template/details", { state: { templateModel: template }})}>
+                            <Template templateModel={template} />
                         </div>
                 </Grid>
             ))}

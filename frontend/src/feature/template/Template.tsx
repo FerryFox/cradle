@@ -15,12 +15,17 @@ export default function Template({ templateModel }: TemplateProps)
 {
     const [isFront, setIsFront] = React.useState(true);
     const [displayName , setDisplayName] = React.useState("");
+    const [date , setDate] = React.useState("");
 
     useEffect(() => {
         if (templateModel) {
             let namePart = templateModel.createdBy.split('-')[0];
             let name = namePart.split('#')[0];
             setDisplayName(name);
+
+            let dateObj = new Date(templateModel.expirationDate);
+            let isoString = dateObj.toISOString()
+            setDate(isoString.split('T')[0]);
         }
     }, [templateModel]);
 
@@ -52,11 +57,11 @@ export default function Template({ templateModel }: TemplateProps)
                 </Typography>
 
                 <Typography variant="body2" style={{ display: 'block', textAlign: 'left' }}>
-                     2000-01-01
+                    {date}
                 </Typography>
 
                 <Typography variant="body2" style={{ display: 'block', textAlign: 'left' }}>
-                    Free Kebab
+                    {templateModel.promise}
                 </Typography>
 
                 <Typography  variant="body2"
@@ -82,8 +87,8 @@ export default function Template({ templateModel }: TemplateProps)
 
                     <Divider color={"error"}  style={{ marginBottom: '8px'}}/>
 
-                    <Typography variant="body2" style={{ display: 'block', textAlign: 'left' }}>
-                        by  {templateModel.description}
+                    <Typography variant="body2" style={{ textAlign: 'left', overflowWrap: 'break-word' }}>
+                       {templateModel.description}
                     </Typography>
 
                     <Typography  variant="body2"

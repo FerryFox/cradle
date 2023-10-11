@@ -15,11 +15,14 @@ import lombok.*;
 public class NewTemplate
 {
     private String name;
+    private String promise;
     private String description;
 
     private String image;
     private String fileName;
     private int defaultCount;
+
+    private String expirationDate;
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;

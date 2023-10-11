@@ -9,6 +9,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import MessageIcon from '@mui/icons-material/Message';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -25,108 +26,119 @@ type DrawerComponentProps = {
     navigate: (path: string) => void,
 }
 
-function DrawerComponent({ open, toggleDrawer, navigate} : DrawerComponentProps)
+export default function DrawerComponent({ open, toggleDrawer, navigate} : DrawerComponentProps)
 {
     const drawerWidth = 240;
 
-    return (
-        <Drawer sx={{
+return (
+    <Drawer onClose={toggleDrawer}
+    sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
             width: drawerWidth,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-                width: drawerWidth,
-                boxSizing: 'border-box',
-            },}} variant="temporary" anchor="left" open={open}>
+            boxSizing: 'border-box',
+        },}} variant="temporary" anchor="left" open={open}>
 
-            <DrawerHeader>
-                <IconButton onClick={toggleDrawer}><ChevronLeftIcon />
-                </IconButton>
-            </DrawerHeader>
+        <DrawerHeader>
+            <IconButton onClick={toggleDrawer}><ChevronLeftIcon />
+            </IconButton>
+        </DrawerHeader>
 
-            <Divider style={{ height: '5px',  }}/>
+        <Divider style={{ height: '5px',  }}/>
 
-            <List>
-                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates')}>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <DashboardCustomizeIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Public'} secondary={'Search for stamp cards'} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
+        <List>
+            <ListItem key={'Dashboard'} disablePadding onClick={() => navigate('/dashboard')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Dashboard'} secondary={'Search for stamp cards'} />
+                </ListItemButton>
+            </ListItem>
+        </List>
 
-            <Divider style={{ height: '5px',  }} />
+        <List>
+            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <DashboardCustomizeIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Public'} secondary={'Search for stamp cards'} />
+                </ListItemButton>
+            </ListItem>
+        </List>
 
-            <List>
-                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <AddCardIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Templates'} secondary={'Manage Templates'} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
+        <Divider style={{ height: '5px',  }} />
 
-            <List>
-                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/stampcards')}>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <ApprovalIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Stamp Cards'} secondary={'Visit your Collection'} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
+        <List>
+            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <AddCardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Templates'} secondary={'Manage Templates'} />
+                </ListItemButton>
+            </ListItem>
+        </List>
 
-            <Divider style={{ height: '5px',  }} />
+        <List>
+            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/stampcards')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <ApprovalIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Stamp Cards'} secondary={'Visit your Collection'} />
+                </ListItemButton>
+            </ListItem>
+        </List>
 
-            <List>
-                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <AccountBoxIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Profile'} secondary={''} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
+        <Divider style={{ height: '5px',  }} />
 
-            <List>
-                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <Diversity3Icon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Friends'} secondary={''} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
+        <List>
+            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <AccountBoxIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Profile'} secondary={''} />
+                </ListItemButton>
+            </ListItem>
+        </List>
 
-            <List>
-                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <MessageIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Messages'} secondary={''} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
+        <List>
+            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <Diversity3Icon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Friends'} secondary={''} />
+                </ListItemButton>
+            </ListItem>
+        </List>
 
-            <Divider style={{ height: '5px',  }} />
-            <List>
-                <ListItem key={'Templates'} disablePadding onClick={() => navigate('/')}>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <ArrowBackIosIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Home'} secondary={''} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-        </Drawer>
+        <List>
+            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <MessageIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Messages'} secondary={''} />
+                </ListItemButton>
+            </ListItem>
+        </List>
+
+        <Divider style={{ height: '5px',  }} />
+        <List>
+            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <ArrowBackIosIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Home'} secondary={''} />
+                </ListItemButton>
+            </ListItem>
+        </List>
+    </Drawer>
     );
 }
-export default DrawerComponent;

@@ -1,6 +1,5 @@
 package com.fox.cradle.features.stampSystem.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
@@ -26,34 +25,34 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TemplateController
 {
-    private final JwtService _jwtService;
-    private final TemplateService _templateService;
-    private final AppUserService _appUserService;
+    private final JwtService jwtService;
+    private final TemplateService templateService;
+    private final AppUserService appUserService;
 
     @GetMapping("/all")
     public ResponseEntity<List<TemplateResponse>> getAllTemplates()
     {
-        List<TemplateResponse> response = _templateService.getAllTemplates();
+        List<TemplateResponse> response = templateService.getAllTemplates();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/all/public")
     public ResponseEntity<List<TemplateResponse>> getAllPublicTemplates()
     {
-        List<TemplateResponse> response = _templateService.getAllPublic();
+        List<TemplateResponse> response = templateService.getAllPublic();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/my")
     public ResponseEntity<List<TemplateResponse>> getMyTemplates(HttpServletRequest httpServletRequest)
     {
-        Optional<AppUser> AppUse =  _appUserService.
-                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
+        Optional<AppUser> AppUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
         if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
         else
         {
-            List<TemplateResponse> response = _templateService.getMyTemplates(AppUse.get());
+            List<TemplateResponse> response = templateService.getMyTemplates(AppUse.get());
             return ResponseEntity.ok(response);
         }
     }
@@ -61,22 +60,21 @@ public class TemplateController
     @DeleteMapping("/delete/{id}")
     public void deleteTemplate(@PathVariable Long id)
     {
-        _templateService.deleteTemplate(id);
+        templateService.deleteTemplate(id);
     }
 
     @PutMapping()
     public ResponseEntity<TemplateResponse> updateTemplate(@RequestBody TemplateEdit request, HttpServletRequest httpServletRequest)
     {
-        Optional<AppUser> AppUse =  _appUserService.
-                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
-        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
-        if (AppUse.get().getAppUserEmail().equals(request.getCreatedBy()))
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+        else
         {
-            TemplateResponse response = _templateService.updateTemplate(request);
+            TemplateResponse response = templateService.updateTemplate(request);
             return ResponseEntity.ok(response);
         }
-        else return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/categories")
@@ -100,12 +98,12 @@ public class TemplateController
     @PostMapping("/new-template")
     public ResponseEntity<TemplateResponse> createTemplate(@RequestBody NewTemplate request, HttpServletRequest httpServletRequest)
     {
-        Optional<AppUser> AppUse =  _appUserService.
-                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
+        Optional<AppUser> AppUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
         if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        TemplateResponse savedTemplate = _templateService.createTemplate(request, AppUse.get());
+        TemplateResponse savedTemplate = templateService.createTemplate(request, AppUse.get());
 
         return ResponseEntity.created(null).body(savedTemplate);
     }

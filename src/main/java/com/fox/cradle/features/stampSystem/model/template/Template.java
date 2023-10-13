@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -24,7 +25,9 @@ public class Template
     private long id;
 
     private String name;
+    private String promise;
     private String description;
+
     private String image;
 
     private String createdBy;
@@ -32,6 +35,7 @@ public class Template
 
     private Instant createdDate;
     private Instant lastModifiedDate;
+    private String expirationDate;
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;

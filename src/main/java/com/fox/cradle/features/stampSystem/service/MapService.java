@@ -55,18 +55,7 @@ public class MapService
     {
         String image = pictureService.getPictureByIdBase64Encoded(template.getImage());
 
-        ZoneId zoneId = ZoneId.of("Europe/Berlin");
-        String zonedDateTimeCreated = template.getCreatedDate().atZone(zoneId).toString();
-
-        String zonedDateUpdated = "";
-        if (template.getLastModifiedDate() == null) {
-            zonedDateUpdated = zonedDateTimeCreated;
-        }
-        else
-        {
-            zonedDateUpdated = template.getLastModifiedDate().atZone(zoneId).toString();
-        }
-        TemplateResponse response = TemplateResponse.builder()
+        return TemplateResponse.builder()
                 .id(template.getId())
                 .name(template.getName())
                 .promise(template.getPromise())
@@ -74,15 +63,13 @@ public class MapService
                 .defaultCount(template.getDefaultCount())
                 .createdBy(template.getCreatedBy())
                 .image(image)
-                .expirationDate(template.getExpirationDate())
                 .stampCardCategory(template.getStampCardCategory())
                 .stampCardSecurity(template.getStampCardSecurity())
                 .stampCardStatus(template.getStampCardStatus())
-                .createdDate(zonedDateTimeCreated)
-                .lastModifiedDate(zonedDateUpdated)
+                .createdDate(template.getCreatedDate().toString())
+                .lastModifiedDate(template.getLastModifiedDate().toString())
+                .expirationDate(template.getExpirationDate())
                 .build();
-
-        return response;
     }
 
     public List<StampCardResponse> mapStampCardsToResponseNoFields(List<StampCard> stampCards)

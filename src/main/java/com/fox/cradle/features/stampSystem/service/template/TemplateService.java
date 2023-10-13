@@ -102,6 +102,7 @@ public class TemplateService
         }
 
         template.setName(request.getName());
+        template.setPromise(request.getPromise());
         template.setDescription(request.getDescription());
         template.setDefaultCount(Integer.parseInt(request.getDefaultCount()));
 
@@ -109,6 +110,7 @@ public class TemplateService
         template.setStampCardSecurity(StampCardSecurity.valueOf(request.getStampCardSecurity()));
         template.setStampCardStatus(StampCardStatus.valueOf(request.getStampCardStatus()));
 
+        template.setExpirationDate(request.getExpirationDate());
         template.setLastModifiedDate(Instant.now());
 
         Template savedTemplate = templateRepository.save(template);

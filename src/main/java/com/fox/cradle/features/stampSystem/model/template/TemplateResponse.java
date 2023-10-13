@@ -23,18 +23,14 @@ public class TemplateResponse
     private String createdBy;
     private int defaultCount;
 
-    private String expirationDate;
-
-
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;
-
     @Enumerated(EnumType.STRING)
     private StampCardSecurity stampCardSecurity;
-
     @Enumerated(EnumType.STRING)
     private StampCardStatus stampCardStatus;
 
     private String createdDate;
+    private String expirationDate;
     private String lastModifiedDate;
 }

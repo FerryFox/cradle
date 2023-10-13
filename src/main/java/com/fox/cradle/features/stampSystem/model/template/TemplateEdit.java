@@ -8,13 +8,20 @@ import lombok.Data;
 public class TemplateEdit
 {
     private String id;
+
     private String name;
+    private String promise;
     private String description;
-    private String defaultCount;
-    private String createdBy;
     private String image;
+
+    private String createdBy;
+    private String defaultCount;
+
     private String stampCardCategory;
     private String stampCardSecurity;
     private String stampCardStatus;
+
     private String createdDate;
+    private String expirationDate;
+    private String lastModifiedDate;
 }

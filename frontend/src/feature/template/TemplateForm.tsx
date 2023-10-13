@@ -18,7 +18,7 @@ export default function TemplateForm()
 {
     const currentDate = new Date();
     currentDate.setFullYear(currentDate.getFullYear() + 1);
-    const [selectedDate, setSelectedDate] = useState(currentDate);
+    const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
 
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const navigate = useNavigate();
@@ -59,8 +59,10 @@ export default function TemplateForm()
         }, 820);  // match the duration of the shake animation
     };
 
-    const handleImageChange = (e :ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files && e.target.files[0];
+    const handleImageChange = (event :ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files) return;
+        const file = event.target.files[0];
+
 
         if (file) {
             const reader = new FileReader();
@@ -136,12 +138,11 @@ export default function TemplateForm()
 
 return (
 <LocalizationProvider dateAdapter={AdapterDateFns}>
-<Controller title={'Create a Template'}/>
+<Controller title={'Create a Template'} showBackButton={true}/>
     <Container className={isShaking ? 'shake' : ''} component="main" maxWidth="xs">
     <Toolbar/>
 
-    <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
-
+    <Box sx={{marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 , mb : 2}}>
 
             <Typography variant={"h5"} align="right">
@@ -210,9 +211,9 @@ return (
                 <InputLabel id="status-wheel-lable-id">Status</InputLabel>
                 <Select
                     labelId="status-wheel-lable-id"
-                    id="category-wheel-id"
+                    id="status-wheel-id"
                     value={selectedStatus}
-                    label="Category"
+                    label="Status"
                     onChange={(event: SelectChangeEvent) => setSelectedStatus(event.target.value)}>
 
                     {Status.map((status, index) => (
@@ -273,7 +274,7 @@ return (
                             display: 'flex',
                             justifyContent: 'center',
                             mt: 2,
-                            height: 140,
+                            height: 340,
                             backgroundImage: `url(${imageSrc})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center'

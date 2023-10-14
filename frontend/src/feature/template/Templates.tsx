@@ -2,18 +2,31 @@ import React, { useState, useEffect } from 'react';
 import Template from "./Template";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import {Toolbar} from "@mui/material";
+import {IconButton, Snackbar, Toolbar} from "@mui/material";
 import Button from "@mui/material/Button";
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
 import Controller from "../core/Controller";
 import {TemplateModel} from "./model/models";
 import {loadTemplateModels} from "./service/templateService";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
+
 
 export default function Templates()
 {
     const [templates, setTemplates] = useState<TemplateModel[]>([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    const handleGetCardClick = async (template: TemplateModel) => {
+        try {
+            await createStampCardFromTemplateId(template.id);
+            setOpenSnackbar(true);
+        } catch (error) {
+            console.error("Error creating the stamp card:", error);
+        }
+    };
 
     useEffect(() =>
     {
@@ -45,10 +58,28 @@ export default function Templates()
                 {templates.map(template => (
                     <Grid item xs={6} sm={6} md={4} key={template.id} >
                         <Template templateModel={template}  />
-                        <Button onClick={() => createStampCardFromTemplateId(template.id) }> Get this card </Button>
+                        <Button onClick={() => handleGetCardClick(template)}>
+                            Get this card
+                        </Button>
                     </Grid>
                 ))}
             </Grid>
+
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={openSnackbar}
+                autoHideDuration={2000}
+                onClose={() => setOpenSnackbar(false)}
+                message="Stamp card created"
+                action={
+                    <IconButton color="secondary" size="small" onClick={() => setOpenSnackbar(false)}>
+                        <HighlightOffIcon />
+                    </IconButton>
+                }
+            />
         </Container>
     </div>
     );

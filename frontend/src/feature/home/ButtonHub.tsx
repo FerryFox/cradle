@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import {Button, ButtonGroup, Paper} from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LoginIcon from "@mui/icons-material/Login";

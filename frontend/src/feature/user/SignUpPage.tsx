@@ -4,10 +4,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import axios from 'axios';
@@ -15,15 +13,29 @@ import { useNavigate } from 'react-router-dom';
 import {IconButton} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import Copyright from "./Copyright";
+import {FormEvent} from "react";
 
-const saveUser = async (userDTO) =>
+type UserDTO = {
+    firstname: string,
+    email: string,
+    password: string,
+    receiveNews: boolean
+}
+
+type AuthResponse = {
+    access_token: string;
+    // ... any other expected properties ...
+};
+
+const saveUser = async (userDTO : UserDTO) :Promise<AuthResponse | null> =>
 {
     try
     {
-        const response = await axios.post('/api/auth/register', userDTO);
+        const response = await axios.post<AuthResponse>('/api/auth/register', userDTO);
         if(response.status === 200 || response.status === 201)
         {
-            return response;
+            return response.data;
         }
     }catch (error)
     {
@@ -32,24 +44,12 @@ const saveUser = async (userDTO) =>
     return null;
 };
 
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                StamPete
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 export default function SignUp()
 {
     const navigate = useNavigate();
 
-    const handleSubmit = async (event) =>
+    const handleSubmit = async (event : FormEvent<HTMLFormElement>) : Promise<void> =>
     {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -63,21 +63,17 @@ export default function SignUp()
 
         try
         {
-            const response = await saveUser(userDTO);
-
-            const token = response.data.access_token;
-            if (token)
-            {
-                // Store the token in LocalStorage
-                localStorage.setItem('authToken', token);
-                // Set default axios authorization header
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-                navigate('/dashboard');
-            }
-            else
-            {
-                // Handle any other validation or issues here
-                console.error('No token received');
+            const response   = await saveUser(userDTO as UserDTO);
+            if (response){
+                const token = response.access_token;
+                if (token) {
+                    // Store the token in LocalStorage
+                    localStorage.setItem('authToken', token);
+                    // Set default axios authorization header
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+                    navigate('/dashboard');
+                }
+                else { console.error('No token received'); }
             }
         }
         catch (error)
@@ -154,7 +150,7 @@ return (
             </Grid>
         </Box>
     </Box>
-    <Copyright sx={{ mt: 5 }} />
+    <Copyright/>
 </Container>
 );
 }

@@ -1,6 +1,4 @@
 import Container from "@mui/material/Container";
-import BottomController from "../core/BottomController";
-import AppBarComponent from "../core/AppBarComponent";
 import {Toolbar} from "@mui/material";
 import Template from "../template/Template";
 import Grid from "@mui/material/Grid";

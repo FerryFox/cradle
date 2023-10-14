@@ -30,12 +30,10 @@ export default function Templates()
 
     useEffect(() =>
     {
-        const fetchData = async () => {
-            await loadTemplateModels(setTemplates, setError, setLoading);
-        };
+        loadTemplateModels(setTemplates, setLoading)
+            .catch( (error) => setError(error.message));
+        }, []);
 
-        fetchData();
-    }, []);
 
     if (loading) return (
         <Container>

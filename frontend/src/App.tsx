@@ -32,7 +32,7 @@ export default function App()
 return (
 <div className="App">
     <ThemeProvider theme={lightTheme}>
-    <CssBaseline enableColorScheme/>
+    <CssBaseline/>
             <Router>
                 <Routes>
                     <Route path="*" element={<NotFoundPage />} />

@@ -87,7 +87,7 @@ export default function Template({ templateModel }: TemplateProps)
 
                     <Divider color={"error"}  style={{ marginBottom: '8px'}}/>
 
-                    <Typography variant="body2" style={{ textAlign: 'left', overflowWrap: 'break-word' }}>
+                    <Typography variant="body2" style={{ textAlign: 'left', overflowWrap: 'break-word'}}>
                        {templateModel.description}
                     </Typography>
 

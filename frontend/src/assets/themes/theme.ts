@@ -41,7 +41,7 @@ export const lightTheme = createTheme(
                 info: {main: '#E8A97C'},
                 success: {main: '#41B3A3'},
                 warning: {main: '#C38D9E'},
-                error: {main: '#e040fb'},
+                error: {main: '#e71616'},
             },
         typography: {
             fontFamily: '"Gabarito", sans-serif',

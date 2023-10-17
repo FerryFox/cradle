@@ -7,15 +7,15 @@ export type StampCardModel =
     templateModel: TemplateModel;
     stampFields: StampFieldModel[];
 
-    isCompleted: boolean;
-    isRedeemed: boolean;
+    completed: boolean;
+    redeemed: boolean;
 };
 
 
 export type StampFieldModel =
 {
     id: number;
-    isStamped: boolean;
+    stamped: boolean;
     emptyImageUrl: string;
     stampedImageUrl: string;
     index: number;

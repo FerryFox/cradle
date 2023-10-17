@@ -47,7 +47,7 @@ class PictureServiceIntegrationTest
         Picture savePicture = pictureService.savePicture(loadedPicture);
         assert savePicture != null;
 
-        String base64EncodedPic = pictureService.getPictureByIdBase64Encoded(savePicture.getId());
+        String base64EncodedPic = pictureService.getPictureString(savePicture.getId());
         assert base64EncodedPic != null;
 
         List<Picture> allPictures = pictureService.getAllPictures();

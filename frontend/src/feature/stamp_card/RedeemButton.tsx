@@ -1,16 +1,23 @@
 import {Button, Paper, Stack} from "@mui/material";
-
 import Box from "@mui/material/Box";
 import React from "react";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 
-export default function RedeemButton()
+type RedeemButtonProps = {
+    redeemCard: () => void;
+};
+
+export default function RedeemButton({ redeemCard }: RedeemButtonProps)
 {
-return (
+
+    return (
     <>
         <Paper elevation={DEFAULT_ELEVATION} sx={{px : 2, py : 2 }}>
             <Stack>
-                <Button variant="contained" color="primary">
+                <Button onClick={redeemCard}
+                    variant="contained"
+                    color="primary">
+
                     Collect your prize!
                 </Button>
                 <Box sx={{
@@ -25,8 +32,5 @@ return (
                 </Box>
             </Stack>
         </Paper>
-
-    </>
-
-    );
+    </>);
 }

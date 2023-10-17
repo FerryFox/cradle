@@ -122,4 +122,19 @@ public class StampService
 
         return mapService.mapStampCardToResponse(stampCard);
     }
+
+    public StampCardResponse setRedeemedForThisCard(long id)
+    {
+        StampCard stampCard = stampCardRepository.findById(id).orElseThrow();
+
+        if(stampCard.isCompleted())
+        {
+            stampCard.setRedeemed(true);
+            stampCardRepository.save(stampCard);
+
+            return mapService.mapStampCardToResponse(stampCard);
+        }
+
+        return mapService.mapStampCardToResponse(stampCard);
+    }
 }

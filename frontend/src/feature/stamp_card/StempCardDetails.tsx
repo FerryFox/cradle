@@ -4,7 +4,7 @@ import Template from "../template/Template";
 import Grid from "@mui/material/Grid";
 import StampField from "./StampField";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import StampCardExtraInfo from "./StampCardExtraInfo";
 import Controller from "../core/Controller";
 import {StampCardModel, StampFieldModel} from "./model/models";
@@ -17,7 +17,7 @@ export default function StampCardDetails()
 {
     const { id } = useParams<{ id: string }>();
     const [stampCardModel, setStampCardModel] = useState<StampCardModel>();
-
+    const navigateTo = useNavigate();
     const [message, setMessage] = useState("");
 
     useEffect(() => {
@@ -33,11 +33,6 @@ export default function StampCardDetails()
     function onStampAttempt(stampField: StampFieldModel)
     {
         const token = localStorage.getItem('authToken');
-
-        if (!token) {
-            console.error("No auth token found");
-            return;
-        }
 
         if (!stampCardModel) {
             console.error("stampCardModel is not defined");
@@ -87,6 +82,50 @@ export default function StampCardDetails()
             });
     }
 
+    const redeemCard = () => {
+        const token = localStorage.getItem('authToken');
+
+        axios.post('/api/stamp/markStampCardAsRedeemed', stampCardModel?.id, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    setStampCardModel(response.data);
+                    navigateTo("/stampcards");
+                }
+            })
+            .catch(error => {
+                console.error("Error marking StampCard as complete:", error);
+            });
+    }
+
+    const deleteStampCard = (id: number) => {
+        const token = localStorage.getItem('authToken');
+
+        if (!token) {
+            console.error("No auth token found");
+            return;
+        }
+
+        axios.delete(`/api/stampcard/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                if (response.status === 204)
+                {
+                    navigateTo("/stampcards");
+                }
+            })
+            .catch(error => {
+                console.error("Error deleting StampCard:", error);
+            });
+    }
+
     if (!stampCardModel) {
         return <div>Loading...</div>;
     }
@@ -108,23 +147,25 @@ return(
                 </Grid>
 
                 <Grid item xs={12}>
-                {stampCardModel.completed ?
-                    (
-                        <RedeemButton />
+                    {stampCardModel.completed ?
+                        (
+                            <RedeemButton redeemCard={redeemCard} />
 
-                    )
-                        :
-                    (
-                        <Grid item xs={12}>
-                            <StampField stampFields={stampCardModel.stampFields} onStampAttempt={onStampAttempt} />
-                        </Grid>
-                    )
-                }
+                        )
+                            :
+                        (
+                            <Grid item xs={12}>
+                                <StampField stampFields={stampCardModel.stampFields} onStampAttempt={onStampAttempt} />
+                            </Grid>
+                        )
+                    }
                 </Grid>
 
                 <Grid item xs={12}>
                     <Paper elevation={DEFAULT_ELEVATION} sx={{py : 1 , px : 1}}>
-                        <Button variant={"contained"}  color={"error"}>
+                        <Button
+                            onClick={() => deleteStampCard(stampCardModel.id)}
+                            variant={"contained"}  color={"error"}>
                             Stop Collecting and Delete this Card
                         </Button>
                     </Paper>

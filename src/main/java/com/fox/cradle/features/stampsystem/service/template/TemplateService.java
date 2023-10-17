@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class TemplateService
     private final PictureService pictureService;
     private final StampService stampService;
 
-    private final String ERROR = "Stamp card template not found";
+    private static final String ERROR = "Stamp card template not found";
 
     public List<TemplateResponse> getAllTemplates()
     {
@@ -38,11 +37,13 @@ public class TemplateService
         return templates.stream().map(mapService::mapTemplateToResponse).toList();
     }
 
-    public Template getTemplateById(Long id)
+    public TemplateResponse getTemplateById(Long id)
     {
-        return templateRepository.findById(id).orElseThrow(
+        Template template =  templateRepository.findById(id).orElseThrow(
                 () -> new RuntimeException(ERROR));
+        return mapService.mapTemplateToResponse(template);
     }
+
 
     public List<TemplateResponse> getMyTemplates(AppUser appUser)
     {
@@ -55,7 +56,8 @@ public class TemplateService
 
     public TemplateResponse createTemplate(NewTemplate request, AppUser appUser)
     {
-        //picture Saving
+        //picture Saving, request image is a string here and will be saved in mongo db by the picture service
+        //the picture id will be saved in the template
         String pictureId = pictureService.savePicture(request.getImage() , request.getFileName()).getId();
 
         Template createdTemplate = mapService.mapNewToTemplate(request, appUser, pictureId);
@@ -69,12 +71,6 @@ public class TemplateService
 
         Template savedTemplate = templateRepository.save(createdTemplate);
         return mapService.mapTemplateToResponse(savedTemplate);
-    }
-
-    public Template getStampCardTemplateById(Long id)
-    {
-        return templateRepository.findById(id).orElseThrow(
-            () -> new RuntimeException(ERROR));
     }
 
 
@@ -95,7 +91,7 @@ public class TemplateService
                 () -> new RuntimeException(ERROR));
 
 
-        String oldString64 = pictureService.getPictureByIdBase64Encoded(template.getImage());
+        String oldString64 = pictureService.getPictureString(template.getImage());
         String newString64 = pictureService.removePrefixFrom64(request.getImage());
         if(!oldString64.equals(newString64))
         {

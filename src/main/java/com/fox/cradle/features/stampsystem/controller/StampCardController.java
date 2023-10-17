@@ -43,15 +43,28 @@ public class StampCardController
         return ResponseEntity.created(location ).body(result);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<StampCardResponse>> getAllStampCardsNoFields(HttpServletRequest httpServletRequest)
+    @GetMapping("/allactive")
+    public ResponseEntity<List<StampCardResponse>> getAllActiveStampCardsNoFields(HttpServletRequest httpServletRequest)
     {
         Optional<AppUser> appUse =  appUserService.
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
         if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        List<StampCardResponse> results = stampCardService.getAllStampCardsNoFields(appUse.get());
+        List<StampCardResponse> results = stampCardService.getAllActiveStampCardsNoFields(appUse.get());
+
+        return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/archived")
+    public ResponseEntity<List<StampCardResponse>> getAllStampCardsArchived(HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+
+        List<StampCardResponse> results = stampCardService.getAllStampCardsArchived(appUse.get());
 
         return ResponseEntity.ok(results);
     }
@@ -70,6 +83,19 @@ public class StampCardController
         List<StampFieldResponse> results = stampCardService.getStampFields(stampCardId);
 
         return ResponseEntity.ok(results);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteStampCard(@PathVariable Long id , HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+
+        stampCardService.deleteStampCard(id, appUse.get().getId());
+
+        return ResponseEntity.noContent().build();
     }
 
 }

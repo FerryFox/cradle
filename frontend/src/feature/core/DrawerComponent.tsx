@@ -10,6 +10,7 @@ import Diversity3Icon from '@mui/icons-material/Diversity3';
 import MessageIcon from '@mui/icons-material/Message';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -89,6 +90,17 @@ return (
                         <ApprovalIcon />
                     </ListItemIcon>
                     <ListItemText primary={'Stamp Cards'} secondary={'Visit your Collection'} />
+                </ListItemButton>
+            </ListItem>
+        </List>
+
+        <List>
+            <ListItem key={'Archive'} disablePadding onClick={() => navigate('/stampcards/archive')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <ArchiveIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Archive'} secondary={'Visit finished Redeemed Cards'} />
                 </ListItemButton>
             </ListItem>
         </List>

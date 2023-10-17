@@ -19,6 +19,7 @@ import TemplateDetails from "./feature/template/TemplateDetails";
 import TemplateEdit from "./feature/template/TemplateEdit";
 import StampCards from "./feature/stamp_card/StampCards";
 import StampCardDetails from "./feature/stamp_card/StempCardDetails";
+import Archive from "./feature/archive/Archive";
 
 export default function App()
 {
@@ -51,6 +52,7 @@ return (
 
                     <Route path="/stampcards" element={<StampCards/>} />
                     <Route path="/stampcard/details/:id" element={<StampCardDetails/>} />
+                    <Route path="/stampcards/archive" element={<Archive/>} />
                 </Routes>
             </Router>
     </ThemeProvider>

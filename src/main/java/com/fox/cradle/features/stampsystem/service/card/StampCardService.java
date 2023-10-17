@@ -1,5 +1,6 @@
 package com.fox.cradle.features.stampsystem.service.card;
 
+import com.fox.cradle.exceptions.WrongUserException;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.stampsystem.model.stamp.StampField;
 import com.fox.cradle.features.stampsystem.model.stamp.StampFieldResponse;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -72,9 +74,11 @@ public class StampCardService
                 .build();
     }
 
-    public List<StampCardResponse> getAllStampCardsNoFields(AppUser appUser)
+    public List<StampCardResponse> getAllActiveStampCardsNoFields(AppUser appUser)
     {
-       var stampCards = appUser.getMyStampCards();
+       List<StampCard> stampCards = appUser.getMyStampCards().stream()
+               .filter(card -> !card.isRedeemed())
+               .toList();
 
        return mapService.mapStampCardsToResponseNoFields(stampCards);
     }
@@ -107,5 +111,25 @@ public class StampCardService
     {
         StampCard stampCard = stampCardRepository.findById(id).orElse(null);
         return mapService.mapStampCardToResponse(stampCard);
+    }
+
+    public void deleteStampCard(Long id, Long userId)
+    {
+        StampCard stampCard = stampCardRepository.findById(id).orElseThrow();
+
+        if(!Objects.equals(stampCard.getOwner().getId(), userId))
+            throw new WrongUserException("You are not the owner of this card");
+
+        stampCardRepository.deleteById(id);
+    }
+
+    public List<StampCardResponse> getAllStampCardsArchived(AppUser appUser)
+    {
+        List<StampCard> stampCards = appUser.getMyStampCards()
+                .stream()
+                .filter(StampCard::isRedeemed)
+                .toList();
+
+        return mapService.mapStampCardsToResponseNoFields(stampCards);
     }
 }

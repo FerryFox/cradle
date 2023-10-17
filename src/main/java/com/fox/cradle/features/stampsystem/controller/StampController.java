@@ -37,7 +37,6 @@ public class StampController
         return ResponseEntity.ok(stamping);
     }
 
-    //security is missing
     @PostMapping("/markStampCardAsComplete")
     public ResponseEntity<StampCardResponse> attemptToComplete(@RequestBody long id, HttpServletRequest httpServletRequest)
     {
@@ -48,7 +47,17 @@ public class StampController
 
         StampCardResponse result = stampService.setCompleteForThisCard(id);
         return ResponseEntity.ok(result);
-
     }
 
+    @PostMapping("/markStampCardAsRedeemed")
+    public ResponseEntity<StampCardResponse> attemptToRedeem(@RequestBody long id, HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUser =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUser.isEmpty()) return ResponseEntity.badRequest().build();
+
+        StampCardResponse result = stampService.setRedeemedForThisCard(id);
+        return ResponseEntity.ok(result);
+    }
 }

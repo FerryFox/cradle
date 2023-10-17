@@ -30,6 +30,13 @@ public class TemplateController
     private final TemplateService templateService;
     private final AppUserService appUserService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TemplateResponse> getTemplateById(@PathVariable Long id)
+    {
+        TemplateResponse response = templateService.getTemplateById(id);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<TemplateResponse>> getAllTemplates()
     {

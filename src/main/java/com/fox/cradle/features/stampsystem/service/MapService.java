@@ -1,7 +1,6 @@
 package com.fox.cradle.features.stampsystem.service;
 
 import com.fox.cradle.features.appuser.model.AppUser;
-import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stampsystem.model.stamp.StampField;
 import com.fox.cradle.features.stampsystem.model.stamp.StampFieldResponse;
@@ -21,7 +20,6 @@ import java.util.List;
 public class MapService
 {
     private final PictureService pictureService;
-    private final AppUserService appUserService;
 
     public Template mapNewToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
     {
@@ -51,7 +49,7 @@ public class MapService
 
     public TemplateResponse mapTemplateToResponse(Template template)
     {
-        String image = pictureService.getPictureByIdBase64Encoded(template.getImage());
+        String image = pictureService.getPictureString(template.getImage());
 
         return TemplateResponse.builder()
                 .id(template.getId())

@@ -1,5 +1,6 @@
 package com.fox.cradle.features.picture.model;
 
+import com.fox.cradle.features.picture.service.PictureType;
 import jakarta.persistence.GeneratedValue;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,8 @@ public class Picture
     @GeneratedValue
     private String id;
     private String name;
-    private Binary imageData;
+
+    private PictureType type;
+    private String url;
+    private Binary imageBinary;
 }

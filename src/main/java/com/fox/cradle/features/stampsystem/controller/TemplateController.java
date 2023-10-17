@@ -12,6 +12,7 @@ import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
 import com.fox.cradle.features.stampsystem.service.template.TemplateService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,13 +47,13 @@ public class TemplateController
     @GetMapping("/my")
     public ResponseEntity<List<TemplateResponse>> getMyTemplates(HttpServletRequest httpServletRequest)
     {
-        Optional<AppUser> AppUse =  appUserService.
+        Optional<AppUser> appUse =  appUserService.
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
-        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
         else
         {
-            List<TemplateResponse> response = templateService.getMyTemplates(AppUse.get());
+            List<TemplateResponse> response = templateService.getMyTemplates(appUse.get());
             return ResponseEntity.ok(response);
         }
     }
@@ -98,14 +99,14 @@ public class TemplateController
     @PostMapping("/new-template")
     public ResponseEntity<TemplateResponse> createTemplate(@RequestBody NewTemplate request, HttpServletRequest httpServletRequest)
     {
-        Optional<AppUser> AppUse =  appUserService.
+        Optional<AppUser> appUse =  appUserService.
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
-        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        TemplateResponse savedTemplate = templateService.createTemplate(request, AppUse.get());
+        TemplateResponse savedTemplate = templateService.createTemplate(request, appUse.get());
 
-        return ResponseEntity.created(null).body(savedTemplate);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTemplate);
     }
 }
 

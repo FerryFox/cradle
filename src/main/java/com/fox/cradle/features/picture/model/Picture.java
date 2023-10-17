@@ -1,8 +1,6 @@
 package com.fox.cradle.features.picture.model;
 
 import jakarta.persistence.GeneratedValue;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.Binary;

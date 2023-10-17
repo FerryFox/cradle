@@ -1,56 +1,47 @@
-import * as React from 'react';
-import {
-    Box, Toolbar, Container,
-    Grid, Paper,
-} from '@mui/material';
-import {useNavigate} from "react-router-dom";
-import AppBarComponent from "../core/AppBarComponent";
-import DrawerComponent from "../core/DrawerComponent";
-import BottomController from "../core/BottomController";
+import React from "react";
 import Controller from "../core/Controller";
+import Container from "@mui/material/Container";
+import {Paper, Toolbar} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import {useNavigate} from "react-router-dom";
 
 export default function Dashboard()
 {
-    const navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
-    const toggleDrawer = () => {setOpen(!open);
-};
+    const navigateTo = useNavigate();
+
 
 return (
-
-<Box sx={{ display: 'flex' }}>
-    <Controller title="Dashboard" />
-
+<>
+<Controller title="Dashboard"/>
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-
-    <Toolbar />
+        <Toolbar />
         <Grid container spacing={3} >
             <Grid item xs={12} >
-                <Paper sx={{ p: 2 }} onClick={() => navigate("/stampcards")}>
-                   See your cards
+                <Paper sx={{ p: 2 }} onClick={() => navigateTo("/stampcards")}>
+                    See your cards
                 </Paper>
             </Grid>
 
             <Grid item xs={12} >
-                <Paper sx={{ p: 2 }} onClick={() => navigate("/templates")}>
-                   Find the newest cards
+                <Paper sx={{ p: 2 }} onClick={() => navigateTo("/templates")}>
+                    Find the newest cards
                 </Paper>
             </Grid>
 
             <Grid item xs={12}>
-                <Paper sx={{ p: 2 }} onClick={() => navigate("/template/form")}>
+                <Paper sx={{ p: 2 }} onClick={() => navigateTo("/template/form")}>
                     Create a new Stampcard
                 </Paper>
             </Grid>
 
             <Grid item xs={12}>
                 <Paper sx={{ p: 2 }}>
-                   Read the latest news
+                    Read the latest news
                     <p> load news from the server</p>
                 </Paper>
             </Grid>
         </Grid>
     </Container>
-</Box>
-
-);}
+</>
+    );
+}

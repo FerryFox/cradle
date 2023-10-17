@@ -30,16 +30,18 @@ public class TemplateService
     private final PictureService pictureService;
     private final StampService stampService;
 
+    private final String ERROR = "Stamp card template not found";
+
     public List<TemplateResponse> getAllTemplates()
     {
         List<Template> templates = templateRepository.findAll();
-        return templates.stream().map(mapService::mapTemplateToResponse).collect(Collectors.toList());
+        return templates.stream().map(mapService::mapTemplateToResponse).toList();
     }
 
     public Template getTemplateById(Long id)
     {
         return templateRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Stamp card template not found"));
+                () -> new RuntimeException(ERROR));
     }
 
     public List<TemplateResponse> getMyTemplates(AppUser appUser)
@@ -48,7 +50,7 @@ public class TemplateService
                 filter( template -> template.getAppUser().getId().equals(appUser.getId()))
                 .toList();
 
-        return templates.stream().map(mapService::mapTemplateToResponse).collect(Collectors.toList());
+        return templates.stream().map(mapService::mapTemplateToResponse).toList();
     }
 
     public TemplateResponse createTemplate(NewTemplate request, AppUser appUser)
@@ -72,7 +74,7 @@ public class TemplateService
     public Template getStampCardTemplateById(Long id)
     {
         return templateRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Stamp card template not found"));
+            () -> new RuntimeException(ERROR));
     }
 
 
@@ -90,7 +92,7 @@ public class TemplateService
     public TemplateResponse updateTemplate(TemplateEdit request)
     {
         Template template = templateRepository.findById(Long.parseLong(request.getId())).orElseThrow(
-                () -> new RuntimeException("Stamp card template not found"));
+                () -> new RuntimeException(ERROR));
 
 
         String oldString64 = pictureService.getPictureByIdBase64Encoded(template.getImage());
@@ -123,6 +125,6 @@ public class TemplateService
                     .filter( template -> template.getStampCardStatus().equals(StampCardStatus.PUBLIC))
                     .toList();
 
-        return templates.stream().map(mapService::mapTemplateToResponse).collect(Collectors.toList());
+        return templates.stream().map(mapService::mapTemplateToResponse).toList();
     }
 }

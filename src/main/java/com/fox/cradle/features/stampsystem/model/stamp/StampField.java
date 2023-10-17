@@ -22,7 +22,7 @@ public class StampField
     private String emptyImageUrl;
 
     private String stampedImageUrl;
-    private int Index;
+    private int index;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="stamp_card_id")

@@ -1,5 +1,5 @@
 import AppBar from "@mui/material/AppBar";
-import {Badge, IconButton, Input, InputAdornment, Stack, Toolbar, Typography} from "@mui/material";
+import {Badge, IconButton, InputAdornment, Toolbar, Typography} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import * as React from "react";

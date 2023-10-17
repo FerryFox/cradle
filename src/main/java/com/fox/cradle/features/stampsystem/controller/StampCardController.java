@@ -10,7 +10,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,32 +21,37 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StampCardController
 {
-    private final StampCardService _stampCardService;
-    private final JwtService _jwtService;
-    private final AppUserService _appUserService;
+    private final StampCardService stampCardService;
+    private final JwtService jwtService;
+    private final AppUserService appUserService;
 
     @PostMapping("/create")
     public ResponseEntity<StampCardResponse> createStampCard(@RequestBody String templateId, HttpServletRequest httpServletRequest)
     {
-        Optional<AppUser> AppUse =  _appUserService.
-                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
-        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        StampCardResponse result = _stampCardService.createStampCard(templateId , AppUse.get());
+        StampCardResponse result = stampCardService.createStampCard(templateId , appUse.get());
 
-        return ResponseEntity.created(null).body(result);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(result.getId())
+                .toUri();
+
+        return ResponseEntity.created(location ).body(result);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<StampCardResponse>> getAllStampCardsNoFields(HttpServletRequest httpServletRequest)
     {
-        Optional<AppUser> AppUse =  _appUserService.
-                findUserByEmail(_jwtService.extractUsernameFromRequest(httpServletRequest));
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
-        if (AppUse.isEmpty()) return ResponseEntity.badRequest().build();
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        List<StampCardResponse> results = _stampCardService.getAllStampCardsNoFields(AppUse.get());
+        List<StampCardResponse> results = stampCardService.getAllStampCardsNoFields(appUse.get());
 
         return ResponseEntity.ok(results);
     }
@@ -52,7 +59,7 @@ public class StampCardController
     @GetMapping("/{id}")
     public ResponseEntity<StampCardResponse> getStampCard(@PathVariable Long id)
     {
-        StampCardResponse result = _stampCardService.getStampCard(id);
+        StampCardResponse result = stampCardService.getStampCard(id);
 
         return ResponseEntity.ok(result);
     }
@@ -60,7 +67,7 @@ public class StampCardController
     @GetMapping("/fields/{stampCardId}")
     public ResponseEntity<List<StampFieldResponse>> getAllStampFields(@PathVariable Long stampCardId)
     {
-        List<StampFieldResponse> results = _stampCardService.getStampFields(stampCardId);
+        List<StampFieldResponse> results = stampCardService.getStampFields(stampCardId);
 
         return ResponseEntity.ok(results);
     }

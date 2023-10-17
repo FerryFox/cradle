@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class AuthenticationServiceIntegrationTest
+class AuthenticationServiceIntegrationTest
 {
     @Autowired
     private JwtService jwtService;
@@ -56,7 +56,7 @@ public class AuthenticationServiceIntegrationTest
     }
 
     @Test
-    public void registerTest()
+    void registerTest()
     {
         //Given
         RegisterRequest request = new RegisterRequest();
@@ -70,13 +70,15 @@ public class AuthenticationServiceIntegrationTest
         //WHEN
         AuthenticationResponse response = authService.register(request);
         String jwtToken = jwtService.generateToken(user);
+
         //THEN
+        Assertions.assertNotNull(response.getToken());
         assert response.getToken() != null;
         assert response.getToken().equals(jwtToken);
     }
 
     @Test
-    public void authenticateTest()
+    void authenticateTest()
     {
         //GIVEN
         AuthenticationRequest request = new AuthenticationRequest();
@@ -93,7 +95,7 @@ public class AuthenticationServiceIntegrationTest
     }
 
     @Test
-    public void testRefreshToken()
+    void testRefreshToken()
     {
         // GIVEN
         User user = new User();

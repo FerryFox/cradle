@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -76,7 +75,7 @@ public class MapService
      return stampCards
                 .stream()
                 .map(this::mapStampCardToResponseNoStampFields)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public StampCardResponse mapStampCardToResponseNoStampFields(StampCard stampCard)
@@ -96,7 +95,7 @@ public class MapService
         return fields
                 .stream()
                 .map(this::mapStampFieldToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public StampFieldResponse mapStampFieldToResponse(StampField stampField)

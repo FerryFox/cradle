@@ -1,13 +1,10 @@
-import React from "react";
-import {useEffect, useState} from "react";
+import React , {useEffect, useState} from "react";
 import {Box, IconButton, useTheme} from "@mui/material";
 import MessageIcon from '@mui/icons-material/Message';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import {useNavigate} from "react-router-dom";
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-
-
 
 export default function BottomController() {
     const [lastScrollTop, setLastScrollTop] = useState(0);

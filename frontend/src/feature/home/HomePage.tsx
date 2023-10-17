@@ -33,6 +33,10 @@ export default function HomePage()
         setIsAuthenticated(false);
     }
 
+    if(error) {
+        return <div>Failed to load news: {error}</div>;
+    }
+
 return (
 <div className="home-container">
     <Container>

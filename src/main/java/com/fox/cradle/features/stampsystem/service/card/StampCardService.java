@@ -33,7 +33,7 @@ public class StampCardService
     {
         //create and save stampCard
         Template template = templateRepository
-                .findById(Long.parseLong(templateId)).orElse(null);
+                .findById(Long.parseLong(templateId)).orElseThrow();
 
         StampCard stampCard = StampCard.builder()
                 .createdDate(Instant.now())
@@ -51,7 +51,7 @@ public class StampCardService
         {
             StampField stampField = StampField.builder()
                     .isStamped(false)
-                    .Index(i)
+                    .index(i)
                     .stampCard(savedCard)
                     .emptyImageUrl("https://images.nightcafe.studio/jobs/Ku1vjoHEHrx5OGqbtgxL/Ku1vjoHEHrx5OGqbtgxL--1--cyx7c.jpg?tr=w-640,c-at_max")
                     .stampedImageUrl("https://images.nightcafe.studio/jobs/c2EI3ymfZvoZHuTyjhos/c2EI3ymfZvoZHuTyjhos--1--vylwa.jpg?tr=w-1600,c-at_max")

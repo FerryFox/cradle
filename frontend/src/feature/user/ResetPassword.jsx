@@ -6,7 +6,6 @@ export default function ResetPassword() {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleSubmit = () => {
-        // TODO: Implement the password reset logic here
         if (password === confirmPassword) {
             console.log('Password reset logic here');
         } else {

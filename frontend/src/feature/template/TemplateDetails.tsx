@@ -70,9 +70,11 @@ return (
                         Manage your Stamp Card here!
                     </Typography>
 
-                    <Button color={"secondary"}
-                            variant={"contained"}
-                            sx={{ width: '80%' }}>
+                    <Button onClick={() => handleDelete(templateModel.id)}
+                        color={"secondary"}
+                        variant={"contained"}
+                        sx={{ width: '80%' }}>
+
                         Delete
                     </Button>
 
@@ -151,7 +153,6 @@ return (
                 <Typography variant="body2" sx={{textAlign : "left"}}>
                     Date of Expiration : {expirationDate?.toLocaleDateString()}
                 </Typography>
-
             </Stack>
         </Paper>
 
@@ -164,6 +165,9 @@ return (
 
                     <Button variant={"contained"}>
                         Edit
+                    </Button>
+                    <Button onClick={() => handleDelete(templateModel.id)} variant={"contained"}>
+                        Delete
                     </Button>
                 </Stack>
             </Paper>

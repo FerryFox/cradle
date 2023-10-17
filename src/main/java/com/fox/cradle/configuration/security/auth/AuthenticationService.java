@@ -2,8 +2,8 @@ package com.fox.cradle.configuration.security.auth;
 
 import com.fox.cradle.configuration.security.SecuritySender;
 import com.fox.cradle.configuration.security.jwt.JwtService;
-import com.fox.cradle.configuration.security.user.UserRepository;
 import com.fox.cradle.configuration.security.user.User;
+import com.fox.cradle.configuration.security.user.UserRepository;
 
 import com.fox.cradle.exceptions.RefreshTokenMissingException;
 import jakarta.servlet.http.HttpServletRequest;

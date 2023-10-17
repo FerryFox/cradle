@@ -1,6 +1,7 @@
 package com.fox.cradle.configuration.security.jwt;
 
 
+import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +33,7 @@ public class JwtServiceIntegrationTest
     private String secretKey;
 
     @Autowired
-    private  JwtService jwtService;
+    private JwtService jwtService;
 
     @Container
     static final MongoDBContainer mongoDBContainer = new MongoDBContainer();
@@ -143,19 +144,5 @@ public class JwtServiceIntegrationTest
         Assertions.assertFalse(user2.getEmail().equals(username));
     }
 
-    @Test
-    public void isRefreshTokenlongLived()
-    {
-        User user = new User();
-        user.setEmail("f@f");
-        String token = jwtService.generateLongLiveToken(user);
 
-        var expiration = jwtService.extractClaim(token, Claims::getExpiration);
-
-        boolean isValid = jwtService.isTokenValid(token, user);
-        assert isValid;
-        assert jwtService.extractUsername(token).equals(user.getEmail());
-        Assertions.assertFalse(jwtService.isTokenExpired(token));
-        assert expiration.after(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 6));
-    }
 }

@@ -23,7 +23,7 @@ public class StampService
     private final StampFieldRepository stampFieldRepository;
     private final MapService mapService;
 
-    private final String message = "Stamping successful";
+    private static final String MESSAGE = "Stamping successful";
 
     public TimeGateSecurity createTimeGate(NewTemplate newTemplate, Template template)
     {
@@ -56,7 +56,7 @@ public class StampService
     private StampThisResponse trustUser(StampCard stampCard, StampField stampField)
     {
         finishStamping(stampField, stampCard);
-        return  new StampThisResponse(true, message);
+        return  new StampThisResponse(true, MESSAGE);
     }
 
     private StampThisResponse timeGate(StampCard stampCard , StampField stampField)
@@ -67,7 +67,7 @@ public class StampService
         if(time == null)
         {
             finishStamping(stampField, stampCard);
-            return new StampThisResponse(true, message);
+            return new StampThisResponse(true, MESSAGE);
         }
         else
         {
@@ -77,7 +77,7 @@ public class StampService
             if(timeSinceLastStamp.compareTo(duration) > 0)
             {
                 finishStamping(stampField, stampCard);
-                return new StampThisResponse(true, message);
+                return new StampThisResponse(true, MESSAGE);
             }
         }
         return new StampThisResponse(false, "Time gate not passed yet");
@@ -85,9 +85,10 @@ public class StampService
 
     private StampThisResponse locationGate(StampCard stampCard, StampField stampField)
     {
-        System.out.println(stampCard);
-        System.out.println(stampField);
-        return new StampThisResponse(false, "Location gate not implemented yet");
+        if( stampCard!= null && stampField != null)
+            return new StampThisResponse(false, "Location gate not implemented yet");
+        else
+            return new StampThisResponse(false, "Something went wrong");
     }
 
     private void finishStamping(StampField stampField, StampCard stampCard)

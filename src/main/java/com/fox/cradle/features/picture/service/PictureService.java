@@ -113,4 +113,5 @@ public class PictureService
         }
         return base64;
     }
+
 }

@@ -44,10 +44,10 @@ public class DatabaseInitializer implements CommandLineRunner
     @Override
     public void run(String... args) throws Exception {
     //MongoDb
-        //initPictureMongoDb();
+        List<Picture> pictures = initPictureMongoDb();
         //initNewsMongoDb();
 
-    //SQL
+    //Create Some AppUsers
         User userIce = new User();
         userIce.setEmail("w@w");
         userIce.setPassword("1234");
@@ -109,11 +109,13 @@ public class DatabaseInitializer implements CommandLineRunner
         appUserAnna.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserAnna);
 
-        Instant time = java.time.Instant.now();
+
 //Create some stamp card templates
+        Instant time = java.time.Instant.now();
+
         Template template_001 = new Template();
         template_001.setName("Ice Cream");
-        template_001.setImage("652e97eafc88ca0727b5def2");
+        template_001.setImage(pictures.get(0).getId());
         template_001.setExpirationDate("2024-10-11T06:39:11.609Z");
         template_001.setPromise("Free Ice Cream");
         template_001.setDefaultCount(10);
@@ -134,7 +136,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_002 = new Template();
         template_002.setName("Coffee");
-        template_002.setImage("652e97eafc88ca0727b5def3");
+        template_002.setImage(pictures.get(1).getId());
         template_002.setExpirationDate("2024-10-11T06:39:11.609Z");
         template_002.setPromise("Free Coffee");
         template_002.setDefaultCount(10);
@@ -150,7 +152,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_003 = new Template();
         template_003.setName("Cinema");
-        template_003.setImage("652e97eafc88ca0727b5def4");
+        template_003.setImage(pictures.get(2).getId());
         template_003.setExpirationDate("2024-10-11T06:39:11.609Z");
         template_003.setPromise("Free Ticket");
         template_003.setDefaultCount(5);
@@ -166,7 +168,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_004 = new Template();
         template_004.setName("Kebab");
-        template_004.setImage("652e97eafc88ca0727b5def5");
+        template_004.setImage(pictures.get(3).getId());
         template_004.setExpirationDate("2024-10-11T06:39:11.609Z");
         template_004.setPromise("Free Kebab");
         template_004.setDefaultCount(10);
@@ -182,7 +184,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_005 = new Template();
         template_005.setName("Sushi");
-        template_005.setImage("652e97eafc88ca0727b5def6");
+        template_005.setImage(pictures.get(4).getId());
         template_005.setExpirationDate("2024-10-11T06:39:11.609Z");
         template_005.setPromise("Free Sushi");
         template_005.setDefaultCount(8);
@@ -198,7 +200,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_006 = new Template();
         template_006.setName("Roller Coaster");
-        template_006.setImage("652e97eafc88ca0727b5def7");
+        template_006.setImage(pictures.get(5).getId());
         template_006.setExpirationDate("2024-10-11T06:39:11.609Z");
         template_006.setPromise("Free Ticket");
         template_006.setDefaultCount(3);
@@ -206,7 +208,7 @@ public class DatabaseInitializer implements CommandLineRunner
         template_006.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
         template_006.setStampCardStatus(StampCardStatus.PUBLIC);
         template_006.setDescription("Visit the roller coaster 3 times and get a free ticket");
-        template_006.setCreatedBy(appUserIceCompany.getAppUserName() + "#" + appUserIceCompany.getNameIdentifier());;
+        template_006.setCreatedBy(appUserIceCompany.getAppUserName() + "#" + appUserIceCompany.getNameIdentifier());
         template_006.setCreatedDate(time);
         template_006.setLastModifiedDate(time);
         template_006.setAppUser(appUserIceCompany);
@@ -214,7 +216,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_007 = new Template();
         template_007.setName("Vegetables");
-        template_007.setImage("652e97eafc88ca0727b5def9");
+        template_007.setImage(pictures.get(7).getId());
         template_007.setExpirationDate("2024-10-11T06:39:11.609Z");
         template_007.setPromise("Free Vegetables");
         template_007.setDefaultCount(6);
@@ -230,7 +232,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         Template template_008 = new Template();
         template_008.setName("Skate");
-        template_008.setImage("652e97eafc88ca0727b5def8");
+        template_008.setImage(pictures.get(6).getId());
         template_008.setExpirationDate("2024-10-11T06:39:11.609Z");
         template_008.setPromise("Free Ticket");
         template_008.setDefaultCount(9);
@@ -244,36 +246,39 @@ public class DatabaseInitializer implements CommandLineRunner
         template_008.setAppUser(appUserAnna);
         templateService.save(template_008);
 
-
         System.out.println("database initialized");
     }
 
-    private void initPictureMongoDb() throws Exception {
+    private List<Picture> initPictureMongoDb() throws Exception
+    {
+        List<Picture> pictures = pictureService.getAllPictures();
+        if (pictures.isEmpty()) return pictures;
 
         Picture ice = pictureService.loadPictureFromFile("ice");
-        pictureService.savePicture(ice);
+        pictures.add(pictureService.savePicture(ice));
 
         Picture coffee = pictureService.loadPictureFromFile("coffee");
-        pictureService.savePicture(coffee);
+        pictures.add(pictureService.savePicture(coffee));
 
         Picture cinema = pictureService.loadPictureFromFile("cinema");
-        pictureService.savePicture(cinema);
+        pictures.add(pictureService.savePicture(cinema));
 
         Picture kebab = pictureService.loadPictureFromFile("kebab");
-        pictureService.savePicture(kebab);
+        pictures.add(pictureService.savePicture(kebab));
 
         Picture sushi = pictureService.loadPictureFromFile("sushi");
-        pictureService.savePicture(sushi);
+        pictures.add(pictureService.savePicture(sushi));
 
         Picture roller  = pictureService.loadPictureFromFile("roller");
-        pictureService.savePicture(roller);
+        pictures.add(pictureService.savePicture(roller));
 
         Picture skate = pictureService.loadPictureFromFile("skate");
-        pictureService.savePicture(skate);
+        pictures.add(pictureService.savePicture(skate));
 
         Picture vegetables = pictureService.loadPictureFromFile("vegetables");
-        pictureService.savePicture(vegetables);
+        pictures.add(pictureService.savePicture(vegetables));
 
+        return pictures;
     }
     private void initNewsMongoDb()
     {

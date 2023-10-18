@@ -44,7 +44,6 @@ public class TemplateService
         return mapService.mapTemplateToResponse(template);
     }
 
-
     public List<TemplateResponse> getMyTemplates(AppUser appUser)
     {
         List<Template> templates = templateRepository.findAll().stream().

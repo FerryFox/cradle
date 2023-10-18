@@ -1,24 +1,17 @@
 package com.fox.cradle.configuration.security.auth;
 
-import com.fox.cradle.configuration.security.auth.AuthenticationRequest;
-import com.fox.cradle.configuration.security.auth.AuthenticationResponse;
-import com.fox.cradle.configuration.security.auth.AuthenticationService;
-import com.fox.cradle.configuration.security.auth.RegisterRequest;
+import com.fox.cradle.AbstractMongoDBIntegrationTest;
+
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,36 +20,13 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class AuthenticationServiceIntegrationTest
+class AuthenticationServiceIntegrationTest extends AbstractMongoDBIntegrationTest
 {
     @Autowired
     private JwtService jwtService;
 
     @Autowired
     private AuthenticationService authService;
-
-
-    @Container
-    static final MongoDBContainer mongoDBContainer = new MongoDBContainer();
-
-    @BeforeAll
-    static void setup()
-    {
-        mongoDBContainer.start();
-    }
-
-    @AfterAll
-    static void cleanup()
-    {
-        mongoDBContainer.stop(); // stop the MongoDB container
-    }
-
-    @DynamicPropertySource
-    static void setUrlDynamically(DynamicPropertyRegistry registry)
-    {
-        System.out.println( "MONGO_URL=" + mongoDBContainer.getReplicaSetUrl());
-        registry.add("MONGO_URL", () -> mongoDBContainer.getReplicaSetUrl());
-    }
 
     @Test
     void registerTest()

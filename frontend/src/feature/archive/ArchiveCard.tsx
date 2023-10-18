@@ -1,6 +1,5 @@
-import {useNavigate} from "react-router-dom";
 import React, {useEffect} from "react";
-import {Button, Divider, Paper, Stack} from "@mui/material";
+import {Divider, Paper, Stack} from "@mui/material";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -12,11 +11,8 @@ interface ArchiveCardViewProps {
     stampCard: StampCardModel;
 }
 
-
 export default function ArchiveCard( { stampCard }: ArchiveCardViewProps)
 {
-    const navigateTo = useNavigate();
-
     const [displayName , setDisplayName] = React.useState("");
     const [date , setDate] = React.useState("");
 

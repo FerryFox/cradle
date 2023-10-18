@@ -79,12 +79,14 @@ public class MapService
     public StampCardResponse mapStampCardToResponseNoStampFields(StampCard stampCard)
     {
         TemplateResponse templateResponse = mapTemplateToResponse(stampCard.getTemplate());
+
         return StampCardResponse.builder()
                 .id(stampCard.getId())
                 .createdDate(stampCard.getCreatedDate().toString())
                 .templateModel(templateResponse)
                 .isCompleted(stampCard.isCompleted())
                 .isRedeemed(stampCard.isRedeemed())
+                .redeemDate(stampCard.getRedeemDate() != null ? stampCard.getRedeemDate().toString() : null)
                 .build();
     }
 

@@ -4,7 +4,6 @@ export type TemplateModel = {
     name : string;
     promise : string;
     description : string;
-    image : string;
     createdBy : string;
     defaultCount : number;
     stampCardCategory : string;
@@ -13,4 +12,6 @@ export type TemplateModel = {
     createdDate : string;
     lastModifiedDate : string;
     expirationDate : Date;
+
+    image : string;
 };

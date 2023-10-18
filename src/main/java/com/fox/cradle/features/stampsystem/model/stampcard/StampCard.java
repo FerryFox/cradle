@@ -25,6 +25,7 @@ public class StampCard
 
     private Instant createdDate;
     private Instant lastStampDate;
+    private Instant redeemDate;
 
     private boolean isCompleted;
     private boolean isRedeemed;

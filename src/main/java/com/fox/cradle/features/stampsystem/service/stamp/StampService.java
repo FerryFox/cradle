@@ -130,6 +130,7 @@ public class StampService
         if(stampCard.isCompleted())
         {
             stampCard.setRedeemed(true);
+            stampCard.setRedeemDate(Instant.now());
             stampCardRepository.save(stampCard);
 
             return mapService.mapStampCardToResponse(stampCard);

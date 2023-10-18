@@ -22,7 +22,7 @@ export default function ArchiveCard( { stampCard }: ArchiveCardViewProps)
             let name = namePart.split('#')[0];
             setDisplayName(name);
 
-            let dateObj = new Date(stampCard.templateModel.expirationDate);
+            let dateObj = new Date(stampCard.redeemDate);
             let isoString = dateObj.toISOString()
             setDate(isoString.split('T')[0]);
         }

@@ -7,6 +7,8 @@ export type StampCardModel =
     templateModel: TemplateModel;
     stampFields: StampFieldModel[];
 
+    redeemDate: Date;
+
     completed: boolean;
     redeemed: boolean;
 };

@@ -83,30 +83,6 @@ public class StampCardService
        return mapService.mapStampCardsToResponseNoFields(stampCards);
     }
 
-    public List<StampFieldResponse> getStampFields(Long stampCardId)
-    {
-        StampCard stampCard = new StampCard();
-        stampCard.setId(stampCardId);
-
-        List<StampField> fields = stampCard.getStampFields();
-
-        List<StampFieldResponse> result = new ArrayList<>();
-        for(StampField item : fields)
-        {
-            StampFieldResponse sfr = StampFieldResponse.builder()
-                    .stampedImageUrl(item.getStampedImageUrl())
-                    .emptyImageUrl(item.getEmptyImageUrl())
-                    .isStamped(item.isStamped())
-                    .index(item.getIndex())
-                    .id(item.getId())
-                    .stampCardId(stampCard.getId())
-                    .build();
-            
-            result.add(sfr);
-        }
-        return result;
-    }
-
     public StampCardResponse getStampCard(Long id)
     {
         StampCard stampCard = stampCardRepository.findById(id).orElse(null);

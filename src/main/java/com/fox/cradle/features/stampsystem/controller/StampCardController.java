@@ -3,7 +3,6 @@ package com.fox.cradle.features.stampsystem.controller;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
-import com.fox.cradle.features.stampsystem.model.stamp.StampFieldResponse;
 import com.fox.cradle.features.stampsystem.model.stampcard.StampCardResponse;
 import com.fox.cradle.features.stampsystem.service.card.StampCardService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -75,14 +74,6 @@ public class StampCardController
         StampCardResponse result = stampCardService.getStampCard(id);
 
         return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/fields/{stampCardId}")
-    public ResponseEntity<List<StampFieldResponse>> getAllStampFields(@PathVariable Long stampCardId)
-    {
-        List<StampFieldResponse> results = stampCardService.getStampFields(stampCardId);
-
-        return ResponseEntity.ok(results);
     }
 
     @DeleteMapping("/{id}")

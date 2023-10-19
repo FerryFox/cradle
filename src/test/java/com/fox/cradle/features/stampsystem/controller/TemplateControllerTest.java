@@ -74,7 +74,7 @@ class TemplateControllerTest extends AbstractMongoDBIntegrationTest
         String token = SaveUsersAndGetToken();
 
         //When
-        mockMvc.perform(post("/api/templates/new-template")
+         mockMvc.perform(post("/api/templates/new-template")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + token)
                         .content(STANDARD_NEW_TEMPLATE))

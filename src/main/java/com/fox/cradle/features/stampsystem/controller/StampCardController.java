@@ -40,7 +40,7 @@ public class StampCardController
                 .buildAndExpand(result.getId())
                 .toUri();
 
-        return ResponseEntity.created(location ).body(result);
+        return ResponseEntity.created(location).body(result);
     }
 
     @GetMapping("/allactive")

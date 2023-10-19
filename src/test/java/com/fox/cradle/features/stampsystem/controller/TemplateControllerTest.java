@@ -293,9 +293,6 @@ class TemplateControllerTest extends AbstractMongoDBIntegrationTest
                 .andExpect(jsonPath("$.createdDate").exists())
                 .andExpect(jsonPath("$.lastModifiedDate").exists());
 
-
-
-
     }
 
     @Test

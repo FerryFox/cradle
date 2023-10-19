@@ -21,7 +21,7 @@ public abstract class AbstractMongoDBIntegrationTest {
 
     @AfterAll
     static void cleanup() {
-        mongoDBContainer.stop(); // stop the MongoDB container
+        mongoDBContainer.stop();
     }
 
     @DynamicPropertySource

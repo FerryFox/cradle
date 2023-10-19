@@ -75,9 +75,9 @@ public class DatabaseInitializer implements CommandLineRunner
         userRepository.save(userIce);
 
         AppUser appUserIceCompany = new AppUser();
-        appUserIceCompany.setAppUserName("Ice cream man");
+        appUserIceCompany.setAppUserName(userIce.getFirstname());
         appUserIceCompany.setAppUserEmail("w@w");
-        appUserIceCompany.setReceiveNews(true);
+        appUserIceCompany.setReceiveNews(userIce.isReceiveNews());
         appUserIceCompany.setNameIdentifier(UUID.randomUUID().toString());
         appUserService.saveAppUser(appUserIceCompany);
 

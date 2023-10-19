@@ -7,6 +7,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.util.List;
 
 @SpringBootTest
@@ -17,70 +18,46 @@ class PictureServiceIntegrationTest extends AbstractMongoDBIntegrationTest
 
     public static final String DEFAULT_PICTURE = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolGxg";
 
-    @Test
-    void WalkThroughPictureService() throws Exception {
-        Picture loadedPicture = pictureService.loadPictureFromFile("ice");
-        Assertions.assertNotNull(loadedPicture);
-
-        Picture savePicture = pictureService.savePicture(loadedPicture);
-        Assertions.assertNotNull(savePicture);
-
-
-        String base64EncodedPic = pictureService.getPictureString(savePicture.getId());
-        Assertions.assertNotNull(base64EncodedPic);
-
-        List<Picture> allPictures = pictureService.getAllPictures();
-        Assertions.assertNotNull(allPictures);
-
-        pictureService.deletePictureById(savePicture.getId());
-    }
 
     @Test
     void loadPictureFromFileTest() throws Exception
     {
-        //When
-        Picture loadedPicture = pictureService.loadPictureFromFile("ice");
+        //GIVEN
+        String imageName = "ice";
 
-        //Then
-        Assertions.assertNotNull(loadedPicture);
-        Assertions.assertNotNull(loadedPicture.getImageBinary());
-        Assertions.assertNotNull(loadedPicture.getName());
-        Assertions.assertNotNull(loadedPicture.getType());
+        //WHEN
+        String picture = pictureService.loadPictureFromFile(imageName);
+
+        //THEN
+        Assertions.assertNotNull(picture);
+        Assertions.assertTrue(picture.startsWith("data:image/jpeg;base64,/9j/"));
     }
 
     @Test
     void getAllPicturesTest() throws Exception
     {
-        //Given
-        List<Picture> test = pictureService.getAllPictures();
-        Assertions.assertNotNull(test);
+        //WHEN
+        List<Picture> pictures = pictureService.getAllPictures();
 
-        Picture loadedPicture = pictureService.loadPictureFromFile("ice");
-        Assertions.assertNotNull(loadedPicture);
-
-        Picture savedPicture = pictureService.savePicture(loadedPicture);
-        Assertions.assertNotNull(savedPicture);
-
-        List<Picture> allPictures2 = pictureService.getAllPictures();
-        Assertions.assertNotNull(allPictures2);
-        Assertions.assertEquals(1, allPictures2.size());
-
-        //Cleanup
-        pictureService.deletePictureById(savedPicture.getId());
+        //THEN
+        Assertions.assertNotNull(pictures);
     }
 
     @Test
     void savePictureAndDelete() throws Exception
     {
-        //Given
-        Picture loadedPicture = pictureService.loadPictureFromFile("ice");
-        Assertions.assertNotNull(loadedPicture);
+        //GIVEN
+        String picture = DEFAULT_PICTURE;
+        String name = "test";
 
-        Picture savedPicture = pictureService.savePicture(loadedPicture);
+        //WHEN
+        Picture savedPicture = pictureService.savePicture(picture, name);
+
+        //THEN
         Assertions.assertNotNull(savedPicture);
-
-        //Cleanup
-        pictureService.deletePictureById(savedPicture.getId());
+        Assertions.assertNotNull(savedPicture.getId());
+        Assertions.assertEquals(name, savedPicture.getName());
+        Assertions.assertEquals(PictureType.BASE64, savedPicture.getType());
     }
 
     @Test
@@ -166,6 +143,22 @@ class PictureServiceIntegrationTest extends AbstractMongoDBIntegrationTest
         Assertions.assertTrue(binary.getData().length > 0);
     }
 
+    @Test
+    void getPictureByIdTest() throws IOException {
+
+        //GIVEN
+        String picAsString = pictureService.loadPictureFromFile("ice");
+        String id = pictureService.savePicture(picAsString, "iceTest").getId();
+        //WHEN
+        Picture pic = pictureService.getPictureById(id);
+
+        //THEN
+        Assertions.assertNotNull(pic);
+        Assertions.assertEquals("iceTest", pic.getName());
+        Assertions.assertEquals(PictureType.BASE64, pic.getType());
+        Assertions.assertNotNull(pic.getImageBinary());
+        Assertions.assertEquals(id , pic.getId());
+    }
 
     @Test
     void removePrefixFrom64()

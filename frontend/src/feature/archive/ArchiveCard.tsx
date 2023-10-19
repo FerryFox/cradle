@@ -67,7 +67,7 @@ export default function ArchiveCard( { stampCard }: ArchiveCardViewProps)
                             by  {displayName}
                         </Typography>
                         <Typography variant={"body1"} align={"left"}>
-                            expire : {date}
+                            collected : {date}
                         </Typography>
                     </Stack>
                 </Grid>

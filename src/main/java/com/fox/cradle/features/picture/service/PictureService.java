@@ -1,6 +1,7 @@
 package com.fox.cradle.features.picture.service;
 
 import com.fox.cradle.exceptions.PictureFileMissingException;
+import com.fox.cradle.exceptions.WrongPictureTypeException;
 import com.fox.cradle.features.picture.model.Picture;
 import org.bson.types.Binary;
 import org.springframework.core.io.ClassPathResource;
@@ -21,15 +22,16 @@ public class PictureService
     private final PictureRepository pictureRepository;
     private static final String DEFAULT_PICTURE = "data:image";
 
-    public Picture loadPictureFromFile(String imageName) throws PictureFileMissingException, IOException {
+    public String loadPictureFromFile(String imageName) throws PictureFileMissingException, IOException
+    {
         ClassPathResource resource = new ClassPathResource("images/" + imageName + ".jpg");
         byte[] imageData = Files.readAllBytes(resource.getFile().toPath());
 
-        Picture picture = new Picture();
-        picture.setImageBinary(new Binary(imageData));
-        picture.setName(imageName);
-        picture.setType(PictureType.BASE64);
-        return picture;
+        // Convert the byte array to a Base64-encoded string
+        String base64Image = Base64.getEncoder().encodeToString(imageData);
+
+        // Return the data URI for a JPEG image
+        return "data:image/jpeg;base64," + base64Image;
     }
 
     public List<Picture> getAllPictures()
@@ -39,7 +41,6 @@ public class PictureService
 
     public Picture savePicture(String possiblePicture, String name)
     {
-
         Picture picture = new Picture();
         picture.setName(name);
 
@@ -48,12 +49,15 @@ public class PictureService
             picture.setType(PictureType.BASE64);
             picture.setImageBinary(base64ToBinary(possiblePicture));
         }
-        else
+        else if (possiblePicture.startsWith("http"))
         {
             picture.setType(PictureType.URL_LINK);
             picture.setUrl(possiblePicture);
         }
-
+        else
+        {
+            throw new WrongPictureTypeException("Picture type not supported");
+        }
         return pictureRepository.save(picture);
     }
 
@@ -99,12 +103,14 @@ public class PictureService
         return new Binary(bytes);
     }
 
+
     public Picture getPictureById(String id)
     {
         return pictureRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Picture not found"));
     }
 
+    ///used to compare picture-strings
     public String removePrefixFrom64(String base64)
     {
         if (base64.startsWith(DEFAULT_PICTURE))

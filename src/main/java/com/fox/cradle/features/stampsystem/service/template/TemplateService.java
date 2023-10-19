@@ -72,7 +72,6 @@ public class TemplateService
         return mapService.mapTemplateToResponse(savedTemplate);
     }
 
-
     public Template save(Template template)
     {
         return templateRepository.save(template);

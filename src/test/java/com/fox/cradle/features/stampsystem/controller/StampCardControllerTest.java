@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class StampCardControllerTestWithInitialDb extends AbstractMongoDBIntegrationTest {
+class StampCardControllerTest extends AbstractMongoDBIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -38,7 +38,7 @@ class StampCardControllerTestWithInitialDb extends AbstractMongoDBIntegrationTes
     void createGetAndDeleteStampCard() throws Exception {
         //GIVEN
         String token = getTokenFromIceCreamCompany(); //Ice Cream Company, w@w
-        String templateId = "3"; //Cinema Template
+        String templateId = "1"; //Ice Cream Template
 
         //WHEN THEN
         MvcResult result = mockMvc.perform(post("/api/stampcard/create")
@@ -55,15 +55,6 @@ class StampCardControllerTestWithInitialDb extends AbstractMongoDBIntegrationTes
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
 
-
-        //can not be test atm because of the way we handle the fields during the manuel saveing of the stampcard
-        /*
-        mockMvc.perform(get("/api/stampcard/fields/" + returnedId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk());
-         */
-
         mockMvc.perform(delete("/api/stampcard/" + returnedId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + token))
@@ -73,20 +64,25 @@ class StampCardControllerTestWithInitialDb extends AbstractMongoDBIntegrationTes
     @Test
     void getAllActiveStampCardsNoFields() throws Exception {
         //GIVEN
-        String token = getTokenFromIceCreamCompany(); //Ice Cream Company, w@w
+        String token = getTokenFromIceCreamCompany();
 
         //WHEN THEN
-        mockMvc.perform(get("/api/stampcard/allactive")
+        MvcResult value = mockMvc.perform(get("/api/stampcard/allactive")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + token))
             .andExpect(status().isOk())
-            .andExpect(result -> result.getResponse().getContentAsString().contains("Cinema"));
+            .andExpect(result -> result.getResponse().getContentAsString().contains("Ice Cream"))
+            .andExpect(result -> result.getResponse().getContentAsString().contains("Cinema"))
+            .andReturn();
+
+        System.out.println(value.getResponse().getContentAsString());
+
     }
 
     @Test
     void getAllStampCardsArchived() throws Exception {
         //GIVEN
-        String token = getTokenFromIceCreamCompany(); //Ice Cream Company, w@w
+        String token = getTokenFromIceCreamCompany();
 
         //WHEN THEN
         MvcResult result = mockMvc.perform(get("/api/stampcard/archived")
@@ -95,15 +91,12 @@ class StampCardControllerTestWithInitialDb extends AbstractMongoDBIntegrationTes
             .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
-        Assertions.assertFalse(content.contains("Cinema"));
+        Assertions.assertFalse(content.contains("Ice Cream"));
     }
-
-
-
 
     private String getTokenFromIceCreamCompany()
     {
-        User user = userRepository.findByEmail("w@w").get();
+        User user = userRepository.findByEmail("icream@gmail.com").get();
         return jwtService.generateToken(user);
     }
 }

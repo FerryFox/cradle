@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -241,7 +242,7 @@ class TemplateControllerTest extends AbstractMongoDBIntegrationTest
     }
 
     @Test
-    void updateTemplate() throws Exception {
+    void updateTemplateTest() throws Exception {
         //GIVEN
         String token = SaveUsersAndGetToken();
 
@@ -253,33 +254,46 @@ class TemplateControllerTest extends AbstractMongoDBIntegrationTest
                 .andExpect(status().isCreated())
                 .andReturn();
 
+        String returnedId = JsonPath.read(result.getResponse().getContentAsString(), "$.id").toString();
+        TemplateResponse templateResponse = new ObjectMapper().readValue(result.getResponse().getContentAsString(), TemplateResponse.class);
+        Instant now = Instant.now();
+
         TemplateEdit templateEdit = TemplateEdit.builder()
-                .id(JsonPath.read(result.getResponse().getContentAsString(), "$.id"))
-                .name("CoolTemplate 2")
-                .description("buy some get some more")
-                .defaultCount("10")
-                .stampCardCategory(StampCardCategory.DRINK.toString())
-                .stampCardSecurity(StampCardSecurity.TRUSTUSER.toString())
-                .stampCardStatus(StampCardStatus.ACTIVE.toString())
-                .expirationDate("2024-10-18T11:59:56.000Z")
+                .id(returnedId)
+                .name("updatedName")
+                .promise("updatedPromise")
+                .description("updatedDescription")
+                .defaultCount("20")
+
+                .image(templateResponse.getImage())
+                .createdBy("updatedCreatedBy")
+                .stampCardSecurity("TRUSTUSER")
+                .stampCardStatus("ACTIVE")
+                .stampCardCategory("FOOD")
+
+                .expirationDate("2029-10-18T11:59:56.000Z")
+                .lastModifiedDate(now.toString())
                 .build();
 
+        ObjectMapper objectMapper = new ObjectMapper();
         //WHEN
         mockMvc.perform(put("/api/templates")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + token)
-                        .content(new ObjectMapper().writeValueAsString(templateEdit)))
+                        .content(objectMapper.writeValueAsString(templateEdit)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.name").value("CoolTemplate 2"))
-                .andExpect(jsonPath("$.description").value("buy some get some more"))
-                .andExpect(jsonPath("$.defaultCount").value(10))
-                .andExpect(jsonPath("$.stampCardCategory").value("DRINK"))
+                .andExpect(jsonPath("$.name").value("updatedName"))
+                .andExpect(jsonPath("$.description").value("updatedDescription"))
+                .andExpect(jsonPath("$.defaultCount").value(20))
+                .andExpect(jsonPath("$.stampCardCategory").value("FOOD"))
                 .andExpect(jsonPath("$.stampCardSecurity").value("TRUSTUSER"))
                 .andExpect(jsonPath("$.stampCardStatus").value("ACTIVE"))
-                .andExpect(jsonPath("$.expirationDate").value("2024-10-18T11:59:56.000Z"))
+                .andExpect(jsonPath("$.expirationDate").value("2029-10-18T11:59:56.000Z"))
                 .andExpect(jsonPath("$.createdDate").exists())
                 .andExpect(jsonPath("$.lastModifiedDate").exists());
+
+
 
 
     }
@@ -301,8 +315,14 @@ class TemplateControllerTest extends AbstractMongoDBIntegrationTest
 
     @Test
     void getTemplatesBySecurity() throws Exception {
+        //GIVEN
+        String token = SaveUsersAndGetToken();
+
+        //THEN WHEN
+
         mockMvc.perform(get("/api/templates/security")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0]").value("TRUSTUSER"))
                 .andExpect(jsonPath("$[1]").value("TIMEGATE"))
@@ -311,13 +331,19 @@ class TemplateControllerTest extends AbstractMongoDBIntegrationTest
 
     @Test
     void getTemplatesByStatus() throws Exception {
+        //GIVEN
+        String token = SaveUsersAndGetToken();
+
+        //THEN WHEN
         mockMvc.perform(get("/api/templates/status")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0]").value("ACTIVE"))
                 .andExpect(jsonPath("$[1]").value("INACTIVE"))
-                .andExpect(jsonPath("$[2]").value("PUBLIC"))
-                .andExpect(jsonPath("$[3]").value("PRIVATE"));
+                .andExpect(jsonPath("$[2]").value("PRIVATE"))
+                .andExpect(jsonPath("$[3]").value("PUBLIC"));
 
     }
 

@@ -1,13 +1,13 @@
 spring:
   datasource:
     url: ${POSTGRES_URL}
-    username: postgres
+    username: ${POSTGRES_USER}
     password: ${POSTGRES_PW}  # this is for local application only
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: false
     properties:
       hibernate:
@@ -18,7 +18,7 @@ spring:
   data:
     mongodb:
       uri: ${MONGO_URL}
-      database: DeleteMeDb
+      database: cradleprod
 
 
 application:

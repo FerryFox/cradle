@@ -20,18 +20,24 @@ import com.fox.cradle.features.stampsystem.service.stamp.TimeGateRepository;
 import com.fox.cradle.features.stampsystem.service.template.TemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Component
+@Profile({"test", "dev"})
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner
 {
+    private final MongoTemplate mongoTemplate;
+
     private final AppUserService appUserService;
     private final UserRepository userRepository;
     private final TemplateService templateService;
@@ -44,8 +50,19 @@ public class DatabaseInitializer implements CommandLineRunner
     @Override
     public void run(String... args) throws Exception {
     //MongoDb
+        String collectionNamePicture = "pictures";
+        String collectionNameNews = "news";
+        if (mongoTemplate.collectionExists(collectionNamePicture))
+        {
+            mongoTemplate.dropCollection(collectionNamePicture);
+        }
+        if (mongoTemplate.collectionExists(collectionNameNews))
+        {
+            mongoTemplate.dropCollection(collectionNameNews);
+        }
+
         List<Picture> pictures = initPictureMongoDb();
-        //initNewsMongoDb();
+        List<News> news = initNewsMongoDb();
 
     //Create Some AppUsers
         User userIce = new User();
@@ -251,8 +268,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
     private List<Picture> initPictureMongoDb() throws Exception
     {
-        List<Picture> pictures = pictureService.getAllPictures();
-        if (pictures.isEmpty()) return pictures;
+        List<Picture> pictures = new ArrayList<>();
 
         Picture ice = pictureService.loadPictureFromFile("ice");
         pictures.add(pictureService.savePicture(ice));
@@ -280,7 +296,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
         return pictures;
     }
-    private void initNewsMongoDb()
+    private List<News> initNewsMongoDb()
     {
         News news1 = News.builder()
                 .title("Collect & Earn")
@@ -341,5 +357,6 @@ public class DatabaseInitializer implements CommandLineRunner
 
         List<News> newsList = List.of(news1, news2, news3, news4, news5, news6, news7, news8);
         newsList.forEach(newsService::saveNews);
+        return newsList;
     }
 }

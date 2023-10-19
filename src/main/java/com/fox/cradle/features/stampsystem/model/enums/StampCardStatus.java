@@ -4,7 +4,6 @@ public enum StampCardStatus
 {
     ACTIVE,
     INACTIVE,
-    DELETED,
     PRIVATE,
     PUBLIC,
 }

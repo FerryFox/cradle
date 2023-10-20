@@ -16,7 +16,7 @@ class PictureServiceIntegrationTest extends AbstractMongoDBIntegrationTest
     @Autowired
     private PictureService pictureService;
 
-    public static final String DEFAULT_PICTURE = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolGxg";
+    public static final String DEFAULT_PICTURE = "data:image/jpeg;base64,/9j/4AAQgGBolGxg";
 
 
     @Test
@@ -95,7 +95,7 @@ class PictureServiceIntegrationTest extends AbstractMongoDBIntegrationTest
         //When
         Picture savedPicture = pictureService.savePicture(picture);
         Picture updatedPicture = pictureService.updatePicutre(savedPicture.getId(),
-                "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkdsddsdsdshUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolGxg");
+                "data:image/jpeg;base64,/9j/4AAQSkZYHSggGBolGxg");
 
         //Then
         Assertions.assertNotNull(updatedPicture);

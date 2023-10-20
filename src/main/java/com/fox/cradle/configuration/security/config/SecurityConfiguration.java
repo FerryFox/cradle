@@ -35,6 +35,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(c -> {
                     //Allow this without a token
                     c.requestMatchers(HttpMethod.GET, "/static/**").permitAll();
+                    c.requestMatchers(HttpMethod.GET, "/assets/**").permitAll();
+                    c.requestMatchers(HttpMethod.GET, "/").permitAll(); // Allow root
+                    c.requestMatchers(HttpMethod.GET, "/index.html").permitAll(); // Allow index.html
+                    c.requestMatchers(HttpMethod.GET, "/static/**").permitAll();
                     c.requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll();
                     c.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll();
                     c.requestMatchers(HttpMethod.GET, "/api/news/**").permitAll();

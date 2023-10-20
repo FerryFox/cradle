@@ -1,15 +1,20 @@
-export function resizeAndCropImage(file, maxWidth, maxHeight, callback) {
+export function resizeAndCropImage(
+    file: File,
+    maxWidth: number,
+    maxHeight: number,
+    callback: (dataUrl: string) => void
+): void {
     const reader = new FileReader();
 
-    reader.onload = function (event) {
+    reader.onload = function(event: ProgressEvent<FileReader>) {
         const img = new Image();
 
-        img.onload = function () {
+        img.onload = function() {
             const canvas = document.createElement('canvas');
 
             let width = img.width;
             let height = img.height;
-            let newWidth, newHeight;
+            let newWidth: number, newHeight: number;
             let offsetX = 0, offsetY = 0;
 
             const targetAspect = maxWidth / maxHeight;
@@ -31,12 +36,15 @@ export function resizeAndCropImage(file, maxWidth, maxHeight, callback) {
             canvas.height = maxHeight;
 
             const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, -offsetX, -offsetY, newWidth, newHeight);
-
-            callback(canvas.toDataURL("image/jpeg"));
+            if (ctx) {
+                ctx.drawImage(img, -offsetX, -offsetY, newWidth, newHeight);
+                callback(canvas.toDataURL("image/jpeg"));
+            }
         }
 
-        img.src = event.target.result;
+        if (typeof event.target?.result === "string") {
+            img.src = event.target.result;
+        }
     }
 
     reader.readAsDataURL(file);

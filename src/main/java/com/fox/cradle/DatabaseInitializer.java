@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Profile({"test", "dev"})
+@Profile({"dev"})
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner
 {

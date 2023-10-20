@@ -55,8 +55,8 @@ class AuthenticationServiceIntegrationTest extends AbstractMongoDBIntegrationTes
     {
         //GIVEN
         AuthenticationRequest request = new AuthenticationRequest();
-        request.setEmail("q@q");
-        request.setPassword("1234");
+        request.setEmail("icecream@gmail.com");
+        request.setPassword("startrek");
 
         //WHEN
         AuthenticationResponse response = authService.authenticate(request);
@@ -64,7 +64,7 @@ class AuthenticationServiceIntegrationTest extends AbstractMongoDBIntegrationTes
         //THEN
         assert response.getToken() != null;
         assertTrue(response.getToken().length() > 0);
-        assert jwtService.isTokenValid(response.getToken(), new User(1,"q@q", "1234", "fox", true));
+        assert jwtService.isTokenValid(response.getToken(), new User(1,"icecream@gmail.com", "startrek", "Ice Cream Company", true));
     }
 
     @Test
@@ -72,7 +72,7 @@ class AuthenticationServiceIntegrationTest extends AbstractMongoDBIntegrationTes
     {
         // GIVEN
         User user = new User();
-        user.setEmail("q@q");
+        user.setEmail("icecream@gmail.com");
         String token = jwtService.generateToken(user);
 
         HttpServletRequest request = mock(HttpServletRequest.class);

@@ -1,98 +1,177 @@
 package com.fox.cradle.features.picture.service;
 
+import com.fox.cradle.AbstractMongoDBIntegrationTest;
 import com.fox.cradle.features.picture.model.Picture;
+import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
 
+import java.io.IOException;
 import java.util.List;
 
 @SpringBootTest
-class PictureServiceIntegrationTest
+class PictureServiceIntegrationTest extends AbstractMongoDBIntegrationTest
 {
     @Autowired
     private PictureService pictureService;
 
-    @Container
-    static final MongoDBContainer mongoDBContainer = new MongoDBContainer();
+    public static final String DEFAULT_PICTURE = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolGxg";
 
-    @BeforeAll
-    static void setup()
-    {
-        mongoDBContainer.start();
-    }
-
-    @AfterAll
-    static void cleanup()
-    {
-        mongoDBContainer.stop(); // stop the MongoDB container
-    }
-
-    @DynamicPropertySource
-    static void setUrlDynamically(DynamicPropertyRegistry registry)
-    {
-        System.out.println( "MONGO_URL=" + mongoDBContainer.getReplicaSetUrl());
-        registry.add("MONGO_URL", () -> mongoDBContainer.getReplicaSetUrl());
-    }
-
-    @Test
-    void WalkThroughPictureService() throws Exception {
-        Picture loadedPicture = pictureService.loadPictureFromFile("ice");
-        assert loadedPicture != null;
-
-        Picture savePicture = pictureService.savePicture(loadedPicture);
-        assert savePicture != null;
-
-        String base64EncodedPic = pictureService.getPictureByIdBase64Encoded(savePicture.getId());
-        assert base64EncodedPic != null;
-
-        List<Picture> allPictures = pictureService.getAllPictures();
-        assert allPictures != null;
-        assert allPictures.size() == 1;
-
-        pictureService.deletePictureById(savePicture.getId());
-    }
 
     @Test
     void loadPictureFromFileTest() throws Exception
     {
-        Picture loadedPicture = pictureService.loadPictureFromFile("ice");
-        assert loadedPicture != null;
-        assert loadedPicture.getName().equals("ice");
+        //GIVEN
+        String imageName = "ice";
+
+        //WHEN
+        String picture = pictureService.loadPictureFromFile(imageName);
+
+        //THEN
+        Assertions.assertNotNull(picture);
+        Assertions.assertTrue(picture.startsWith("data:image/jpeg;base64,/9j/"));
     }
 
     @Test
     void getAllPicturesTest() throws Exception
     {
-        List<Picture> test = pictureService.getAllPictures();
-        assert test != null;
+        //WHEN
+        List<Picture> pictures = pictureService.getAllPictures();
 
-        Picture loadedPicture = pictureService.loadPictureFromFile("ice");
-        assert loadedPicture != null;
-
-        Picture savedPicture = pictureService.savePicture(loadedPicture);
-        assert savedPicture != null;
-
-        List<Picture> allPictures2 = pictureService.getAllPictures();
-        assert allPictures2 != null;
-        assert allPictures2.size() == 1;
-
-        pictureService.deletePictureById(savedPicture.getId());
+        //THEN
+        Assertions.assertNotNull(pictures);
     }
 
     @Test
     void savePictureAndDelete() throws Exception
     {
-        Picture loadedPicture = pictureService.loadPictureFromFile("ice");
-        assert loadedPicture != null;
+        //GIVEN
+        String picture = DEFAULT_PICTURE;
+        String name = "test";
 
-        Picture savedPicture = pictureService.savePicture(loadedPicture);
-        assert savedPicture != null;
+        //WHEN
+        Picture savedPicture = pictureService.savePicture(picture, name);
 
+        //THEN
+        Assertions.assertNotNull(savedPicture);
+        Assertions.assertNotNull(savedPicture.getId());
+        Assertions.assertEquals(name, savedPicture.getName());
+        Assertions.assertEquals(PictureType.BASE64, savedPicture.getType());
+    }
+
+    @Test
+    void savePictureWithBaseString()
+    {
+        //Given
+        Picture picture = new Picture();
+        picture.setName("test");
+        picture.setType(PictureType.BASE64);
+        picture.setImageBinary(new Binary(DEFAULT_PICTURE.getBytes()));
+
+        //When
+        Picture savedPicture = pictureService.savePicture(picture);
+
+        //Then
+        Assertions.assertNotNull(savedPicture);
+        Assertions.assertNotNull(savedPicture.getId());
+        Assertions.assertEquals(picture.getName(), savedPicture.getName());
+        Assertions.assertEquals(picture.getType(), savedPicture.getType());
+        Assertions.assertEquals(picture.getImageBinary(), savedPicture.getImageBinary());
+
+        //Cleanup
         pictureService.deletePictureById(savedPicture.getId());
+    }
+
+    @Test
+    void updatePicutreTest()
+    {
+        //Given
+        Picture picture = new Picture();
+        picture.setName("test");
+        picture.setType(PictureType.BASE64);
+        picture.setImageBinary(new Binary(DEFAULT_PICTURE.getBytes()));
+
+        //When
+        Picture savedPicture = pictureService.savePicture(picture);
+        Picture updatedPicture = pictureService.updatePicutre(savedPicture.getId(),
+                "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkdsddsdsdshUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolGxg");
+
+        //Then
+        Assertions.assertNotNull(updatedPicture);
+        Assertions.assertEquals(savedPicture.getId(), updatedPicture.getId());
+        Assertions.assertEquals(savedPicture.getName(), updatedPicture.getName());
+        Assertions.assertEquals(savedPicture.getType(), updatedPicture.getType());
+        Assertions.assertNotEquals(savedPicture.getImageBinary(), updatedPicture.getImageBinary());
+
+        //Cleanup
+        pictureService.deletePictureById(savedPicture.getId());
+    }
+
+    @Test
+    void getPictureString()
+    {
+        //Given
+        Picture picture = new Picture();
+        picture.setName("test");
+        picture.setType(PictureType.BASE64);
+        picture.setImageBinary(new Binary(DEFAULT_PICTURE.getBytes()));
+        Picture savedPicture = pictureService.savePicture(picture);
+
+        //When
+        String pictureString = pictureService.getPictureString(savedPicture.getId());
+
+        //Then
+        Assertions.assertNotNull(pictureString);
+        //Since the picture is saved as a binary, the string should not be the same as the default picture
+        //Since the start of string is removed, the string should not start with "data:image/jpeg;base64,"
+        Assertions.assertNotEquals(DEFAULT_PICTURE, pictureString);
+        Assertions.assertTrue(pictureString.startsWith("ZGF0YTppbWFnZS9qcGVnO2"));
+    }
+
+    @Test
+    void base64ToBinary()
+    {
+        //Given
+        String base64 = DEFAULT_PICTURE;
+
+        //When
+        Binary binary = pictureService.base64ToBinary(base64);
+
+        //Then
+        Assertions.assertNotNull(binary);
+        Assertions.assertTrue(binary.getData().length > 0);
+    }
+
+    @Test
+    void getPictureByIdTest() throws IOException {
+
+        //GIVEN
+        String picAsString = pictureService.loadPictureFromFile("ice");
+        String id = pictureService.savePicture(picAsString, "iceTest").getId();
+        //WHEN
+        Picture pic = pictureService.getPictureById(id);
+
+        //THEN
+        Assertions.assertNotNull(pic);
+        Assertions.assertEquals("iceTest", pic.getName());
+        Assertions.assertEquals(PictureType.BASE64, pic.getType());
+        Assertions.assertNotNull(pic.getImageBinary());
+        Assertions.assertEquals(id , pic.getId());
+    }
+
+    @Test
+    void removePrefixFrom64()
+    {
+        //Given
+        String base64 = DEFAULT_PICTURE;
+
+        //When
+        String result = pictureService.removePrefixFrom64(base64);
+
+        //Then
+        Assertions.assertNotNull(result);
+        Assertions.assertNotEquals(base64, result);
+        Assertions.assertFalse(result.startsWith("data:image/jpeg;base64,"));
     }
 }

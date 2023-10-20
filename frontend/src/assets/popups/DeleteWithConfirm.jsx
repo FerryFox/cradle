@@ -28,7 +28,7 @@ function DeleteWithConfirm({ onDelete }) {
 return (
     <Container>
         <Box>
-            <Button variant="contained" color="warning" onClick={handleOpen}>
+            <Button variant="contained" color="secondary" onClick={handleOpen}>
                 Delete
             </Button>
             <Modal open={open} onClose={handleClose}>

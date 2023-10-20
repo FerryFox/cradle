@@ -1,6 +1,5 @@
 package com.fox.cradle.configuration.security.jwt;
 
-import com.fox.cradle.configuration.security.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -42,9 +41,7 @@ public class JwtService implements IJwtService
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); // Skip "Bearer "
         }
-        String result = extractUsername(token);
-
-        return result;
+        return extractUsername(token);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver)

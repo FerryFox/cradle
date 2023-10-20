@@ -17,7 +17,7 @@ public class NewsController
 {
     private final NewsService newsService;
 
-    @GetMapping("/all")
+    @GetMapping("/home")
     public ResponseEntity<List<News>> getAllNews()
     {
         return ResponseEntity.ok(newsService.getAllNews());

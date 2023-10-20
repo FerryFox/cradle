@@ -19,7 +19,7 @@ public class Message
 
     private Instant timestamp = Instant.now();
 
-    private String message;
+    private String note;
 
     @Override
     public String toString()
@@ -28,7 +28,7 @@ public class Message
         return "Massage{" +
                 "id='" + id + '\'' +
                 ", timestamp=" + localDateTime +
-                ", message='" + message + '\'' +
+                ", message='" + note + '\'' +
                 '}';
     }
 }

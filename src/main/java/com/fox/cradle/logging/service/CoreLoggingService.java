@@ -13,7 +13,7 @@ public class CoreLoggingService
     public void logMassage(String massage)
     {
         Message message = new Message();
-        message.setMessage(massage);
+        message.setNote(massage);
         messageService.saveMassage(message);
     }
 }

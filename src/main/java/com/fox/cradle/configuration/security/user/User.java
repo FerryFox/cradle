@@ -1,6 +1,5 @@
 package com.fox.cradle.configuration.security.user;
 
-import com.fox.cradle.features.appuser.model.AppUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

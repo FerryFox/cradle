@@ -14,7 +14,7 @@ public class NewsService
 
     public News getNewsById(String id)
     {
-        return newsReposetory.findById(id).get();
+        return newsReposetory.findById(id).orElseThrow();
     }
 
     public List<News> getAllNews()

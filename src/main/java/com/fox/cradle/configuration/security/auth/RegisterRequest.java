@@ -1,6 +1,5 @@
 package com.fox.cradle.configuration.security.auth;
 
-import com.fox.cradle.features.appuser.model.AppUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

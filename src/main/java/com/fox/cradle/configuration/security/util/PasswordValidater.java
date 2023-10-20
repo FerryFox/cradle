@@ -2,13 +2,10 @@ package com.fox.cradle.configuration.security.util;
 
 public class PasswordValidater
 {
-    private static final int PASSWORD_MIN_Lenght = 8;
-
-    //the last ones are not needed since ther are not allowed anyway
+    private static final int PASSWORD_MIN_LENGTH = 8;
     private static final String[] FORBIDDEN_PASSWORDS = {"Password123", "Password", "12345678"};
     public static boolean isValid(String password)
     {
-        //just in case some persons copyed ther password
         password = password.trim();
 
         if(!isPasswordLenghtOK(password)) return false;
@@ -26,7 +23,7 @@ public class PasswordValidater
 
     public static boolean isPasswordLenghtOK(String password)
     {
-        if(password.length() < PASSWORD_MIN_Lenght)
+        if(password.length() < PASSWORD_MIN_LENGTH)
         {
             return false;
         }

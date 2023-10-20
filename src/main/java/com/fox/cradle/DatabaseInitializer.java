@@ -1,267 +1,240 @@
 package com.fox.cradle;
 
-import com.fox.cradle.configuration.security.user.User;
-import com.fox.cradle.configuration.security.user.UserRepository;
+import com.fox.cradle.configuration.security.auth.AuthenticationService;
+import com.fox.cradle.configuration.security.auth.RegisterRequest;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
-import com.fox.cradle.features.picture.service.PictureService;
-import com.fox.cradle.features.stampSystem.model.enums.StampCardCategory;
-import com.fox.cradle.features.stampSystem.model.enums.StampCardSecurity;
-import com.fox.cradle.features.stampSystem.model.enums.StampCardStatus;
-import com.fox.cradle.features.stampSystem.model.stamp.TimeGateSecurity;
-import com.fox.cradle.features.stampSystem.model.template.Template;
 import com.fox.cradle.features.news.model.News;
 import com.fox.cradle.features.news.model.NewsCategory;
 import com.fox.cradle.features.news.service.NewsService;
-import com.fox.cradle.features.stampSystem.service.card.StampCardService;
-import com.fox.cradle.features.stampSystem.service.stamp.StampService;
-import com.fox.cradle.features.stampSystem.service.stamp.TimeGateRepository;
-import com.fox.cradle.features.stampSystem.service.template.TemplateService;
+import com.fox.cradle.features.picture.service.PictureService;
+import com.fox.cradle.features.stampsystem.model.enums.StampCardCategory;
+import com.fox.cradle.features.stampsystem.model.enums.StampCardSecurity;
+import com.fox.cradle.features.stampsystem.model.enums.StampCardStatus;
+import com.fox.cradle.features.stampsystem.model.template.NewTemplate;
+import com.fox.cradle.features.stampsystem.service.template.TemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 @Component
+@Profile({"test", "dev"})
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner
 {
+    private final MongoTemplate mongoTemplate;
+    private final AuthenticationService authService;
     private final AppUserService appUserService;
-    private final UserRepository userRepository;
     private final TemplateService templateService;
-    private final StampCardService stampCardService;
-    private final StampService stampService;
     private final PictureService pictureService;
     private final NewsService newsService;
-    private final TimeGateRepository timeGateRepository;
+
+    static final String PASSWORD = "startrek";
+    static final String EXP = "2024-10-11T06:39:11.609Z";
 
     @Override
     public void run(String... args) throws Exception {
     //MongoDb
-        initPictureMongoDb();
-        //initNewsMongoDb();
+        String collectionNamePicture = "pictures";
+        String collectionNameNews = "news";
+        if (mongoTemplate.collectionExists(collectionNamePicture))
+        {
+            mongoTemplate.dropCollection(collectionNamePicture);
+        }
+        if (mongoTemplate.collectionExists(collectionNameNews))
+        {
+            mongoTemplate.dropCollection(collectionNameNews);
+        }
 
-    //SQL
-        User userIce = new User();
-        userIce.setEmail("w@w");
-        userIce.setPassword("1234");
-        userIce.setReceiveNews(true);
-        userIce.setFirstname("Ice Cream Company");
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        userIce.setPassword(passwordEncoder.encode(userIce.getPassword()));
-        userRepository.save(userIce);
+        initNewsMongoDb();
 
-        AppUser appUserIceCompany = new AppUser();
-        appUserIceCompany.setAppUserName("Ice cream man");
-        appUserIceCompany.setAppUserEmail("w@w");
-        appUserIceCompany.setReceiveNews(true);
-        appUserIceCompany.setNameIdentifier(UUID.randomUUID().toString());
-        appUserService.saveAppUser(appUserIceCompany);
+//Create Some AppUsers
+    //Create User 1
+        RegisterRequest registerRequestIce = RegisterRequest.builder()
+                .firstname("Ice Cream Company")
+                .email("icecream@gmail.com")
+                .password(PASSWORD)
+                .receiveNews(true)
+                .build();
 
-        User userBob = new User();
-        userBob.setEmail("q@q");
-        userBob.setPassword("1234");
-        userBob.setReceiveNews(true);
-        userBob.setFirstname("Bob");
-        userBob.setPassword(passwordEncoder.encode(userBob.getPassword()));
-        userRepository.save(userBob);
+        //Event triggers the creation of an appUser
+        authService.register(registerRequestIce);
+        AppUser appUserIceCompany = appUserService.findUserByEmail(registerRequestIce.getEmail()).orElseThrow();
 
-        AppUser appUserBob = new AppUser();
-        appUserBob.setAppUserName("Bob");
-        appUserBob.setAppUserEmail("q@q");
-        appUserBob.setReceiveNews(true);
-        appUserBob.setNameIdentifier(UUID.randomUUID().toString());
-        appUserService.saveAppUser(appUserBob);
+        String ice = pictureService.loadPictureFromFile("ice");
+        NewTemplate icreamTemplate = NewTemplate.builder()
+                .name("Ice Cream")
+                .promise("Free Ice Cream")
+                .description("Buy ice creams and get one for free")
+                .image(ice)
+                .fileName("ice")
+                .defaultCount(10)
+                .expirationDate(EXP)
+                .stampCardCategory(StampCardCategory.FOOD)
+                .stampCardSecurity(StampCardSecurity.TRUSTUSER)
+                .stampCardStatus(StampCardStatus.PUBLIC)
+                .appUser(appUserIceCompany)
+                .build();
+        templateService.createTemplate(icreamTemplate, appUserIceCompany);
 
-        User userCinema = new User();
-        userCinema.setEmail("e@e");
-        userCinema.setPassword("1234");
-        userCinema.setReceiveNews(true);
-        userCinema.setFirstname("Cinema");
-        userCinema.setPassword(passwordEncoder.encode(userCinema.getPassword()));
-        userRepository.save(userCinema);
+    //Time Gate Example
+        String coffee = pictureService.loadPictureFromFile("coffee");
+        NewTemplate coffeTemplate = NewTemplate.builder()
+                .name("Coffee")
+                .promise("Free Coffee")
+                .description("Buy coffees and get one for free")
+                .image(coffee)
+                .fileName("coffee")
+                .defaultCount(5)
+                .expirationDate(EXP)
+                .stampCardCategory(StampCardCategory.DRINK)
+                .stampCardSecurity(StampCardSecurity.TIMEGATE)
+                .securityTimeGateDuration("PT30S")
+                .stampCardStatus(StampCardStatus.PUBLIC)
+                .build();
+        templateService.createTemplate(coffeTemplate, appUserIceCompany);
 
-        AppUser appUserCinema = new AppUser();
-        appUserCinema.setAppUserName("Cinema");
-        appUserCinema.setAppUserEmail("e@e");
-        appUserCinema.setReceiveNews(true);
-        appUserCinema.setNameIdentifier(UUID.randomUUID().toString());
-        appUserService.saveAppUser(appUserCinema);
+        String kebab = pictureService.loadPictureFromFile("kebab");
+        NewTemplate kebabTemplate = NewTemplate.builder()
+                .name("Kebab")
+                .promise("Free Kebab")
+                .description("Buy kebabs and get one for free")
+                .image(kebab)
+                .fileName("kebab")
+                .defaultCount(10)
+                .expirationDate(EXP)
+                .stampCardCategory(StampCardCategory.FOOD)
+                .stampCardSecurity(StampCardSecurity.TRUSTUSER)
+                .stampCardStatus(StampCardStatus.PRIVATE)
+                .build();
+       templateService.createTemplate(kebabTemplate, appUserIceCompany);
 
-        User userAnna = new User();
-        userAnna.setEmail("r@r");
-        userAnna.setPassword("1234");
-        userAnna.setReceiveNews(false);
-        userAnna.setFirstname("Anna");
-        userAnna.setPassword(passwordEncoder.encode(userAnna.getPassword()));
-        userRepository.save(userAnna);
+        //Create User 2
+        RegisterRequest registerRequestCinema = RegisterRequest.builder()
+                .firstname("Cinema")
+                .email("thalia@web.de")
+                .password(PASSWORD)
+                .receiveNews(true)
+                .build();
 
-        AppUser appUserAnna = new AppUser();
-        appUserAnna.setAppUserName("Anna");
-        appUserAnna.setAppUserEmail("r@r");
-        appUserAnna.setReceiveNews(false);
-        appUserAnna.setNameIdentifier(UUID.randomUUID().toString());
-        appUserService.saveAppUser(appUserAnna);
+        //Event triggers the creation of an appUser
+        authService.register(registerRequestCinema);
+        AppUser appUserCinema = appUserService.findUserByEmail(registerRequestCinema.getEmail()).orElseThrow();
 
-        Instant time = java.time.Instant.now();
-//Create some stamp card templates
-        Template template_001 = new Template();
-        template_001.setName("Ice Cream");
-        template_001.setImage("65154a35cdbe396e77ad09c4");
-        template_001.setDefaultCount(10);
-        template_001.setStampCardCategory(StampCardCategory.FOOD);
-        template_001.setStampCardSecurity(StampCardSecurity.TIMEGATE);
+        String cinema = pictureService.loadPictureFromFile("cinema");
 
-        TimeGateSecurity timeGateSecurity = new TimeGateSecurity();
-        timeGateSecurity.setTimeGateDuration(java.time.Duration.ofSeconds(30));
-        template_001.setTimeGateSecurity(timeGateSecurity);
+        NewTemplate cinemaTemplate = NewTemplate.builder()
+                .name("Cinema")
+                .promise("Free Ticket")
+                .description("Visit the cinema x times to get a free ticket")
+                .image(cinema)
+                .fileName("cinema")
+                .defaultCount(5)
+                .expirationDate(EXP)
+                .stampCardCategory(StampCardCategory.ENTERTAINMENT)
+                .stampCardSecurity(StampCardSecurity.TRUSTUSER)
+                .stampCardStatus(StampCardStatus.PUBLIC)
+                .appUser(appUserCinema)
+                .build();
 
-        template_001.setStampCardStatus(StampCardStatus.PUBLIC);
-        template_001.setDescription("Buy 10 ice creams and get one for free");
-        template_001.setCreatedBy(appUserIceCompany.getAppUserEmail());
-        template_001.setCreatedDate(time);
-        template_001.setAppUser(appUserIceCompany);
-        template_001.setLastModifiedDate(time);
-        templateService.save(template_001);
-
-        Template template_002 = new Template();
-        template_002.setName("Coffee");
-        template_002.setImage("65154a35cdbe396e77ad09c5");
-        template_002.setDefaultCount(10);
-        template_002.setStampCardCategory(StampCardCategory.DRINK);
-        template_002.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
-        template_002.setStampCardStatus(StampCardStatus.PUBLIC);
-        template_002.setDescription("Buy 10 coffees and get one for free");
-        template_002.setCreatedBy(appUserIceCompany.getAppUserEmail());
-        template_002.setCreatedDate(time);
-        template_002.setLastModifiedDate(time);
-        template_002.setAppUser(appUserIceCompany);
-        templateService.save(template_002);
-
-        Template template_003 = new Template();
-        template_003.setName("Cinema");
-        template_003.setImage("65154a35cdbe396e77ad09c6");
-        template_003.setDefaultCount(5);
-        template_003.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
-        template_003.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
-        template_003.setStampCardStatus(StampCardStatus.PUBLIC);
-        template_003.setDescription("Visit the cinema x times to get a free ticket");
-        template_003.setCreatedBy(appUserCinema.getAppUserEmail());
-        template_003.setCreatedDate(time);
-        template_003.setLastModifiedDate(time);
-        template_003.setAppUser(appUserCinema);
-        templateService.save(template_003);
-
-        Template template_004 = new Template();
-        template_004.setName("Kebab");
-        template_004.setImage("65154a35cdbe396e77ad09c7");
-        template_004.setDefaultCount(10);
-        template_004.setStampCardCategory(StampCardCategory.FOOD);
-        template_004.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
-        template_004.setStampCardStatus(StampCardStatus.PUBLIC);
-        template_004.setDescription("Buy 10 kebabs and get one for free");
-        template_004.setCreatedBy(appUserIceCompany.getAppUserEmail());
-        template_004.setCreatedDate(time);
-        template_004.setLastModifiedDate(time);
-        template_004.setAppUser(appUserIceCompany);
-        templateService.save(template_004);
-
-        Template template_005 = new Template();
-        template_005.setName("Sushi");
-        template_005.setImage("65154e3e8f36310e63f95291");
-        template_005.setDefaultCount(8);
-        template_005.setStampCardCategory(StampCardCategory.FOOD);
-        template_005.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
-        template_005.setStampCardStatus(StampCardStatus.PUBLIC);
-        template_005.setDescription("Buy 70 sushi and get one for free");
-        template_005.setCreatedBy(appUserIceCompany.getAppUserEmail());
-        template_005.setCreatedDate(time);
-        template_005.setLastModifiedDate(time);
-        template_005.setAppUser(appUserIceCompany);
-        templateService.save(template_005);
-
-        Template template_006 = new Template();
-        template_006.setName("Roller Coaster");
-        template_006.setImage("65154f2302fcd52a916f5f76");
-        template_006.setDefaultCount(3);
-        template_006.setStampCardCategory(StampCardCategory.FOOD);
-        template_006.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
-        template_006.setStampCardStatus(StampCardStatus.PUBLIC);
-        template_006.setDescription("Visit the roller coaster 3 times and get a free ticket");
-        template_006.setCreatedBy(appUserIceCompany.getAppUserEmail());
-        template_006.setCreatedDate(time);
-        template_006.setLastModifiedDate(time);
-        template_006.setAppUser(appUserIceCompany);
-        templateService.save(template_006);
-
-        Template template_007 = new Template();
-        template_007.setName("Vegetables");
-        template_007.setImage("6515521a3e4b2477e35ac574");
-        template_007.setDefaultCount(6);
-        template_007.setStampCardCategory(StampCardCategory.FOOD);
-        template_007.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
-        template_007.setStampCardStatus(StampCardStatus.PUBLIC);
-        template_007.setDescription("Buy 6 vegetables and get one for free");
-        template_007.setCreatedBy(appUserAnna.getAppUserEmail());
-        template_007.setCreatedDate(time);
-        template_007.setLastModifiedDate(time);
-        template_007.setAppUser(appUserAnna);
-        templateService.save(template_007);
-
-        Template template_008 = new Template();
-        template_008.setName("Skate");
-        template_008.setImage("6515521a3e4b2477e35ac573");
-        template_008.setDefaultCount(9);
-        template_008.setStampCardCategory(StampCardCategory.ENTERTAINMENT);
-        template_008.setStampCardSecurity(StampCardSecurity.TRUSTUSER);
-        template_008.setStampCardStatus(StampCardStatus.PRIVATE);
-        template_008.setDescription("Visit the skate park 9 times and get a free ticket");
-        template_008.setCreatedBy(appUserAnna.getAppUserEmail());
-        template_008.setCreatedDate(time);
-        template_008.setLastModifiedDate(time);
-        template_008.setAppUser(appUserAnna);
-        templateService.save(template_008);
+        templateService.createTemplate(cinemaTemplate, appUserCinema);
 
 
-        System.out.println("database initialized");
+        //Create User 3
+        RegisterRequest registerRequestFood = RegisterRequest.builder()
+                .firstname("Local Food Store")
+                .email("food@fake.com")
+                .password(PASSWORD)
+                .receiveNews(false)
+                .build();
+
+        //Event triggers the creation of an appUser
+        authService.register(registerRequestFood);
+        AppUser appUserFood = appUserService.findUserByEmail(registerRequestFood.getEmail()).orElseThrow();
+
+        String sushi = pictureService.loadPictureFromFile("sushi");
+        NewTemplate sushiTemplate = NewTemplate.builder()
+                .name("Sushi")
+                .promise("Free Sushi")
+                .description("Buy sushi and get one for free")
+                .image(sushi)
+                .fileName("sushi")
+                .defaultCount(8)
+                .expirationDate(EXP)
+                .stampCardCategory(StampCardCategory.FOOD)
+                .stampCardSecurity(StampCardSecurity.TRUSTUSER)
+                .stampCardStatus(StampCardStatus.PUBLIC)
+                .appUser(appUserFood)
+                .build();
+        templateService.createTemplate(sushiTemplate, appUserFood);
+
+        String vegetables = pictureService.loadPictureFromFile("vegetables");
+        NewTemplate vegetablesTemplate = NewTemplate.builder()
+                .name("Vegetables")
+                .promise("Free Vegetables")
+                .description("Buy vegetables and get one for free")
+                .image(vegetables)
+                .fileName("vegetables")
+                .defaultCount(8)
+                .expirationDate(EXP)
+                .stampCardCategory(StampCardCategory.FOOD)
+                .stampCardSecurity(StampCardSecurity.TRUSTUSER)
+                .stampCardStatus(StampCardStatus.PUBLIC)
+                .appUser(appUserFood)
+                .build();
+        templateService.createTemplate(vegetablesTemplate, appUserFood);
+
+//Create User 4
+        RegisterRequest registerRequestPark = RegisterRequest.builder()
+                .firstname("Theme Park")
+                .email("park@gmail.com")
+                .password(PASSWORD)
+                .receiveNews(true)
+                .build();
+
+        //Event triggers the creation of an appUser
+        authService.register(registerRequestPark);
+        AppUser appUserClothes = appUserService.findUserByEmail(registerRequestPark.getEmail()).orElseThrow();
+
+        String roller = pictureService.loadPictureFromFile("roller");
+        NewTemplate rollerTemplate = NewTemplate.builder()
+                .name("Roller Coaster")
+                .promise("Free Ride")
+                .description("Visit the park x times to get a free ride")
+                .image(roller)
+                .fileName("roller")
+                .defaultCount(5)
+                .expirationDate(EXP)
+                .stampCardCategory(StampCardCategory.ENTERTAINMENT)
+                .stampCardSecurity(StampCardSecurity.TRUSTUSER)
+                .stampCardStatus(StampCardStatus.PUBLIC)
+                .appUser(appUserClothes)
+                .build();
+        templateService.createTemplate(rollerTemplate, appUserClothes);
+
+        String skate = pictureService.loadPictureFromFile("skate");
+        NewTemplate skateTemplate = NewTemplate.builder()
+                .name("Skate Park")
+                .promise("Free Skate")
+                .description("Visit the park x times to get a free skate")
+                .image(skate)
+                .fileName("skate")
+                .defaultCount(5)
+                .expirationDate(EXP)
+                .stampCardCategory(StampCardCategory.ENTERTAINMENT)
+                .stampCardSecurity(StampCardSecurity.TRUSTUSER)
+                .stampCardStatus(StampCardStatus.PUBLIC)
+                .appUser(appUserClothes)
+                .build();
+        templateService.createTemplate(skateTemplate, appUserClothes);
+
     }
 
-    private void initPictureMongoDb() throws Exception {
-
-        /*
-        Picture ice = pictureService.loadPictureFromFile("ice");
-        pictureService.savePicture(ice);
-
-        Picture coffee = pictureService.loadPictureFromFile("coffee");
-        pictureService.savePicture(coffee);
-
-        Picture cinema = pictureService.loadPictureFromFile("cinema");
-        pictureService.savePicture(cinema);
-
-        Picture kebab = pictureService.loadPictureFromFile("kebab");
-        pictureService.savePicture(kebab);
-
-
-        Picture sushi = pictureService.loadPictureFromFile("sushi");
-        pictureService.savePicture(sushi);
-
-        Picture roller  = pictureService.loadPictureFromFile("roller");
-        pictureService.savePicture(roller);
-
-        Picture skate = pictureService.loadPictureFromFile("skate");
-        pictureService.savePicture(skate);
-
-        Picture vegetables = pictureService.loadPictureFromFile("vegetables");
-        pictureService.savePicture(vegetables);
-
-         */
-    }
-    private void initNewsMongoDb()
+    private List<News> initNewsMongoDb()
     {
         News news1 = News.builder()
                 .title("Collect & Earn")
@@ -322,5 +295,6 @@ public class DatabaseInitializer implements CommandLineRunner
 
         List<News> newsList = List.of(news1, news2, news3, news4, news5, news6, news7, news8);
         newsList.forEach(newsService::saveNews);
+        return newsList;
     }
 }

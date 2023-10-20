@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+/* Path: frontend/src/features/home*/
+.home-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-container > * {
+  margin-bottom: 20px; /* Adjust as needed */
+}
+
+.home-container > *:last-child {
+  margin-bottom: 0; /* To ensure the last child doesn't have extra spacing at the bottom */
+}

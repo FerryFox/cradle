@@ -1,6 +1,5 @@
 package com.fox.cradle.configuration.security.jwt;
 
-import com.fox.cradle.configuration.security.user.User;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Map;

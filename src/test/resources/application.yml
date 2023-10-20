@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: test
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -17,7 +19,7 @@ spring:
 application:
   security:
     jwt:
-      secret-key: ${JWT_SECRET_KEY}
+      secret-key: 74516470f8b2b0946c83d6847499a31af608f2d2cc3de4ce5b9db8181eea741f
       expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days

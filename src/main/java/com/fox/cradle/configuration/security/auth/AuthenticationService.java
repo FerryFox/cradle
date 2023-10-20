@@ -1,11 +1,14 @@
 package com.fox.cradle.configuration.security.auth;
 
 import com.fox.cradle.configuration.security.SecuritySender;
+import com.fox.cradle.configuration.security.config.TokenCheckException;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import com.fox.cradle.configuration.security.user.UserRepository;
 
 import com.fox.cradle.exceptions.RefreshTokenMissingException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -91,6 +94,36 @@ public class AuthenticationService implements IAuthenticationService
         else
         {
             throw new RefreshTokenMissingException("Refresh token is missing");
+        }
+    }
+
+    public boolean checkToken(HttpServletRequest request) throws TokenCheckException {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String token;
+        final String email;
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return false;
+        }
+
+        token = authHeader.substring(7);
+
+        try {
+            email = jwtService.extractUsername(token);
+            if (email == null) {
+                return false;
+            }
+            var user = userRepository.findByEmail(email).orElseThrow();
+            return jwtService.isTokenValid(token, user);
+        }
+        catch (SignatureException ex) {
+                throw new TokenCheckException("Invalid token signature detected.");
+        }
+        catch (ExpiredJwtException ex) {
+            throw new TokenCheckException("Token has expired.");
+        }
+        catch (Exception ex) {
+            throw new TokenCheckException("Token is invalid.");
         }
     }
 }

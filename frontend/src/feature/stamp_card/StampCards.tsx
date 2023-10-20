@@ -23,7 +23,12 @@ export default function StampCards()
     useEffect(() => {
         const fetchStampCards = async () => {
             try {
-                const response = await axios.get('/api/stampcard/allactive');
+                const token = localStorage.getItem('authToken');
+                const response = await axios.get('/api/stampcard/allactive', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 setStampCards(response.data);
             } catch (error) {
                 setError("Error fetching stamp cards.");
@@ -32,7 +37,7 @@ export default function StampCards()
                 setLoading(false);
             }
         };
-        fetchStampCards().catch();
+        fetchStampCards();
     }, []);
 
     if (loading) return ( <div> Loading ... </div>)

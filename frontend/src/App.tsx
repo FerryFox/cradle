@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import axios from "axios";
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { CssBaseline, ThemeProvider} from "@mui/material";
@@ -23,14 +23,8 @@ import Archive from "./feature/archive/Archive";
 
 export default function App()
 {
-    const token = localStorage.getItem('authToken');
-    if (token)
-    {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-    }
 
-
-return (
+    return (
 <div className="App">
     <ThemeProvider theme={lightTheme}>
     <CssBaseline/>

@@ -8,12 +8,19 @@ export const loadTemplateModels = async (
 
 ) => {
     try {
-        const response
-            = await axios.get('/api/templates/all/public');
-        setTemplates(response.data);
-        setLoading(false)
-    }
+        const token = localStorage.getItem('authToken');
 
+        const response = await axios.get('/api/templates/all/public',
+    {
+            headers:
+                {
+                'Authorization': `Bearer ${token}`
+                }
+            });
+
+        setTemplates(response.data);
+        setLoading(false);
+    }
     catch (error) {
         setLoading(false);
     }

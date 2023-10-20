@@ -6,7 +6,6 @@ import {Button, Divider, Toolbar} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import StampCardView from "../stamp_card/StampCardView";
 import axios from "axios";
 import ArchiveCard from "./ArchiveCard";
 

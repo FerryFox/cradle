@@ -8,6 +8,7 @@ import NewsBox from "./NewsBox";
 import {News} from "./model/models";
 import {loadNews} from "./service/newsService";
 import About from "./About";
+import axios from "axios";
 
 export default function HomePage()
 {
@@ -21,12 +22,29 @@ export default function HomePage()
     }, []);
 
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            setIsAuthenticated(true);
+        const checkTokenValidity = async () => {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                try {
+                    await axios.get('/api/auth/check-token', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+                setIsAuthenticated(true)
+                }
+                catch {
+                    setIsAuthenticated(false)
+                    localStorage.removeItem('authToken');
+                }
+            }
         }
-    });
+        checkTokenValidity().then();
+    }, []);
 
     function deleteToken() {
         localStorage.removeItem('authToken');

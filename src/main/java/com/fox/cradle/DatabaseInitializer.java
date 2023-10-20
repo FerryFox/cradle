@@ -56,7 +56,7 @@ public class DatabaseInitializer implements CommandLineRunner
     //Create User 1
         RegisterRequest registerRequestIce = RegisterRequest.builder()
                 .firstname("Ice Cream Company")
-                .email("icream@gmail.com")
+                .email("icecream@gmail.com")
                 .password(PASSWORD)
                 .receiveNews(true)
                 .build();

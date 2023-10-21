@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Profile({"test"})
+@Profile({"short"})
 @RequiredArgsConstructor
 public class DatabaseInitializerTest implements CommandLineRunner
 {

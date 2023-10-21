@@ -1,6 +1,5 @@
 package com.fox.cradle.configuration.security.auth;
 
-import com.fox.cradle.AbstractMongoDBIntegrationTest;
 
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
@@ -20,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class AuthenticationServiceIntegrationTest extends AbstractMongoDBIntegrationTest
+class AuthenticationServiceIntegrationTest
 {
     @Autowired
     private JwtService jwtService;

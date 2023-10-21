@@ -2,7 +2,7 @@ package com.fox.cradle.configuration.security.auth;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fox.cradle.AbstractMongoDBIntegrationTest;
+
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthenticationControllerTest extends AbstractMongoDBIntegrationTest
+class AuthenticationControllerTest
 {
     @Autowired
     MockMvc mockMvc;

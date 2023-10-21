@@ -1,15 +1,10 @@
 package com.fox.cradle.features.stampsystem.controller;
 
-import com.fox.cradle.AbstractMongoDBIntegrationTest;
-
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import com.fox.cradle.configuration.security.user.UserRepository;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
-import com.fox.cradle.features.stampsystem.model.enums.StampCardCategory;
-import com.fox.cradle.features.stampsystem.model.enums.StampCardSecurity;
-import com.fox.cradle.features.stampsystem.model.enums.StampCardStatus;
 import com.fox.cradle.features.stampsystem.model.template.TemplateEdit;
 import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
 import com.jayway.jsonpath.JsonPath;
@@ -39,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TemplateControllerTest extends AbstractMongoDBIntegrationTest
+class TemplateControllerTest
 {
     @Autowired
     MockMvc mockMvc;

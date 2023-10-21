@@ -2,7 +2,7 @@ spring:
   datasource:
     url: ${POSTGRES_URL}
     username: postgres
-    password: ${POSTGRES_PW}  # this is for local application only
+    password: ${POSTGRES_PW}
     driver-class-name: org.postgresql.Driver
 
   jpa:

@@ -1,20 +1,16 @@
 package com.fox.cradle.features.appuser.service;
 
-import com.fox.cradle.AbstractMongoDBIntegrationTest;
 import com.fox.cradle.features.appuser.model.AppUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class AppUserServiceTest extends AbstractMongoDBIntegrationTest
+class AppUserServiceTest
 {
     @Autowired
-    AppUserService appUserService;
+    AppUserService appUserServiceTest;
 
     @Test
     void saveAppUser()
@@ -29,7 +25,7 @@ class AppUserServiceTest extends AbstractMongoDBIntegrationTest
                 .build();
 
         //When
-        AppUser savedAppUser = appUserService.saveAppUser(appUser);
+        AppUser savedAppUser = appUserServiceTest.saveAppUser(appUser);
 
         //Then
         Assertions.assertNotNull(savedAppUser);
@@ -50,10 +46,10 @@ class AppUserServiceTest extends AbstractMongoDBIntegrationTest
                 .additionalInfo(null)
                 .build();
 
-        AppUser savedAppUser = appUserService.saveAppUser(appUser);
+        AppUser savedAppUser = appUserServiceTest.saveAppUser(appUser);
 
         //When
-        AppUser getUser = appUserService.getAppUserById(savedAppUser.getId());
+        AppUser getUser = appUserServiceTest.getAppUserById(savedAppUser.getId());
 
         //Then
         Assertions.assertNotNull(getUser);
@@ -73,10 +69,10 @@ class AppUserServiceTest extends AbstractMongoDBIntegrationTest
                 .additionalInfo(null)
                 .build();
 
-        AppUser savedAppUser = appUserService.saveAppUser(appUser);
+        AppUser savedAppUser = appUserServiceTest.saveAppUser(appUser);
 
         //When
-        AppUser getUser = appUserService.getAppUserById(savedAppUser.getId());
+        AppUser getUser = appUserServiceTest.getAppUserById(savedAppUser.getId());
 
         //Then
         Assertions.assertNotNull(getUser);

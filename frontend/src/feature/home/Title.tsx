@@ -20,7 +20,7 @@ export default function Title(){
             </Box>
             <CardContent sx={{ backgroundColor: 'transparent' }}>
                 <Typography color={"secondary"} variant={"h2"}>
-                    Welcome to StamPete
+                    Welcome to StamPede
                 </Typography>
             </CardContent>
         </Card>

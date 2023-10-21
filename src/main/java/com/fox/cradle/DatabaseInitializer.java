@@ -22,10 +22,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Profile({"dev"})
+@Profile({"dev" , "test"})
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner
 {
+
     private final MongoTemplate mongoTemplate;
     private final AuthenticationService authService;
     private final AppUserService appUserService;
@@ -49,7 +50,6 @@ public class DatabaseInitializer implements CommandLineRunner
         {
             mongoTemplate.dropCollection(collectionNameNews);
         }
-
         initNewsMongoDb();
 
 //Create Some AppUsers

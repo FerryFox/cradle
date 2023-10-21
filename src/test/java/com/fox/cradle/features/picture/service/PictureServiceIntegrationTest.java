@@ -1,6 +1,5 @@
 package com.fox.cradle.features.picture.service;
 
-import com.fox.cradle.AbstractMongoDBIntegrationTest;
 import com.fox.cradle.features.picture.model.Picture;
 import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
@@ -11,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @SpringBootTest
-class PictureServiceIntegrationTest extends AbstractMongoDBIntegrationTest
+class PictureServiceIntegrationTest
 {
     @Autowired
     private PictureService pictureService;
@@ -34,7 +33,7 @@ class PictureServiceIntegrationTest extends AbstractMongoDBIntegrationTest
     }
 
     @Test
-    void getAllPicturesTest() throws Exception
+    void getAllPicturesTest()
     {
         //WHEN
         List<Picture> pictures = pictureService.getAllPictures();
@@ -44,14 +43,13 @@ class PictureServiceIntegrationTest extends AbstractMongoDBIntegrationTest
     }
 
     @Test
-    void savePictureAndDelete() throws Exception
+    void savePictureAndDelete()
     {
         //GIVEN
-        String picture = DEFAULT_PICTURE;
         String name = "test";
 
         //WHEN
-        Picture savedPicture = pictureService.savePicture(picture, name);
+        Picture savedPicture = pictureService.savePicture(DEFAULT_PICTURE, name);
 
         //THEN
         Assertions.assertNotNull(savedPicture);
@@ -133,10 +131,9 @@ class PictureServiceIntegrationTest extends AbstractMongoDBIntegrationTest
     void base64ToBinary()
     {
         //Given
-        String base64 = DEFAULT_PICTURE;
 
         //When
-        Binary binary = pictureService.base64ToBinary(base64);
+    Binary binary = pictureService.base64ToBinary(DEFAULT_PICTURE);
 
         //Then
         Assertions.assertNotNull(binary);

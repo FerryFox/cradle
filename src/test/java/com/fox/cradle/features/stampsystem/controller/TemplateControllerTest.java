@@ -66,7 +66,7 @@ class TemplateControllerTest
     @Test
     void createStandardTemplate() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token = getTokenFromIceCreamCompany();
 
         //When
          mockMvc.perform(post("/api/templates/new-template")
@@ -89,7 +89,7 @@ class TemplateControllerTest
     @Test
     void getTemplateById() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token =  getTokenFromIceCreamCompany();
 
         MvcResult result = mockMvc.perform(post("/api/templates/new-template")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -121,7 +121,7 @@ class TemplateControllerTest
     @Test
     void getAllTemplates() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token =  getTokenFromIceCreamCompany();
 
        mockMvc.perform(post("/api/templates/new-template")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -157,7 +157,7 @@ class TemplateControllerTest
     @Test
     void getAllPublicTemplates() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token =  getTokenFromIceCreamCompany();
 
         MvcResult result = mockMvc.perform(post("/api/templates/new-template")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -187,7 +187,7 @@ class TemplateControllerTest
     @Test
     void getMyTemplates() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token =  getTokenFromIceCreamCompany();
 
         MvcResult result = mockMvc.perform(post("/api/templates/new-template")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -216,7 +216,7 @@ class TemplateControllerTest
     @Test
     void deleteTemplate() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token =  getTokenFromIceCreamCompany();
 
 
         MvcResult result = mockMvc.perform(post("/api/templates/new-template")
@@ -239,7 +239,7 @@ class TemplateControllerTest
     @Test
     void updateTemplateTest() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token =  getTokenFromIceCreamCompany();
 
 
         MvcResult result = mockMvc.perform(post("/api/templates/new-template")
@@ -293,7 +293,7 @@ class TemplateControllerTest
     @Test
     void getTemplatesByCategory() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token =  getTokenFromIceCreamCompany();
 
         mockMvc.perform(get("/api/templates/categories")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -308,7 +308,7 @@ class TemplateControllerTest
     @Test
     void getTemplatesBySecurity() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token =  getTokenFromIceCreamCompany();
 
         //THEN WHEN
 
@@ -324,7 +324,7 @@ class TemplateControllerTest
     @Test
     void getTemplatesByStatus() throws Exception {
         //GIVEN
-        String token = SaveUsersAndGetToken();
+        String token =  getTokenFromIceCreamCompany();
 
         //THEN WHEN
         mockMvc.perform(get("/api/templates/status")
@@ -339,30 +339,10 @@ class TemplateControllerTest
 
     }
 
-    private String SaveUsersAndGetToken()
+
+    private String getTokenFromIceCreamCompany()
     {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-        User securityUser = new User();
-        securityUser.setEmail("test@gmail.com");
-        securityUser.setPassword(passwordEncoder.encode("myPassword"));
-        if(userRepository.findByEmail(securityUser.getEmail()).isEmpty()){
-            userRepository.save(securityUser);
-
-            AppUser appUser = AppUser.builder()
-                    .appUserName("Ice Man")
-                    .appUserEmail("test@gmail.com")
-                    .myStampCards(null)
-                    .additionalInfo(null)
-                    .receiveNews(true)
-                    .nameIdentifier("1234-1234-1234")
-                    .build();
-
-            appUserService.saveAppUser(appUser);
-        }
-
-        var result =  jwtService.generateToken(securityUser);
-        System.out.println(result);
-        return result;
+        User user = userRepository.findByEmail("icecream@gmail.com").orElseThrow();
+        return jwtService.generateToken(user);
     }
 }

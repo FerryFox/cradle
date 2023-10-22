@@ -39,6 +39,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("DatabaseInitializer is running...");
     //MongoDb
         String collectionNamePicture = "pictures";
         String collectionNameNews = "news";
@@ -231,6 +232,7 @@ public class DatabaseInitializer implements CommandLineRunner
                 .appUser(appUserClothes)
                 .build();
         templateService.createTemplate(skateTemplate, appUserClothes);
+        System.out.println("DatabaseInitializer finished...");
 
     }
 

@@ -49,6 +49,7 @@ class AuthenticationServiceIntegrationTest
         Assertions.assertNotNull(response.getToken());
         assert response.getToken() != null;
         assert response.getToken().equals(jwtToken);
+
     }
 
     @Test

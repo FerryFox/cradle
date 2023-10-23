@@ -30,7 +30,7 @@ jobs:
 
     - name: Test with Maven using Test profile
 
-      run: mvn -Dspring.profiles.active=test test --file pom.xml
+      run: mvn test -DargLine="-Dspring.profiles.active=test"
 
     - name: Build with Maven with Production profile
       env:

@@ -342,7 +342,9 @@ class TemplateControllerTest
 
     private String getTokenFromIceCreamCompany()
     {
+        System.out.println("Get token from ice cream company");
         User user = userRepository.findByEmail("icecream@gmail.com").orElseThrow();
+        System.out.println("User: " + user);
         return jwtService.generateToken(user);
     }
 }

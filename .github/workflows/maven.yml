@@ -28,6 +28,10 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
+    - name: Test with Maven using Test profile
+
+      run: mvn -Dspring.profiles.active=test test --file pom.xml
+
     - name: Build with Maven with Production profile
       env:
         JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
@@ -36,7 +40,7 @@ jobs:
         POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
         POSTGRES_PW: ${{ secrets.POSTGRES_PW }}
 
-      run: mvn -Dspring.profiles.active=prod -B package --file pom.xml
+      run: mvn -Dspring.profiles.active=prod -DskipTests=true -B package --file pom.xml
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph

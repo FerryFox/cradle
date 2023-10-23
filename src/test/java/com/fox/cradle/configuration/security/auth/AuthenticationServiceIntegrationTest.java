@@ -4,6 +4,7 @@ package com.fox.cradle.configuration.security.auth;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
+@Transactional
 class AuthenticationServiceIntegrationTest
 {
     @Autowired

@@ -2,7 +2,6 @@ package com.fox.cradle.features.stampsystem.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fox.cradle.AbstractMongoDBIntegrationTest;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.UserRepository;
 import com.fox.cradle.features.stampsystem.model.stamp.StampFieldResponse;
@@ -25,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class StampControllerTest extends AbstractMongoDBIntegrationTest {
+class StampControllerTest{
 
     @Autowired
     UserRepository userRepository;
@@ -146,7 +145,7 @@ class StampControllerTest extends AbstractMongoDBIntegrationTest {
 
     private String getTokenFromIceCreamCompany()
     {
-        User user = userRepository.findByEmail("icream@gmail.com").orElseThrow();
+        User user = userRepository.findByEmail("icecream@gmail.com").orElseThrow();
         return jwtService.generateToken(user);
     }
 }

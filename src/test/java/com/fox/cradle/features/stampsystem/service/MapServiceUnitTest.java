@@ -34,8 +34,6 @@ class MapServiceUnitTest
     @InjectMocks
     MapService mapService;
 
-
-
     @Test
     void mapNewToTemplate()
     {

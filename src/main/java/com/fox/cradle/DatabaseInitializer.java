@@ -22,10 +22,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Profile({"test", "dev"})
+@Profile({"dev" , "test"})
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner
 {
+
     private final MongoTemplate mongoTemplate;
     private final AuthenticationService authService;
     private final AppUserService appUserService;
@@ -38,6 +39,7 @@ public class DatabaseInitializer implements CommandLineRunner
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("DatabaseInitializer is running...");
     //MongoDb
         String collectionNamePicture = "pictures";
         String collectionNameNews = "news";
@@ -49,7 +51,6 @@ public class DatabaseInitializer implements CommandLineRunner
         {
             mongoTemplate.dropCollection(collectionNameNews);
         }
-
         initNewsMongoDb();
 
 //Create Some AppUsers
@@ -231,6 +232,7 @@ public class DatabaseInitializer implements CommandLineRunner
                 .appUser(appUserClothes)
                 .build();
         templateService.createTemplate(skateTemplate, appUserClothes);
+        System.out.println("DatabaseInitializer finished...");
 
     }
 

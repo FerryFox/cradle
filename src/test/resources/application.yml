@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: test
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -8,13 +6,15 @@ spring:
     password:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
 
-  data:
+de:
+  flapdoodle:
     mongodb:
-      uri: ${MONGO_URL}
-      database: test
+      embedded:
+        version: 6.0.1
+
 
 application:
   security:

@@ -2,7 +2,7 @@ package com.fox.cradle.configuration.security.auth;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fox.cradle.AbstractMongoDBIntegrationTest;
+
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthenticationControllerTest extends AbstractMongoDBIntegrationTest
+class AuthenticationControllerTest
 {
     @Autowired
     MockMvc mockMvc;
@@ -32,7 +32,7 @@ class AuthenticationControllerTest extends AbstractMongoDBIntegrationTest
     void shouldRegisterUser() throws Exception{
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
-                .email("test.user@test.com")
+                .email("test1.user@test.com")
                 .firstname("myFirstname")
                 .receiveNews(true)
                 .password("myPassword")
@@ -87,7 +87,7 @@ class AuthenticationControllerTest extends AbstractMongoDBIntegrationTest
     {
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
-                .email("test.user@test.com")
+                .email("test4.user@test.com")
                 .firstname("myFirstname")
                 .receiveNews(true)
                 .password("myPassword")

@@ -1,6 +1,5 @@
 package com.fox.cradle.configuration.security.jwt;
 
-import com.fox.cradle.AbstractMongoDBIntegrationTest;
 import com.fox.cradle.configuration.security.user.User;
 
 import org.junit.jupiter.api.Assertions;
@@ -16,10 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 @SpringBootTest
-class JwtServiceIntegrationTest extends AbstractMongoDBIntegrationTest
+class JwtServiceIntegrationTest
 {
-    //private String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxQHEiLCJpYXQiOjE2OTM4OTY2MTIsImV4cCI6MTY5Mzk4MzAxMn0.4zbMTNA9Q5-0vf-9L9UIDVU8NRL9HjYomQp9qQGLuwI";
-
     @Autowired
     private JwtService jwtService;
 

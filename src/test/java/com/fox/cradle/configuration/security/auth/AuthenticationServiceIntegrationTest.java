@@ -32,13 +32,13 @@ class AuthenticationServiceIntegrationTest
     {
         //Given
         RegisterRequest request = new RegisterRequest();
-        request.setFirstname("fox");
-        request.setEmail("new@new");
+        request.setFirstname("foxd");
+        request.setEmail("new@new.com");
         request.setPassword("1234");
         request.setReceiveNews(true);
 
         User user = new User();
-        user.setEmail("new@new");
+        user.setEmail("new@new.com");
         //WHEN
         AuthenticationResponse response = authService.register(request);
         String jwtToken = jwtService.generateToken(user);

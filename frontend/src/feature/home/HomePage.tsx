@@ -59,7 +59,7 @@ return (
 <div className="home-container">
     <Container>
         <Stack spacing={2}>
-            <Title/>
+           <Title/>
 
             <ButtonHub
                 isAuthenticated={isAuthenticated}

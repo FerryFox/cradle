@@ -15,7 +15,7 @@ PAUSE
 
 :: Build Backend using Maven
 echo Building backend with Maven...
-mvn -B package --file pom.xml
+mvn -Dspring.profiles.active=prod -DskipTests=true -B package --file pom.xml
 PAUSE
 
 echo Script completed.

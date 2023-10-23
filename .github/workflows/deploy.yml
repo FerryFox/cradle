@@ -51,6 +51,8 @@ jobs:
 
   push-to-docker-hub:
     runs-on: ubuntu-latest
+    environment:
+      name: prod
     needs: build-backend
     steps:
       - uses: actions/checkout@v3

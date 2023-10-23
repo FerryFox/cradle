@@ -32,7 +32,7 @@ class AuthenticationControllerTest
     void shouldRegisterUser() throws Exception{
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
-                .email("test.user@test.com")
+                .email("test1.user@test.com")
                 .firstname("myFirstname")
                 .receiveNews(true)
                 .password("myPassword")
@@ -87,7 +87,7 @@ class AuthenticationControllerTest
     {
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
-                .email("test.user@test.com")
+                .email("test4.user@test.com")
                 .firstname("myFirstname")
                 .receiveNews(true)
                 .password("myPassword")

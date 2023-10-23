@@ -79,6 +79,8 @@ jobs:
 
   deploy-to-render:
     runs-on: ubuntu-latest
+    environment:
+      name: prod
     needs: push-to-docker-hub
     steps:
       - name: Trigger redeploy

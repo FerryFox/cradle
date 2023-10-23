@@ -15,7 +15,7 @@
 	<description>rolling</description>
 	<properties>
 		<java.version>20</java.version>
-		<sonar.organization>FoxG4TE</sonar.organization>
+		<sonar.organization>ferryfox</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>

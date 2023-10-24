@@ -5,10 +5,12 @@ import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 import java.util.List;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class PictureServiceIntegrationTest
 {

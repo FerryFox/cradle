@@ -19,6 +19,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
+          projectBaseDir: frontend
           args: >
             -Dsonar.projectKey=foxgate_stampede_frontend
             -Dsonar.organization=ferryfox

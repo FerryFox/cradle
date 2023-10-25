@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,6 +106,10 @@ public class TemplateController
     @PostMapping("/new-template")
     public ResponseEntity<TemplateResponse> createTemplate(@RequestBody NewTemplate request, HttpServletRequest httpServletRequest)
     {
+        Instant givenDate = Instant.parse(request.getExpirationDate());
+        Instant now = Instant.now();
+        if (givenDate.isBefore(now)) return ResponseEntity.badRequest().build();
+
         Optional<AppUser> appUse =  appUserService.
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 

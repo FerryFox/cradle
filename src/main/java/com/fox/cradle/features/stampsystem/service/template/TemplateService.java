@@ -61,8 +61,8 @@ public class TemplateService
 
         Template createdTemplate = mapService.mapNewToTemplate(request, appUser, pictureId);
         createdTemplate.setCreatedDate(Instant.now());
-        //TODO: test for expiration date in backend not done
-        System.out.println("Expiration date: " + request.getExpirationDate());
+
+
 
 
         if(createdTemplate.getStampCardSecurity().equals(StampCardSecurity.TIMEGATE))

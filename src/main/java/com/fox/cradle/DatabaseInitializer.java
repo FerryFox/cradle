@@ -11,6 +11,7 @@ import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardCategory;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardStatus;
+import com.fox.cradle.features.stampsystem.model.template.NewSecurityTimeGate;
 import com.fox.cradle.features.stampsystem.model.template.NewTemplate;
 import com.fox.cradle.features.stampsystem.service.template.TemplateService;
 import lombok.RequiredArgsConstructor;
@@ -94,8 +95,10 @@ public class DatabaseInitializer implements CommandLineRunner
                 .expirationDate(EXP)
                 .stampCardCategory(StampCardCategory.DRINK)
                 .stampCardSecurity(StampCardSecurity.TIMEGATE)
-                .securityTimeGateDuration("PT30S")
                 .stampCardStatus(StampCardStatus.PUBLIC)
+                .securityTimeGate( NewSecurityTimeGate.builder()
+                        .timeGateNumber(1)
+                        .build())
                 .build();
         templateService.createTemplate(coffeTemplate, appUserIceCompany);
 

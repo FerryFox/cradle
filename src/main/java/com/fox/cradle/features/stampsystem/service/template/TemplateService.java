@@ -62,6 +62,9 @@ public class TemplateService
         Template createdTemplate = mapService.mapNewToTemplate(request, appUser, pictureId);
         createdTemplate.setCreatedDate(Instant.now());
 
+
+
+
         if(createdTemplate.getStampCardSecurity().equals(StampCardSecurity.TIMEGATE))
         {
         TimeGateSecurity timeGateSecurity = stampService.createTimeGate(request, createdTemplate);
@@ -100,10 +103,8 @@ public class TemplateService
         template.setName(request.getName());
         template.setPromise(request.getPromise());
         template.setDescription(request.getDescription());
-        template.setDefaultCount(Integer.parseInt(request.getDefaultCount()));
 
         template.setStampCardCategory(StampCardCategory.valueOf(request.getStampCardCategory()));
-        template.setStampCardSecurity(StampCardSecurity.valueOf(request.getStampCardSecurity()));
         template.setStampCardStatus(StampCardStatus.valueOf(request.getStampCardStatus()));
 
         template.setExpirationDate(request.getExpirationDate());

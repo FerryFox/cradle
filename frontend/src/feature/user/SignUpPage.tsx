@@ -14,7 +14,7 @@ import {IconButton} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import Copyright from "./Copyright";
-import {FormEvent} from "react";
+import {FormEvent, useState} from "react";
 
 type UserDTO = {
     firstname: string,
@@ -23,10 +23,18 @@ type UserDTO = {
     receiveNews: boolean
 }
 
+type FormErrors = {
+    firstname?: string;
+    email?: string;
+    password?: string;
+}
+
 type AuthResponse = {
     access_token: string;
     // ... any other expected properties ...
 };
+
+
 
 const saveUser = async (userDTO : UserDTO) :Promise<AuthResponse | null> =>
 {
@@ -44,26 +52,66 @@ const saveUser = async (userDTO : UserDTO) :Promise<AuthResponse | null> =>
     return null;
 };
 
-
 export default function SignUp()
 {
     const navigate = useNavigate();
 
+    const [formData, setFormData] = useState<UserDTO>({
+        firstname: '',
+        email: '',
+        password: '',
+        receiveNews: false,
+    });
+
+    const [isShaking, setIsShaking] = useState<boolean>(false);
+
+    const [formErrors, setFormErrors] = useState<FormErrors>({});
+
+    const handleShake = () => {
+        setIsShaking(true);
+        setTimeout(() => {
+            setIsShaking(false);
+        }, 820);  // match the duration of the shake animation
+    };
+
+    const validateFormData = () => {
+        let errors :FormErrors = {};
+
+        if (!formData.firstname || formData.firstname.length > 31) {
+            errors.firstname = 'Name is required and should not be longer then 30 characters';
+        }
+
+        const emailPattern : RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+        if (!formData.email || !emailPattern.test(formData.email)) {
+            errors.email = 'Valid email is required';
+        }
+
+        if (!formData.password || formData.password.length < 6) {
+            errors.password = 'Password must be at least 6 characters';
+        }
+
+
+        setFormErrors(errors);  // Update the state once here
+
+        return errors;
+    };
+
     const handleSubmit = async (event : FormEvent<HTMLFormElement>) : Promise<void> =>
     {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const userDTO =
-            {
-                firstname: data.get('userName'),
-                email: data.get('email'),
-                password: data.get('password'),
-                receiveNews : data.get('allowExtraEmails') === "on"
-            };
+
+        // Validate form data
+        const errors = validateFormData();
+        setFormErrors(errors);
+
+        if (Object.keys(errors).length > 0) {
+            handleShake();
+            return;
+        }
 
         try
         {
-            const response   = await saveUser(userDTO as UserDTO);
+            const response   = await saveUser(formData);
             if (response){
                 const token = response.access_token;
                 if (token) {
@@ -83,7 +131,10 @@ export default function SignUp()
     };
 
 return (
-<Container component="main" maxWidth="xs">
+<Container className={isShaking ? 'shake' : ''}
+           component="main"
+           maxWidth="xs">
+
     <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
         {/* Use Grid for layout */}
         <Grid container spacing={1}>
@@ -110,18 +161,46 @@ return (
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                    <TextField required fullWidth id="userName" label="Choose your Name"
-                               name="userName" autoComplete="family-name"/>
+                    <TextField required
+                               fullWidth
+                               id="userName"
+                               label="Choose your Name"
+                               name="userName"
+                               autoComplete="family-name"
+                               value={formData.firstname}
+                               onChange={e =>
+                                   setFormData(prev => ({ ...prev, firstname: e.target.value }))}
+                               error={!!formErrors.firstname}
+                               helperText={formErrors.firstname}/>
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField required fullWidth id="email" label="Email Address"
-                               name="email" autoComplete="email"/>
+                    <TextField required
+                               fullWidth
+                               id="email"
+                               label="Email Address"
+                               name="email"
+                               autoComplete="email"
+                               value={formData.email}
+                               onChange={e =>
+                                   setFormData(prev => ({ ...prev, email: e.target.value }))}
+                               error={!!formErrors.email}
+                               helperText={formErrors.email}/>
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField required fullWidth name="password" label="Password"
-                               type="password" id="password" autoComplete="new-password"/>
+                    <TextField required
+                               fullWidth
+                               name="password"
+                               label="Password"
+                               type="password"
+                               id="password"
+                               autoComplete="new-password"
+                               value={formData.password}
+                               onChange={e =>
+                                   setFormData(prev => ({ ...prev, password: e.target.value }))}
+                               error={!!formErrors.password}
+                               helperText={formErrors.password}/>
                 </Grid>
 
                 <Grid item xs={12}>
@@ -148,7 +227,7 @@ return (
                     </Button>
                 </Grid>
             </Grid>
-        </Box>
+            </Box>
     </Box>
     <Copyright/>
 </Container>

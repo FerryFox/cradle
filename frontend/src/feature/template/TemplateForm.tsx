@@ -6,25 +6,56 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {Divider, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Toolbar} from "@mui/material";
+import {
+    Divider,
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    Toolbar
+} from "@mui/material";
 import {resizeAndCropImage} from "../../assets/picture/resizeAndCropImage";
 import Controller from "../core/Controller";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
+import {NewTemplate, SecurityTimeGate} from "./model/models";
+
+type FormErrors = {
+    name?: string;
+    promise? : string;
+    description? : string;
+    defaultCount? : string;
+
+    stampCardCategory? : string;
+    stampCardSecurity? : string;
+    stampCardStatus? : string;
+
+    image? : string;
+    fileName? : string;
+
+    expirationDate? : string
+
+    //TimeGate
+    timeGateNumber? : string;
+}
 
 export default function TemplateForm()
 {
+    const navigate = useNavigate();
+    const [isShaking, setIsShaking] = useState<boolean>(false);
+
+    const [newTemplate, setNewTemplate] = useState<NewTemplate>({} as NewTemplate);
+    const [formErrors, setFormErrors] = useState<FormErrors>({});
+
     const currentDate = new Date();
     currentDate.setFullYear(currentDate.getFullYear() + 1);
     const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
 
     const [imageSrc, setImageSrc] = useState<string | null>(null);
-    const navigate = useNavigate();
-    const [isShaking, setIsShaking] = useState<boolean>(false);
-    const [number, setValue] = useState<number>(10);
-    const [timeGate, setTimeGate] = useState<number>(0);
+
+    const [securityTimeGate, setSecurityTimeGate] = useState<SecurityTimeGate>({timeGateNumber : 0});
 
     //values
     const [Category, setCategory] = useState<string[]>([]);
@@ -63,7 +94,6 @@ export default function TemplateForm()
         if (!event.target.files) return;
         const file = event.target.files[0];
 
-
         if (file) {
             const reader = new FileReader();
 
@@ -76,64 +106,102 @@ export default function TemplateForm()
         }
     }
 
-    const handleSubmit = async (event : React.FormEvent<HTMLFormElement>) => {
+    const validateFormData = () => {
+        let errors :FormErrors = {};
+
+        if (!newTemplate.name || newTemplate.name.length > 21) {
+            errors.name = 'Name is required and should not be longer then 20 characters';
+        }
+
+        if (!newTemplate.promise || newTemplate.promise.length > 21) {
+            errors.promise = 'Promise is required and should not be longer then 20 characters';
+        }
+
+        if (!newTemplate.description || newTemplate.description.length > 81) {
+            errors.description = 'Description is required and should not be longer then 80 characters';
+        }
+
+        if(!newTemplate.defaultCount || newTemplate.defaultCount < 1 || newTemplate.defaultCount > 101){
+            errors.defaultCount = 'Stamps should be at least 1 and not more then 100';
+        }
+
+        if (!selectedCategory) {
+            errors.stampCardCategory = 'Category is required';
+        }
+
+        if (!selectedSecurity) {
+            errors.stampCardSecurity = 'Security is required';
+        }
+
+        if (!selectedStatus) {
+            errors.stampCardStatus = 'Status is required';
+        }
+
+        const isFutureDate = selectedDate.getTime() > new Date().getTime();
+        if (!isFutureDate) {
+           errors.expirationDate = 'Expiration date should be in the future';
+        }
+
+        if (selectedSecurity === 'TIMEGATE' &&
+            (!securityTimeGate.timeGateNumber ||
+                securityTimeGate.timeGateNumber < 0))
+        {
+            errors.timeGateNumber = 'Time between stamping can not be negative';
+        }
+
+        setFormErrors(errors);  // Update the state once here
+
+        return errors;
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log("handleSubmit triggered");
+
+        const errors = validateFormData();
+        setFormErrors(errors);
+
+        if (Object.keys(errors).length > 0) {
+            handleShake();
+            return;
+        }
+
         const token = localStorage.getItem('authToken');
         const fileInput = document.getElementById('contained-button-file') as HTMLInputElement;
         const file = fileInput?.files?.[0];
 
-        const formData = new FormData(event.currentTarget);
-        const nameValue = formData.get('name') as string;
-        const promiseValue = formData.get('promise') as string;
-        const descriptionValue = formData.get('description') as string;
-
-        const date = selectedDate.toISOString();
-
         if (!file) return;
-        console.log("file found");
-        resizeAndCropImage(file, 300, 200, async (resizedImageUrl :string) => {
-            try {
-                console.log("resizeAndCropImage triggered");
-                const payload =
-                    {
-                    name: nameValue,
-                    promise: promiseValue,
-                    description: descriptionValue,
-                    image: resizedImageUrl,
-                    fileName : file.name,
-                    defaultCount : number,
 
-                    stampCardCategory: selectedCategory,
-                    stampCardSecurity: selectedSecurity,
-                    stampCardStatus: selectedStatus,
+        try {
+            const resizedImageUrl = await resizeAndCropImage(file);
 
-                    securityTimeGateDuration : `PT${timeGate}H`,
-                    expirationDate : date
-                    }
+            const payload: NewTemplate = {
+                ...newTemplate,
+                stampCardCategory: selectedCategory,
+                stampCardSecurity: selectedSecurity,
+                stampCardStatus: selectedStatus,
+                image: resizedImageUrl,
+                fileName: file.name,
+                expirationDate: new Date(selectedDate.toISOString()),
 
+                securityTimeGate : securityTimeGate
+            };
 
-
-                const response = await axios.post('/api/templates/new-template', payload, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                console.log("axios.post triggered");
-                console.log(payload);
-
-                if (response.status === 201) // Created
-                {
-                    navigate('/templates/owned');
-                } else {
-                    handleShake();
+            const response = await axios.post('/api/templates/new-template', payload, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
-            } catch (error) {
-                console.log(error);
+            });
+
+            if (response.status === 201) { // Created
+                navigate('/templates/owned');
+            } else {
                 handleShake();
             }
-        });
+        } catch (error) {
+            console.log(error);
+            handleShake();
+        }
     };
 
 return (
@@ -156,25 +224,46 @@ return (
                        label="name"
                        name="name"
                        autoComplete="name"
-                       autoFocus/>
+                       autoFocus
+                       value={newTemplate.name}
+                       onChange ={e  =>
+                           setNewTemplate(newTemplate =>({...newTemplate, name : e.target.value}))}
+                       error={!!formErrors.name}
+                       helperText={formErrors.name}/>
+
 
             <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
                        name="promise"
                        label="promise"
-                       id="promise" />
+                       id="promise"
+                       value={newTemplate.promise}
+                       onChange ={e  =>
+                           setNewTemplate(newTemplate =>({...newTemplate, promise : e.target.value}))}
+                       error={!!formErrors.promise}
+                       helperText={formErrors.promise}/>
 
             <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
                        name="description"
                        label="description"
-                       id="description" />
+                       id="description"
+                       value={newTemplate.description}
+                       onChange ={e  =>
+                           setNewTemplate(newTemplate =>({...newTemplate, description : e.target.value}))}
+                       error={!!formErrors.description}
+                       helperText={formErrors.description}/>
 
             <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
                 label="Stamps per Card"
                 variant="outlined"
                 type="number"
-                value={number}
-                onChange={(e : React.ChangeEvent<HTMLInputElement>) => setValue(Number(e.target.value))}
-            />
+                value={newTemplate.defaultCount}
+                       onChange={e =>
+                           setNewTemplate(newTemplate => ({
+                               ...newTemplate,
+                               defaultCount: parseInt(e.target.value, 10)
+                           }))}
+                error={!!formErrors.defaultCount}
+                helperText={formErrors.defaultCount}/>
 
             <Typography variant={"h5"} align="right">
                 Security & Category
@@ -188,26 +277,31 @@ return (
                 value={selectedDate}
                 onChange={(newDate) => setSelectedDate(newDate as Date)}
                 components={{
-                    TextField: (props) => <TextField {...props} fullWidth sx={{mb : 2}}/>
+                    TextField: (props) => <TextField
+                        {...props}
+                        error={!!formErrors.expirationDate}
+                        helperText={formErrors.expirationDate}
+                        fullWidth sx={{mb : 2}}/>
                 }}
             />
 
-            <FormControl fullWidth sx={{ marginBottom: 2 }}>
-            <InputLabel id="category-wheel-lable-id">Category</InputLabel>
-            <Select
-                labelId="category-wheel-lable-id"
-                id="category-wheel-id"
-                value={selectedCategory}
-                label="Category"
-                onChange={(event: SelectChangeEvent) => setSelectedCategory(event.target.value)}>
+            <FormControl fullWidth sx={{ marginBottom: 2 }} error={!!formErrors.stampCardCategory}>
+                <InputLabel id="category-wheel-lable-id">Category</InputLabel>
+                <Select
+                    labelId="category-wheel-lable-id"
+                    id="category-wheel-id"
+                    value={selectedCategory}
+                    label="Category"
+                    onChange={(event: SelectChangeEvent) => setSelectedCategory(event.target.value)}>
 
-                {Category.map((category, index) => (
-                    <MenuItem key={index} value={category}>{category}</MenuItem>
-                ))}
-            </Select>
+                    {Category.map((category, index) => (
+                        <MenuItem key={category} value={category}>{category}</MenuItem>
+                    ))}
+                </Select>
+                <FormHelperText>{formErrors.stampCardCategory}</FormHelperText>
             </FormControl>
 
-            <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <FormControl fullWidth sx={{ marginBottom: 2 }} error={!!formErrors.stampCardStatus}>
                 <InputLabel id="status-wheel-lable-id">Status</InputLabel>
                 <Select
                     labelId="status-wheel-lable-id"
@@ -217,12 +311,13 @@ return (
                     onChange={(event: SelectChangeEvent) => setSelectedStatus(event.target.value)}>
 
                     {Status.map((status, index) => (
-                        <MenuItem key={index} value={status}>{status}</MenuItem>
+                        <MenuItem key={status} value={status}>{status}</MenuItem>
                     ))}
                 </Select>
+                <FormHelperText>{formErrors.stampCardStatus}</FormHelperText>
             </FormControl>
 
-            <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <FormControl fullWidth sx={{ marginBottom: 2 }} error={!!formErrors.stampCardSecurity}>
                 <InputLabel id="security-wheel-lable-id">Security</InputLabel>
                 <Select
                     labelId="security-wheel-lable-id"
@@ -232,20 +327,31 @@ return (
                     onChange={(event: SelectChangeEvent) => setSelectedSecurity(event.target.value)}>
 
                     {Security.map((security, index) => (
-                        <MenuItem key={index} value={security}>{security}</MenuItem>
+                        <MenuItem key={security} value={security}>{security}</MenuItem>
                     ))}
                 </Select>
+                <FormHelperText>{formErrors.stampCardStatus}</FormHelperText>
 
                 {selectedSecurity === 'TIMEGATE' &&
+                    <>
+                    <Typography variant={"h5"} align="right">
+                        Time Gate
+                    </Typography>
+                    <Divider color={"primary"} sx={{ marginBottom: 2 }}/>
+
                     <TextField margin="normal"
                                required
                                fullWidth
                                label="Hours"
                                variant="outlined"
                                type="number"
-                               value={timeGate}
-                               onChange={(e : ChangeEvent<HTMLInputElement>) => setTimeGate(Number(e.target.value))}
-                               sx={{ marginBottom: 2 }}/>
+                               value={securityTimeGate.timeGateNumber}
+                               onChange={(e : ChangeEvent<HTMLInputElement>) => setSecurityTimeGate({
+                                   timeGateNumber : parseInt(e.target.value, 10)})}
+                               sx={{ marginBottom: 2 }}
+                                error={!!formErrors.timeGateNumber}
+                                helperText={formErrors.timeGateNumber}/>
+                    </>
                 }
             </FormControl>
 
@@ -292,7 +398,3 @@ return (
 </LocalizationProvider>
 );
 }
-
-
-
-

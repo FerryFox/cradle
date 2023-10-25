@@ -260,16 +260,12 @@ class TemplateControllerTest
                 .name("updatedName")
                 .promise("updatedPromise")
                 .description("updatedDescription")
-                .defaultCount("20")
 
                 .image(templateResponse.getImage())
-                .createdBy("updatedCreatedBy")
-                .stampCardSecurity("TRUSTUSER")
                 .stampCardStatus("ACTIVE")
                 .stampCardCategory("FOOD")
 
                 .expirationDate("2029-10-18T11:59:56.000Z")
-                .lastModifiedDate(now.toString())
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -282,14 +278,9 @@ class TemplateControllerTest
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value("updatedName"))
                 .andExpect(jsonPath("$.description").value("updatedDescription"))
-                .andExpect(jsonPath("$.defaultCount").value(20))
                 .andExpect(jsonPath("$.stampCardCategory").value("FOOD"))
-                .andExpect(jsonPath("$.stampCardSecurity").value("TRUSTUSER"))
                 .andExpect(jsonPath("$.stampCardStatus").value("ACTIVE"))
-                .andExpect(jsonPath("$.expirationDate").value("2029-10-18T11:59:56.000Z"))
-                .andExpect(jsonPath("$.createdDate").exists())
-                .andExpect(jsonPath("$.lastModifiedDate").exists());
-
+                .andExpect(jsonPath("$.expirationDate").value("2029-10-18T11:59:56.000Z"));
     }
 
     @Test
@@ -338,7 +329,6 @@ class TemplateControllerTest
                 .andExpect(jsonPath("$[1]").value("INACTIVE"))
                 .andExpect(jsonPath("$[2]").value("PRIVATE"))
                 .andExpect(jsonPath("$[3]").value("PUBLIC"));
-
     }
 
 

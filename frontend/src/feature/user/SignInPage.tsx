@@ -16,8 +16,15 @@ import {IconButton} from "@mui/material";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import Copyright from "./Copyright";
 
+
+type FromErrors = {
+    email?: string;
+}
+
 export default function SignIn()
 {
+    const [formErrors, setFormErrors] = useState<FromErrors>({});
+
     const [remember, setRemember] = useState(() => {
         let storedValue = localStorage.getItem('remember');
         return storedValue === 'true';
@@ -29,7 +36,7 @@ export default function SignIn()
     });
 
     const navigate = useNavigate();
-    const [isShaking, setIsShaking] = useState(false);
+    const [isShaking, setIsShaking] = useState<boolean>(false);
 
     const handleShake = () => {
         setIsShaking(true);
@@ -38,9 +45,32 @@ export default function SignIn()
         }, 820);  // match the duration of the shake animation
     };
 
+    const validateFormData = ()  => {
+        let errors: FromErrors = {};
+
+        const emailPattern : RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+        if (!email || !emailPattern.test(email)) {
+            errors.email = 'Email is not valid';
+        }
+
+        setFormErrors(errors);
+        return errors;
+    }
+
     const handleSubmit = async (event : FormEvent<HTMLFormElement>) : Promise<void>  =>
     {
         event.preventDefault();
+
+        // Validate form data
+        const errors = validateFormData();
+        setFormErrors(errors);
+
+        if (Object.keys(errors).length > 0)
+        {
+            handleShake();
+            return;
+        }
+
         try
         {
             const data = new FormData(event.currentTarget);
@@ -101,11 +131,27 @@ return (
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
-            <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email"
-                       autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} autoFocus/>
+            <TextField margin="normal"
+                       required
+                       fullWidth
+                       id="email"
+                       label="Email Address"
+                       name="email"
+                       autoComplete="email"
+                       autoFocus
+                       value={email}
+                       onChange={e => setEmail(e.target.value)}
+                       error={!!formErrors.email}
+                       helperText={formErrors.email}/>
 
-            <TextField margin="normal" required fullWidth name="password" label="Password" type="password"
-                       id="password" autoComplete="current-password"/>
+            <TextField margin="normal"
+                       required
+                       fullWidth
+                       name="password"
+                       label="Password"
+                       type="password"
+                       id="password"
+                       autoComplete="current-password"/>
 
             <FormControlLabel label="Remember me" control={
                 <Checkbox  value="remember"

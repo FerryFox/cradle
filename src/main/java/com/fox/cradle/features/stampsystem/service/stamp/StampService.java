@@ -27,7 +27,8 @@ public class StampService
 
     public TimeGateSecurity createTimeGate(NewTemplate newTemplate, Template template)
     {
-        Duration duration = Duration.parse(newTemplate.getSecurityTimeGateDuration());
+        int timeInHour = newTemplate.getSecurityTimeGate().getTimeGateNumber();
+        Duration duration = Duration.ofHours(timeInHour);
 
         return TimeGateSecurity.builder()
                 .timeGateDuration(duration)

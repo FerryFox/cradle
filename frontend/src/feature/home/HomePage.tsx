@@ -9,6 +9,8 @@ import {News} from "./model/models";
 import {loadNews} from "./service/newsService";
 import About from "./About";
 import axios from "axios";
+import {Skeleton} from "@mui/lab";
+import IntroductionCard from "./IntroductionCard";
 
 export default function HomePage()
 {
@@ -16,9 +18,10 @@ export default function HomePage()
 
     const [news, setNews] = useState<News[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        loadNews(setNews, setError);
+        loadNews(setNews, setError, setLoading);
     }, []);
 
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -66,8 +69,22 @@ return (
                 deleteToken={deleteToken}
                 navigate={navigateTo}/>
 
-            <NewsBox
-                news={news}/>
+            {loading ?
+                (
+                    Array(8).fill(null).map((_, index) => (
+                        <Skeleton
+                            key={index}
+                            animation="wave"
+                            variant="rectangular"
+                            width="100%"
+                            height="22vh"
+                        />
+                    ))
+                )
+                    :
+                (<NewsBox news={news}/>)
+            }
+
         </Stack>
     </Container>
 

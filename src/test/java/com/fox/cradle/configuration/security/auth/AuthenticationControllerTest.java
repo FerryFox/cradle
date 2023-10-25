@@ -34,7 +34,7 @@ class AuthenticationControllerTest
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
                 .email("test1.user@test.com")
-                .firstname("myFirstname")
+                .firstname("bob")
                 .receiveNews(true)
                 .password("myPassword")
                 .build();
@@ -55,7 +55,7 @@ class AuthenticationControllerTest
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
                 .email("me.bob@test.com")
-                .firstname("myFirstname")
+                .firstname("bobz")
                 .receiveNews(true)
                 .password("myPassword")
                 .build();
@@ -89,7 +89,7 @@ class AuthenticationControllerTest
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
                 .email("test4.user@test.com")
-                .firstname("myFirstname")
+                .firstname("rere")
                 .receiveNews(true)
                 .password("myPassword")
                 .build();

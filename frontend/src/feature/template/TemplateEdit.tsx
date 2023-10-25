@@ -12,6 +12,17 @@ import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {TemplateModel} from "./model/models";
 import Controller from "../core/Controller";
 
+type FormErrors = {
+    name?: string;
+    promise? : string;
+    description? : string;
+
+    stampCardCategory? : string;
+    stampCardStatus? : string;
+
+    expirationDate? : string
+}
+
 export default function TemplateEdit()
 {
     const navigate = useNavigate();
@@ -20,6 +31,7 @@ export default function TemplateEdit()
     const originalTemplateModel = location.state?.templateModel as TemplateModel
     const [selectedDate, setSelectedDate] = useState<Date>(new Date(originalTemplateModel.expirationDate));
     const [editedTemplateModel, setEditedTemplateModel] = useState<TemplateModel>({ ...originalTemplateModel });
+    const [formErrors, setFormErrors] = useState<FormErrors>({});
 
     const [imageSrc, setImageSrc] = useState(originalTemplateModel?.image || '');
     useEffect(() => {
@@ -30,19 +42,10 @@ export default function TemplateEdit()
         }
     }, [originalTemplateModel]);
 
-
-    const hasChanges = JSON.stringify(originalTemplateModel) !== JSON.stringify(editedTemplateModel);
-
     const [Category, setCategory] = useState<string[]>([]);
     useEffect(() => {
         axios('/api/templates/categories')
             .then((response) => setCategory(response.data))
-    }, []);
-
-    const [Security, setSecurity] = useState<string[]>([]);
-    useEffect(() => {
-        axios('/api/templates/security')
-            .then((response) => setSecurity(response.data));
     }, []);
 
     const [Status, setStatus] = useState<string[]>([]);
@@ -52,6 +55,8 @@ export default function TemplateEdit()
         ;
     }, []);
 
+    const hasChanges = JSON.stringify(originalTemplateModel) !== JSON.stringify(editedTemplateModel);
+
     function handleTemplateChange<K extends keyof TemplateModel>(
         name: K,
         value: TemplateModel[K]
@@ -59,13 +64,53 @@ export default function TemplateEdit()
         setEditedTemplateModel(prevModel => ({ ...prevModel, [name]: value }));
     }
 
+    const validateFormData = () => {
+        let errors :FormErrors = {};
+
+        if (!editedTemplateModel.name || editedTemplateModel.name.length > 21) {
+            errors.name = 'Name is required and should not be longer then 20 characters';
+        }
+
+        if (!editedTemplateModel.promise || editedTemplateModel.promise.length > 21) {
+            errors.promise = 'Promise is required and should not be longer then 20 characters';
+        }
+
+        if (!editedTemplateModel.description || editedTemplateModel.description.length > 151) {
+            errors.description = 'Description is required and should not be longer then 150 characters';
+        }
+
+
+        if (!editedTemplateModel) {
+            errors.stampCardCategory = 'Category is required';
+        }
+
+        if (!editedTemplateModel) {
+            errors.stampCardStatus = 'Status is required';
+        }
+
+        const isFutureDate = selectedDate.getTime() > new Date().getTime();
+        if (!isFutureDate) {
+            errors.expirationDate = 'Expiration date should be in the future';
+        }
+
+        setFormErrors(errors);  // Update the state once here
+
+        return errors;
+    };
+
     const handleSubmit = async (event : FormEvent<HTMLFormElement>)  => {
         event.preventDefault();
 
+        const errors = validateFormData();
+        setFormErrors(errors);
+
+        if (Object.keys(errors).length > 0) {
+            return;
+        }
+
+
         const token = localStorage.getItem('authToken');
-
-
-        const response = await axios.put('/api/templates', editedTemplateModel,
+        await axios.put('/api/templates', editedTemplateModel,
     {
             headers: {
                 'Content-Type': 'application/json',
@@ -136,28 +181,28 @@ return (
                     value={editedTemplateModel.name}
                     label="Name"
                     onChange={(e) =>
-                        handleTemplateChange('name', e.target.value)}/>
+                        handleTemplateChange('name', e.target.value)}
+                   error={!!formErrors.name}
+                   helperText={formErrors.name}/>
 
                 <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
                            value={editedTemplateModel.promise}
                            label="Promise"
                            onChange={(e) =>
-                               handleTemplateChange('promise', e.target.value)}/>
+                               handleTemplateChange('promise', e.target.value)}
+                           error={!!formErrors.promise}
+                           helperText={formErrors.promise}/>
 
                 <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
                        value={editedTemplateModel.description}
                        label="Description"
                        onChange={(e) =>
-                           handleTemplateChange('description', e.target.value)}/>
-
-                <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
-                       value={editedTemplateModel.defaultCount}
-                       label="Number"
-                           onChange={(e) =>
-                               handleTemplateChange('defaultCount', parseInt(e.target.value, 10))}/>
+                           handleTemplateChange('description', e.target.value)}
+                           error={!!formErrors.description}
+                           helperText={formErrors.description}/>
 
                 <Typography variant={"h5"} align="right">
-                   Edit Security
+                   Edit Configuration
                 </Typography>
                 <Divider color={"primary"} sx={{ marginBottom: 2 }}/>
 
@@ -173,7 +218,11 @@ return (
                         }));
                     }}
                     components={{
-                        TextField: (props) => <TextField {...props} fullWidth sx={{mb : 2}}/>
+                        TextField: (props) => <TextField
+                            {...props}
+                            error={!!formErrors.expirationDate}
+                            helperText={formErrors.expirationDate}
+                            fullWidth sx={{mb : 2}}/>
                     }}
                 />
 
@@ -188,7 +237,7 @@ return (
                             handleTemplateChange('stampCardCategory', e.target.value)}>
 
                     {Category.map((category, index) => (
-                        <MenuItem key={index} value={category}>{category}</MenuItem>
+                        <MenuItem key={category} value={category}>{category}</MenuItem>
                     ))}
                     </Select>
                 </FormControl>
@@ -204,23 +253,7 @@ return (
                             handleTemplateChange('stampCardStatus', e.target.value)}>
 
                         {Status.map((status, index) => (
-                            <MenuItem key={index} value={status}>{status}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl fullWidth sx={{ marginBottom: 2 }}>
-                    <InputLabel id="security-wheel-lable-id">Security</InputLabel>
-                    <Select
-                        labelId="security-wheel-lable-id"
-                        id="security-wheel-id"
-                        value={editedTemplateModel.stampCardSecurity}
-                        label="Security"
-                        onChange={(e) =>
-                            handleTemplateChange('stampCardSecurity', e.target.value)}>
-
-                        {Security.map((security, index) => (
-                            <MenuItem key={index} value={security}>{security}</MenuItem>
+                            <MenuItem key={status} value={status}>{status}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>

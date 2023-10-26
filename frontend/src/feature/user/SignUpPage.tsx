@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import {IconButton} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import Copyright from "./Copyright";
+import Copyright from "../core/Copyright";
 import {FormEvent, useState} from "react";
 
 type UserDTO = {

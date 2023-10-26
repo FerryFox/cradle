@@ -30,6 +30,9 @@ public class AppUser
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<StampCard> myStampCards;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AppUser> friends;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AdditionalInfo additionalInfo;
 }

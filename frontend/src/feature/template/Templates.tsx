@@ -47,7 +47,7 @@ export default function Templates()
 
     return (
     <div>
-     <Controller title={"Public Stamp Cards"} showSecondLine={true} />
+     <Controller title={"Public Stamp Cards"} showSecondLine/>
         <Container>
             <Toolbar></Toolbar>
             <Toolbar></Toolbar>

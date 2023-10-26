@@ -82,14 +82,14 @@ public class PictureService
     public String getPictureString(String id)
     {
          Optional<Picture> picture =  pictureRepository.findById(id);
-         if(picture.isEmpty()) return "";
+         if(picture.isEmpty()) return null;
 
          if(picture.get().getType() == PictureType.URL_LINK)
              return picture.get().getUrl();
 
          else{
              byte[] imageBytes = picture.get().getImageBinary().getData();
-             return Base64.getEncoder().encodeToString(imageBytes);
+             return "data:image/jpg;base64," + Base64.getEncoder().encodeToString(imageBytes);
          }
     }
 

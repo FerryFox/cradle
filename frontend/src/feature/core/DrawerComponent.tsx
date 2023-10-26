@@ -108,7 +108,7 @@ return (
         <Divider style={{ height: '5px',  }} />
 
         <List>
-            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
+            <ListItem key={'Profile'} disablePadding onClick={() => navigate('/profile')}>
                 <ListItemButton>
                     <ListItemIcon>
                         <AccountBoxIcon />

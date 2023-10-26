@@ -20,6 +20,7 @@ import TemplateEdit from "./feature/template/TemplateEdit";
 import StampCards from "./feature/stamp_card/StampCards";
 import StampCardDetails from "./feature/stamp_card/StempCardDetails";
 import Archive from "./feature/archive/Archive";
+import ProfilePage from "./feature/user/PofilePage";
 
 export default function App()
 {
@@ -36,6 +37,7 @@ export default function App()
 
                     <Route path="/signin" element={<SignInPage />} />
                     <Route path="/signup" element={<SignUpPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/dashboard" element={<Dashboard/>} />
 
                     <Route path="/templates" element={<Templates/>} />

@@ -14,7 +14,7 @@ import axios from "axios";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import {IconButton} from "@mui/material";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import Copyright from "./Copyright";
+import Copyright from "../core/Copyright";
 
 
 type FromErrors = {

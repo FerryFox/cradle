@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function createStampCardFromTemplateId(id : string)
+export async function createStampCardFromTemplateId(id: number)
 {
     const token = localStorage.getItem('authToken');
     const response = await axios

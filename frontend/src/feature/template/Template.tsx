@@ -37,7 +37,7 @@ export default function Template({ templateModel }: TemplateProps)
             height: '34vh',}}>
             <CardMedia
                 sx={{ height: "17vh" }}
-                image={`data:image/jpeg;base64,${templateModel.image}`}
+                image={templateModel.image}
                 title="green iguana"
             />
             {isFront && (

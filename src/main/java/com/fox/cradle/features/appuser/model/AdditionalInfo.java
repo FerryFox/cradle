@@ -18,6 +18,9 @@ public class AdditionalInfo
     private Long id;
 
     private String bio;
+    private String status;
+    private String connection;
+    private String pictureId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "app_user_id",  nullable = true)

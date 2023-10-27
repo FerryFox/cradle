@@ -2,19 +2,26 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {AppUserDTO} from "./model/models";
 import AppUserShortCard from "./AppUserShortCard";
-import {Button, Icon, IconButton, Paper, Stack} from "@mui/material";
+import {IconButton, Paper, Stack} from "@mui/material";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import SearchSharpIcon from '@mui/icons-material/SearchSharp';
+import FollowTheSignsIcon from '@mui/icons-material/FollowTheSigns';
 
-export default function SearchFriends()
+type SearchFriendsProps = {
+    addFriend: (friendId: string) => void;
+}
+
+
+
+export default function SearchFriends( {addFriend} : SearchFriendsProps)
 {
     const token = localStorage.getItem("authToken");
     const [appUsers , setAppUsers] = useState<AppUserDTO[]>([]);
 
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     useEffect(() => {
         if (!token) {return;}
@@ -26,6 +33,18 @@ export default function SearchFriends()
                 setAppUsers(response.data);
             });
     }, []);
+
+
+    const removefromAppUsersAndAddToFriends = (id: string) => {
+        addFriend(id);
+        setAppUsers(appUsers.filter((appUser) => appUser.id.toString() !== id));
+
+    }
+
+    const filteredAppUsers = appUsers.filter((appUser) => {
+        return appUser.nameIdentifier.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            appUser.appUserName.toLowerCase().includes(searchTerm.toLowerCase());
+    });
 
 return (
 <>
@@ -42,14 +61,32 @@ return (
                     </IconButton>
                 </Grid>
                 <Grid item xs={10}>
-                    <TextField fullWidth variant={"standard"}
+                    <TextField
+                        fullWidth
+                        variant={"standard"}
+                        value={searchTerm}
+                        onChange={(event) =>
+                        {
+                            setSearchTerm(event.target.value);
 
+                        }}
                     />
                 </Grid>
             </Grid>
 
-            {appUsers && appUsers.map((appUser) => (
-                        <AppUserShortCard key={appUser.id}  appUser={appUser}/>
+            {filteredAppUsers && filteredAppUsers.map((appUser) => (
+                <AppUserShortCard
+                    key={appUser.id + "search"}
+                    appUser={appUser}
+                    buttons={[
+                        {
+                            onClick: removefromAppUsersAndAddToFriends,
+                            startIcon: <FollowTheSignsIcon />,
+                            label: "Follow",
+                            color: "primary"
+                        }
+                    ]}
+                />
             ))}
         </Stack>
     </Paper>

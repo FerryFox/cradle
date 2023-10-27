@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,23 @@ public class UserMapService
 
     public AppUserDTO mapAppUserToDTO(AppUser appUser)
     {
+        List<AppUserDTO> friends = appUser.getFriends().stream()
+                .map(this::mapAppUserToAddUserDTOWithAddInfo)
+                .collect(Collectors.toList());
+
+
+        return AppUserDTO.builder()
+                .id(appUser.getId())
+                .appUserName(appUser.getAppUserName())
+                .appUserEmail(appUser.getAppUserEmail())
+                .nameIdentifier(appUser.getNameIdentifier())
+                .addInfoDTO(mapAdditionalInfoToDTO(appUser.getAdditionalInfo()))
+                .friends(friends)
+                .build();
+    }
+
+    public AppUserDTO mapAppUserToAddUserDTOWithAddInfo(AppUser appUser)
+    {
         return AppUserDTO.builder()
                 .id(appUser.getId())
                 .appUserName(appUser.getAppUserName())
@@ -44,10 +62,11 @@ public class UserMapService
                 .build();
     }
 
+
     public List<AppUserDTO> mapAppUserListToDTO(List<AppUser> friends)
     {
         return friends.stream()
                 .map(this::mapAppUserToDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 }

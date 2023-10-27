@@ -13,5 +13,7 @@ export type AppUserDTO =
         appUserName: string;
         appUserEmail: string;
         nameIdentifier: string;
+
         addInfoDTO?: AdditionalInfoDTO;
+        friends?: AppUserDTO[];
     }

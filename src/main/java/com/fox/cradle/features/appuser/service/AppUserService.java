@@ -48,7 +48,9 @@ public class AppUserService
     public void updateAdditionalInfo(AppUser appUser, AddInfoDTO info)
     {
         AdditionalInfo oldInfo = appUser.getAdditionalInfo();
+
         oldInfo.setBio(info.getBio());
+
         oldInfo.setStatus(info.getStatus());
         oldInfo.setConnection(info.getConnection());
 
@@ -57,12 +59,16 @@ public class AppUserService
         {
             pictureService.updatePicutre(oldInfo.getPictureId(), info.getPicture());
         }
+        else if (info.getPicture() == null)
+        {
+            oldInfo.setPictureId(null);
+        }
         else
         {
             String pictureId = pictureService.savePicture(
                             info.getPicture(),
                             appUser.getAppUserName())
-                            .getId();
+                    .getId();
             oldInfo.setPictureId(pictureId);
         }
         appUserRepository.save(appUser);
@@ -76,7 +82,7 @@ public class AppUserService
         return friendsDTO;
     }
 
-    public void addFriend(Long userId, Long friendId) {
+    public AppUserDTO addFriend(Long userId, Long friendId) {
         // 1. Fetch both users
         AppUser user = appUserRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id " + userId));
@@ -85,19 +91,36 @@ public class AppUserService
                 .orElseThrow(() -> new RuntimeException("User not found with id " + friendId));
 
         // 2. & 3. Update the list and ensure bidirectionality
-        if (!user.getFriends().contains(friend)) {
+        if (!user.getFriends().contains(friend))
+        {
             user.getFriends().add(friend);
-            friend.getFriends().add(user);
         }
 
         // 4. Save the updated entities
         appUserRepository.save(user);
-        appUserRepository.save(friend);
+
+        return userMapService.mapAppUserToDTO(friend);
     }
 
     public List<AppUserDTO> getUsers()
     {
         List<AppUser> users = appUserRepository.findAll();
         return userMapService.mapAppUserListToDTO(users);
+    }
+
+    @Transactional
+    public AppUserDTO getMeDTO(AppUser appUser)
+    {
+        appUser.getFriends();
+        appUser.getAdditionalInfo();
+        return userMapService.mapAppUserToDTO(appUser);
+    }
+
+    @Transactional
+    public void deleteFriend(AppUser appUser, Long friendId)
+    {
+        appUser.getFriends().removeIf(friend -> friend.getId().equals(friendId));
+
+        appUserRepository.save(appUser);
     }
 }

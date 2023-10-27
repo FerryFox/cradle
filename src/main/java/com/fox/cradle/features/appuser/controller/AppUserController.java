@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -36,6 +37,19 @@ public class AppUserController
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<AppUserDTO> getMe(HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUser =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUser.isEmpty()) return ResponseEntity.badRequest().build();
+
+        AppUserDTO result = appUserService.getMeDTO(appUser.get());
+
+        return ResponseEntity.ok(result);
+    }
+
     @Transactional
     @GetMapping("/friends")
     public ResponseEntity<List<AppUserDTO>> getFriends(HttpServletRequest httpServletRequest)
@@ -50,15 +64,15 @@ public class AppUserController
     }
 
     @PostMapping("/add-friend/{id}")
-    public ResponseEntity<Void> addFriend(HttpServletRequest httpServletRequest, @PathVariable Long id)
+    public ResponseEntity<AppUserDTO> addFriend(HttpServletRequest httpServletRequest, @PathVariable Long id)
     {
         Optional<AppUser> appUser =  appUserService.
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
         if (appUser.isEmpty()) return ResponseEntity.badRequest().build();
 
-        appUserService.addFriend(appUser.get().getId(), id);
+        AppUserDTO friend = appUserService.addFriend(appUser.get().getId(), id);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(friend);
     }
 
     @PostMapping("/additional-info")
@@ -79,9 +93,38 @@ public class AppUserController
     }
 
     @GetMapping("/get-users")
-    public ResponseEntity<List<AppUserDTO>> getUsers()
+    public ResponseEntity<List<AppUserDTO>> getUsers(HttpServletRequest httpServletRequest)
     {
+        Optional<AppUser> appUser =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUser.isEmpty()) return ResponseEntity.badRequest().build();
+
         List<AppUserDTO> users = appUserService.getUsers();
+
+        List<Long> idsToRemove = appUser.get().getFriends().stream()
+                .map(AppUser::getId)
+                .collect(Collectors.toList());
+
+        idsToRemove.add(appUser.get().getId());
+
+        for (Long id : idsToRemove)
+        {
+            users.removeIf(user -> user.getId().equals(id));
+        }
+
         return ResponseEntity.ok(users);
+    }
+
+    @DeleteMapping("/delete-friend/{friendId}")
+    public ResponseEntity<Void> deleteFriend (HttpServletRequest httpServletRequest, @PathVariable Long friendId)
+    {
+    	Optional<AppUser> appUser =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+        if (appUser.isEmpty()) return ResponseEntity.badRequest().build();
+
+        appUserService.deleteFriend(appUser.get(), friendId);
+
+        return ResponseEntity.ok().build();
     }
 }

@@ -3,6 +3,8 @@ package com.fox.cradle.features.appuser.model;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Builder
 @Data
 public class AppUserDTO
@@ -13,4 +15,5 @@ public class AppUserDTO
     private String nameIdentifier;
 
     private AddInfoDTO addInfoDTO;
+    private List<AppUserDTO> friends;
 }

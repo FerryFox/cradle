@@ -52,7 +52,7 @@ export default function ArchiveCard( { stampCard }: ArchiveCardViewProps)
                     <Card>
                         <CardMedia
                             sx={{ height: "20vh" }}
-                            image={`data:image/jpeg;base64,${stampCard.templateModel.image}`}
+                            image={stampCard.templateModel.image}
                             title="green iguana"
                         />
                     </Card>

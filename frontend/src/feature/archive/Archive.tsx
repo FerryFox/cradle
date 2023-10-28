@@ -58,7 +58,7 @@ return(
         {stampCards.length > 0 && (
             <>
                 <Typography variant={"h3"} align={"right"}>
-                    Redemmed Stamp Cards
+                    Redeemed Stamp Cards
                 </Typography>
                 <Divider color={"secondary"}></Divider>
                 <Grid container spacing={4} justifyContent="center" sx={{mt : 1}}>

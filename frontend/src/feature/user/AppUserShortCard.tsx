@@ -7,6 +7,7 @@ import Card from "@mui/material/Card";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import {useNavigate} from "react-router-dom";
 
 
 type ButtonConfig = {
@@ -24,6 +25,7 @@ type AppUserShortCardProps = {
 export default function AppUserShortCard({appUser, buttons } : AppUserShortCardProps )
 {
     const [showMore, setShowMore] = useState(false);
+    const navigateTo = useNavigate();
 
 return (
 <>
@@ -57,6 +59,9 @@ return (
                         </Typography>
             </CardContent>
             <CardActions sx={{ px: 1, justifyContent: 'flex-end'}}>
+                <Button variant={"contained"} size={"small"} onClick={() => navigateTo(`/appuser/${appUser.id}`) }>
+                    Details
+                </Button>
                 {buttons && buttons.map((button, index) => (
                     <Button
                         key={index}

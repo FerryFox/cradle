@@ -119,12 +119,12 @@ return (
         </List>
 
         <List>
-            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
+            <ListItem key={'FriendsPage'} disablePadding onClick={() => navigate('/friends')}>
                 <ListItemButton>
                     <ListItemIcon>
                         <Diversity3Icon />
                     </ListItemIcon>
-                    <ListItemText primary={'Friends'} secondary={''} />
+                    <ListItemText primary={'FriendsPage'} secondary={''} />
                 </ListItemButton>
             </ListItem>
         </List>

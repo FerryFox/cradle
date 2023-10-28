@@ -21,6 +21,8 @@ import StampCards from "./feature/stamp_card/StampCards";
 import StampCardDetails from "./feature/stamp_card/StempCardDetails";
 import Archive from "./feature/archive/Archive";
 import ProfilePage from "./feature/user/PofilePage";
+import AppUserHomePage from "./feature/user/friend/AppUserHomePage";
+import FriendsPage from "./feature/user/friend/FriendsPage";
 
 export default function App()
 {
@@ -39,6 +41,9 @@ export default function App()
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/dashboard" element={<Dashboard/>} />
+
+                    <Route path="/appuser/:id" element={<AppUserHomePage/>}/>
+                    <Route path="/friends" element={<FriendsPage/>}/>
 
                     <Route path="/templates" element={<Templates/>} />
                     <Route path="/templates/owned" element={<TemplatesOwned/>} />

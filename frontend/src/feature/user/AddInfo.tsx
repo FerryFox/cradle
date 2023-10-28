@@ -1,7 +1,6 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from "react";
-import {Button, Divider, IconButton, Paper, Stack, Toolbar} from "@mui/material";
+import {Button, IconButton, Paper, Stack} from "@mui/material";
 import {AdditionalInfoDTO} from "./model/models";
-import axios from "axios";
 import Typography from "@mui/material/Typography";
 import {resizeAndCropImage} from "../../assets/picture/resizeAndCropImage";
 import TextField from "@mui/material/TextField";

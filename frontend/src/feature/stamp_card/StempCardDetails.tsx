@@ -12,7 +12,6 @@ import React, {useEffect, useState} from "react";
 import RedeemButton from "./RedeemButton";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 
-
 export default function StampCardDetails()
 {
     const { id } = useParams<{ id: string }>();

@@ -1,3 +1,5 @@
+import {TemplateModel} from "../../template/model/models";
+
 export type AdditionalInfoDTO = {
     name?: string;
     id?: number;
@@ -16,4 +18,5 @@ export type AppUserDTO =
 
         addInfoDTO?: AdditionalInfoDTO;
         friends?: AppUserDTO[];
+        templates?: TemplateModel[];
     }

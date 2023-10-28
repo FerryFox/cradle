@@ -80,7 +80,6 @@ return (
                 <HaveFriends friends={appUser.friends} deleteFriend={deleteFriend}/>
             }
 
-
             {showSearchFriends ?
                 (
                         <SearchFriends addFriend={addFriend}/>

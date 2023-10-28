@@ -6,6 +6,8 @@ import com.fox.cradle.features.appuser.model.AdditionalInfo;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.model.AppUserDTO;
 import com.fox.cradle.features.picture.service.PictureService;
+import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
+import com.fox.cradle.features.stampsystem.service.template.TemplateService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class AppUserService
     private final AppUserRepository appUserRepository;
     private final PictureService pictureService;
     private final UserMapService userMapService;
+    private final TemplateService templateService;
 
     public AppUser saveAppUser(AppUser appUser)
     {
@@ -74,6 +77,8 @@ public class AppUserService
         appUserRepository.save(appUser);
     }
 
+    //load fiends user data
+    //with  - additional info
     public List<AppUserDTO> getFriends(AppUser appUser)
     {
         List<AppUser> friends = appUser.getFriends();
@@ -99,7 +104,7 @@ public class AppUserService
         // 4. Save the updated entities
         appUserRepository.save(user);
 
-        return userMapService.mapAppUserToDTO(friend);
+        return userMapService.mapAppUserToDTOWithAddInfo(friend);
     }
 
     public List<AppUserDTO> getUsers()
@@ -113,7 +118,7 @@ public class AppUserService
     {
         appUser.getFriends();
         appUser.getAdditionalInfo();
-        return userMapService.mapAppUserToDTO(appUser);
+        return userMapService.mapAppUserToDTOWithAddInfo(appUser);
     }
 
     @Transactional
@@ -122,5 +127,21 @@ public class AppUserService
         appUser.getFriends().removeIf(friend -> friend.getId().equals(friendId));
 
         appUserRepository.save(appUser);
+    }
+
+    //Get user data with
+    //  -   additional info
+    //  -   templates
+    @Transactional
+    public AppUserDTO getUserDTO(String id)
+    {
+        AppUser user = appUserRepository.findById(Long.parseLong(id))
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
+        List<TemplateResponse> templates = templateService.getMyTemplates(user);
+
+        AppUserDTO result = userMapService.mapAppUserToDTOWithAddInfo(user);
+        result.setTemplates(templates);
+        return result;
     }
 }

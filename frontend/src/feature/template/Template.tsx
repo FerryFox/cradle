@@ -4,14 +4,15 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import {TemplateModel} from "./model/models";
-import {Divider} from "@mui/material";
+import {Button, Divider} from "@mui/material";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 
 interface TemplateProps {
     templateModel: TemplateModel;
+    getButton? : (id: number) => void;
 }
 
-export default function Template({ templateModel }: TemplateProps)
+export default function Template({ templateModel, getButton }: TemplateProps)
 {
     const [isFront, setIsFront] = React.useState(true);
     const [displayName , setDisplayName] = React.useState("");
@@ -91,15 +92,31 @@ export default function Template({ templateModel }: TemplateProps)
                        {templateModel.description}
                     </Typography>
 
-                    <Typography  variant="body2"
-                                 color={"secondary"}
-                                 style={{
-                                     position: 'absolute',
-                                     bottom: '8px',
-                                     right: '8px'}}>
+                    {getButton ?
+                        (
+                            <Button onClick={() => getButton(templateModel.id)}
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: '2px',
+                                        right: '2px'}}>
 
-                        INFO
-                    </Typography>
+                                Get
+                            </Button>
+                        )
+                            :
+                        (
+                            <Typography  variant="body2"
+                                            color={"secondary"}
+                                            style={{
+                                                position: 'absolute',
+                                                bottom: '8px',
+                                                right: '8px'}}>
+
+                            INFO
+                        </Typography>
+                        )
+                    }
+
                 </CardContent>)
             }
 

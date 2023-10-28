@@ -34,7 +34,7 @@ public class UserMapService
                 .build();
     }
 
-    public AppUserDTO mapAppUserToDTO(AppUser appUser)
+    public AppUserDTO mapAppUserToDTOWithAddInfo(AppUser appUser)
     {
         List<AppUserDTO> friends = appUser.getFriends().stream()
                 .map(this::mapAppUserToAddUserDTOWithAddInfo)
@@ -66,7 +66,7 @@ public class UserMapService
     public List<AppUserDTO> mapAppUserListToDTO(List<AppUser> friends)
     {
         return friends.stream()
-                .map(this::mapAppUserToDTO)
+                .map(this::mapAppUserToDTOWithAddInfo)
                 .collect(Collectors.toList());
     }
 }

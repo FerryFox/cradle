@@ -19,9 +19,9 @@ export default function Templates()
     const [loading, setLoading] = useState(true);
     const [openSnackbar, setOpenSnackbar] = useState(false);
 
-    const handleGetCardClick = async (template: TemplateModel) => {
+    const handleGetCardClick = async (templateId: number) => {
         try {
-            await createStampCardFromTemplateId(template.id);
+            await createStampCardFromTemplateId(templateId);
             setOpenSnackbar(true);
         } catch (error) {
             console.error("Error creating the stamp card:", error);
@@ -55,10 +55,7 @@ export default function Templates()
             <Grid container spacing={2} justifyContent="center" sx={{mt : 3}}>
                 {templates.map(template => (
                     <Grid item xs={6} sm={6} md={4} key={template.id} >
-                        <Template templateModel={template}  />
-                        <Button onClick={() => handleGetCardClick(template)}>
-                            Get this card
-                        </Button>
+                        <Template templateModel={template} getButton={handleGetCardClick}  />
                     </Grid>
                 ))}
             </Grid>

@@ -37,6 +37,9 @@ public class AppUserController
         return ResponseEntity.ok(result);
     }
 
+    //load user data
+    //with  - additional info
+    //      - friends
     @GetMapping("/me")
     public ResponseEntity<AppUserDTO> getMe(HttpServletRequest httpServletRequest)
     {
@@ -48,6 +51,15 @@ public class AppUserController
         AppUserDTO result = appUserService.getMeDTO(appUser.get());
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AppUserDTO> getUser(@PathVariable String id)
+    {
+        AppUserDTO result = appUserService.getUserDTO(id);
+
+        if (result == null) return ResponseEntity.badRequest().build();
+        else return ResponseEntity.ok(result);
     }
 
     @Transactional

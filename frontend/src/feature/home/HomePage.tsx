@@ -9,8 +9,7 @@ import {News} from "./model/models";
 import {loadNews} from "./service/newsService";
 import About from "./About";
 import axios from "axios";
-import {Skeleton} from "@mui/lab";
-import IntroductionCard from "./IntroductionCard";
+import Skeleton from "@mui/material/Skeleton";
 
 export default function HomePage()
 {

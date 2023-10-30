@@ -62,7 +62,6 @@ public class UserMapService
                 .build();
     }
 
-
     public List<AppUserDTO> mapAppUserListToDTO(List<AppUser> friends)
     {
         return friends.stream()

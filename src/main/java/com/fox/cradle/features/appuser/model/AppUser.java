@@ -1,5 +1,6 @@
 package com.fox.cradle.features.appuser.model;
 
+import com.fox.cradle.features.blog.model.BlogEntry;
 import com.fox.cradle.features.stampsystem.model.stampcard.StampCard;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,4 +36,7 @@ public class AppUser
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AdditionalInfo additionalInfo;
+
+    @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BlogEntry> blogEntries;
 }

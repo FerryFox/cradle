@@ -8,7 +8,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableJpaRepositories(basePackages = {
         "com.fox.cradle.configuration.security",
         "com.fox.cradle.features.appuser",
-        "com.fox.cradle.features.stampsystem"
+        "com.fox.cradle.features.stampsystem",
+        "com.fox.cradle.features.blog",
 })
 @EnableMongoRepositories(basePackages = {
         "com.fox.cradle.features.picture",

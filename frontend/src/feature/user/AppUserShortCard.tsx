@@ -8,6 +8,7 @@ import {DEFAULT_ELEVATION} from "../../globalConfig";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import {useNavigate} from "react-router-dom";
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 
 
 type ButtonConfig = {
@@ -20,9 +21,10 @@ type ButtonConfig = {
 type AppUserShortCardProps = {
     appUser: AppUserDTO;
     buttons?: ButtonConfig[];
+    small?: boolean;
 };
 
-export default function AppUserShortCard({appUser, buttons } : AppUserShortCardProps )
+export default function AppUserShortCard({appUser, buttons, small } : AppUserShortCardProps )
 {
     const [showMore, setShowMore] = useState(false);
     const navigateTo = useNavigate();
@@ -36,10 +38,17 @@ return (
                         {appUser.appUserName.charAt(0)}{appUser.appUserName.charAt(1)}
                     </Avatar>
                 }
+
                 action={
-                    <IconButton onClick={() => setShowMore(!showMore)}>
-                        <ChangeCircleIcon/>
-                    </IconButton>
+                    !small ? (
+                        <IconButton onClick={() => setShowMore(!showMore)}>
+                            <ChangeCircleIcon />
+                        </IconButton>
+                    ) : (
+                        <IconButton onClick={() => navigateTo(`/appuser/${appUser.id}`)}>
+                            <PermContactCalendarIcon/>
+                        </IconButton>
+                    )
                 }
                 title={appUser.appUserName}
                 subheader={appUser.nameIdentifier.substring(0, 8) + " " +

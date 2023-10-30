@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from "react";
+import React, {ChangeEvent, useRef, useState} from "react";
 import {Button, IconButton, Paper, Stack} from "@mui/material";
 import {AdditionalInfoDTO} from "./model/models";
 import Typography from "@mui/material/Typography";
@@ -13,10 +13,9 @@ export default function AddInfo({userInfo, onUpdateUserInfo}: {userInfo: Additio
 {
     const [editInfo , setEditInfo] = useState<AdditionalInfoDTO>(userInfo as AdditionalInfoDTO);
 
-    const [id , setId] = useState<string>( "");
-    const [name , setName] = useState<string>( "");
+
+    const [name] = useState<string>( "");
     const [bio , setBio] = useState<string>("");
-    const [picture , setPicture] = useState<string>("");
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const token = localStorage.getItem("authToken");

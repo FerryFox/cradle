@@ -4,7 +4,6 @@ import Controller from "../../core/Controller";
 import Container from "@mui/material/Container";
 import {Button, Paper, Stack, Toolbar} from "@mui/material";
 import axios from "axios";
-import AddInfo from "../AddInfo";
 import HaveFriends from "../HaveFriends";
 import SearchFriends from "../SearchFriends";
 import {DEFAULT_ELEVATION} from "../../../globalConfig";

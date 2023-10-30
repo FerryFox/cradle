@@ -2,6 +2,7 @@ package com.fox.cradle;
 
 import com.fox.cradle.configuration.security.auth.AuthenticationService;
 import com.fox.cradle.configuration.security.auth.RegisterRequest;
+import com.fox.cradle.features.appuser.model.AddInfoDTO;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.news.model.News;
@@ -14,6 +15,7 @@ import com.fox.cradle.features.stampsystem.model.enums.StampCardStatus;
 import com.fox.cradle.features.stampsystem.model.template.NewSecurityTimeGate;
 import com.fox.cradle.features.stampsystem.model.template.NewTemplate;
 import com.fox.cradle.features.stampsystem.service.template.TemplateService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -39,6 +41,7 @@ public class DatabaseInitializer implements CommandLineRunner
     static final String EXP = "2024-10-11T06:39:11.609Z";
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         System.out.println("DatabaseInitializer is running...");
     //MongoDb
@@ -67,7 +70,18 @@ public class DatabaseInitializer implements CommandLineRunner
         authService.register(registerRequestIce);
         AppUser appUserIceCompany = appUserService.findUserByEmail(registerRequestIce.getEmail()).orElseThrow();
 
+        String icep = pictureService.loadPictureFromFile("icep");
+        AddInfoDTO info = AddInfoDTO.builder()
+                .name("Ice Cream Company")
+                .bio("We are a small ice cream company from Berlin. We love ice cream and we want to share our passion with you. We are looking forward to your visit!")
+                .picture(icep)
+                .status("We are open!")
+                .build();
+        appUserService.updateAdditionalInfo(appUserIceCompany, info);
+
+
         String ice = pictureService.loadPictureFromFile("ice");
+
         NewTemplate icreamTemplate = NewTemplate.builder()
                 .name("Ice Cream")
                 .promise("Free Ice Cream")
@@ -82,6 +96,7 @@ public class DatabaseInitializer implements CommandLineRunner
                 .appUser(appUserIceCompany)
                 .build();
         templateService.createTemplate(icreamTemplate, appUserIceCompany);
+
 
     //Time Gate Example
         String coffee = pictureService.loadPictureFromFile("coffee");
@@ -101,6 +116,7 @@ public class DatabaseInitializer implements CommandLineRunner
                         .build())
                 .build();
         templateService.createTemplate(coffeTemplate, appUserIceCompany);
+
 
         String kebab = pictureService.loadPictureFromFile("kebab");
         NewTemplate kebabTemplate = NewTemplate.builder()
@@ -128,6 +144,17 @@ public class DatabaseInitializer implements CommandLineRunner
         //Event triggers the creation of an appUser
         authService.register(registerRequestCinema);
         AppUser appUserCinema = appUserService.findUserByEmail(registerRequestCinema.getEmail()).orElseThrow();
+
+        String cinemaP = pictureService.loadPictureFromFile("cinemap");
+        AddInfoDTO infoCinema = AddInfoDTO.builder()
+                .name("Cinema")
+                .bio("We are a small cinema from Berlin. We love movies and we want to share our passion with you. We are looking forward to your visit!")
+                .picture(cinemaP)
+                .status("Take a look")
+                .build();
+
+        appUserService.updateAdditionalInfo(appUserCinema, infoCinema);
+
 
         String cinema = pictureService.loadPictureFromFile("cinema");
 
@@ -159,6 +186,16 @@ public class DatabaseInitializer implements CommandLineRunner
         //Event triggers the creation of an appUser
         authService.register(registerRequestFood);
         AppUser appUserFood = appUserService.findUserByEmail(registerRequestFood.getEmail()).orElseThrow();
+
+        String foodp = pictureService.loadPictureFromFile("foodp");
+        AddInfoDTO infoFood = AddInfoDTO.builder()
+                .name("Local Food Store")
+                .bio("We are a small food store from Berlin. We love food and we want to share our passion with you. We are looking forward to your visit!")
+                .picture(foodp)
+                .status("Eat more!")
+                .build();
+
+        appUserService.updateAdditionalInfo(appUserFood, infoFood);
 
         String sushi = pictureService.loadPictureFromFile("sushi");
         NewTemplate sushiTemplate = NewTemplate.builder()
@@ -203,6 +240,16 @@ public class DatabaseInitializer implements CommandLineRunner
         //Event triggers the creation of an appUser
         authService.register(registerRequestPark);
         AppUser appUserClothes = appUserService.findUserByEmail(registerRequestPark.getEmail()).orElseThrow();
+
+        String parkp = pictureService.loadPictureFromFile("parkp");
+        AddInfoDTO infoPark = AddInfoDTO.builder()
+                .name("Theme Park")
+                .bio("We are a small theme park from Berlin. We love theme parks and we want to share our passion with you. We are looking forward to your visit!")
+                .picture(parkp)
+                .status("We are open!")
+                .build();
+
+        appUserService.updateAdditionalInfo(appUserClothes, infoPark);
 
         String roller = pictureService.loadPictureFromFile("roller");
         NewTemplate rollerTemplate = NewTemplate.builder()

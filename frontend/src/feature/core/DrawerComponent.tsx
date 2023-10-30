@@ -128,14 +128,13 @@ return (
                 </ListItemButton>
             </ListItem>
         </List>
-
         <List>
-            <ListItem key={'Templates'} disablePadding onClick={() => navigate('/templates/owned')}>
+            <ListItem key={'Story'} disablePadding onClick={() => navigate('/blog')}>
                 <ListItemButton>
                     <ListItemIcon>
                         <MessageIcon />
                     </ListItemIcon>
-                    <ListItemText primary={'Messages'} secondary={''} />
+                    <ListItemText primary={'Story'} secondary={''} />
                 </ListItemButton>
             </ListItem>
         </List>

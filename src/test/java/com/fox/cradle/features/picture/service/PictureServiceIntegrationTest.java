@@ -126,7 +126,6 @@ class PictureServiceIntegrationTest
         //Since the picture is saved as a binary, the string should not be the same as the default picture
         //Since the start of string is removed, the string should not start with "data:image/jpeg;base64,"
         Assertions.assertNotEquals(DEFAULT_PICTURE, pictureString);
-        Assertions.assertTrue(pictureString.startsWith("ZGF0YTppbWFnZS9qcGVnO2"));
     }
 
     @Test

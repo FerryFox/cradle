@@ -29,7 +29,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner
 {
-
     private final MongoTemplate mongoTemplate;
     private final AuthenticationService authService;
     private final AppUserService appUserService;

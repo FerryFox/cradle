@@ -4,11 +4,14 @@ import Container from "@mui/material/Container";
 import {Paper, Toolbar} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+
 
 export default function Dashboard()
 {
     const navigateTo = useNavigate();
-
+    const token = localStorage.getItem("authToken");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 return (
 <>

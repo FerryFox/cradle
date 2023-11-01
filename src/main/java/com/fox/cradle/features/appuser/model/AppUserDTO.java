@@ -3,6 +3,7 @@ package com.fox.cradle.features.appuser.model;
 import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 

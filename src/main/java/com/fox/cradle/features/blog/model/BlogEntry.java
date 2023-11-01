@@ -11,6 +11,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@ToString
 public class BlogEntry
 {
     @Id
@@ -18,8 +19,8 @@ public class BlogEntry
     private Long id;
 
     private String title;
+    @Column(length = 700)
     private String content;
-
 
     private Instant createdDate;
 

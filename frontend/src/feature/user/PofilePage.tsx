@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import AddInfo from "./AddInfo";
+import AddInfoEdit from "./AddInfoEdit";
 import Controller from "../core/Controller";
 import {Button, Paper, Stack, Toolbar} from "@mui/material";
 import Container from "@mui/material/Container";
@@ -26,7 +26,6 @@ export default function ProfilePage() {
                 }
             );
     }, []);
-
 
     const addFriend = async (friendId: string) => {
         axios.post<AppUserDTO>("/api/user/add-friend/" + friendId)
@@ -55,7 +54,7 @@ export default function ProfilePage() {
             });
     };
 
-    const updateUserInfo = async (updatedUserInfo: AdditionalInfoDTO) => {
+        const updateUserInfo = async (updatedUserInfo: AdditionalInfoDTO) => {
         if (!token) {return;}
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -70,10 +69,9 @@ return (
 <Controller title={"Profile"} showBackButton/>
 <Container>
     <Toolbar></Toolbar>
-    <Toolbar></Toolbar>
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={{mt :3}}>
             {appUser.addInfoDTO &&
-                <AddInfo userInfo={appUser.addInfoDTO} onUpdateUserInfo={updateUserInfo}/>
+                <AddInfoEdit userInfo={appUser.addInfoDTO} onUpdateUserInfo={updateUserInfo}/>
             }
 
             {appUser.friends && appUser.friends.length > 0 &&
@@ -88,7 +86,7 @@ return (
                 (
                 <Paper elevation={DEFAULT_ELEVATION}>
                     <Button onClick={() => setShowSearchFriends(!showSearchFriends)}>
-                        Search For Friends
+                        Search for some Friends
                     </Button>
                 </Paper>
                 )

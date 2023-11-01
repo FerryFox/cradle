@@ -1,13 +1,12 @@
 package com.fox.cradle.features.appuser.model;
 
 import com.fox.cradle.features.blog.model.BlogEntry;
+import com.fox.cradle.features.mail.model.Mail;
 import com.fox.cradle.features.stampsystem.model.stampcard.StampCard;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,11 +31,14 @@ public class AppUser
     private List<StampCard> myStampCards;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<AppUser> friends;
+    private List<AppUser> friends = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AdditionalInfo additionalInfo;
 
     @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<BlogEntry> blogEntries;
+    private List<BlogEntry> blogEntries = new ArrayList<>();
+
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Mail>  mails = new ArrayList<>();
 }

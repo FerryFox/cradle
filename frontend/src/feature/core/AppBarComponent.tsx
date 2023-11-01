@@ -47,9 +47,9 @@ return (
                     {title}
                 </Typography>
 
-                <IconButton color="inherit">
+                <IconButton color="inherit"  onClick={() => navigate("/mail")}>
                     <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon />
+                            <NotificationsIcon />
                     </Badge>
                 </IconButton>
             </div>

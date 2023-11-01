@@ -18,15 +18,13 @@ public class Mail
     @GeneratedValue
     private Long id;
 
-    private String senderId;
+    private String text;
+    private boolean isRead;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="receiver_id")
     private AppUser owner;
 
-    private String subject;
-    private String templateId;
-
-    private boolean isRead;
-    private boolean isDeleted;
+    private Long templateId;
+    private Long senderId;
 }

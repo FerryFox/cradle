@@ -119,8 +119,6 @@ export default function Template({ templateModel, getButton }: TemplateProps)
 
                 </CardContent>)
             }
-
-
         </Card>
     );
 }

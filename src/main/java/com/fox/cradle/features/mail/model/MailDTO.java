@@ -1,6 +1,8 @@
 package com.fox.cradle.features.mail.model;
 
 import com.fox.cradle.features.appuser.model.AppUser;
+import com.fox.cradle.features.appuser.model.AppUserDTO;
+import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,9 +16,9 @@ import lombok.NoArgsConstructor;
 public class MailDTO
 {
     private Long id;
-    private String senderId;
-    private String ownerId;
+    private String text;
 
-    private String subject;
-    private String templateId;
+    private AppUserDTO sender;
+    private TemplateResponse templateResponse;
+    private boolean isRead;
 }

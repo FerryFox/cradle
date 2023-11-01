@@ -83,7 +83,7 @@ public class AppUserService
     {
         List<AppUser> friends = appUser.getFriends();
 
-        List<AppUserDTO> friendsDTO = userMapService.mapAppUserListToDTO(friends);
+        List<AppUserDTO> friendsDTO = userMapService.mapAppUserFriendsToDTOWithAddInfo(friends);
         return friendsDTO;
     }
 
@@ -104,13 +104,13 @@ public class AppUserService
         // 4. Save the updated entities
         appUserRepository.save(user);
 
-        return userMapService.mapAppUserToDTOWithAddInfo(friend);
+        return userMapService.mapAppUserToDTOWithAddInfoAndFriends(friend);
     }
 
     public List<AppUserDTO> getUsers()
     {
         List<AppUser> users = appUserRepository.findAll();
-        return userMapService.mapAppUserListToDTO(users);
+        return userMapService.mapAppUserFriendsToDTOWithAddInfo(users);
     }
 
     @Transactional
@@ -118,7 +118,7 @@ public class AppUserService
     {
         appUser.getFriends();
         appUser.getAdditionalInfo();
-        return userMapService.mapAppUserToDTOWithAddInfo(appUser);
+        return userMapService.mapAppUserToDTOWithAddInfoAndFriends(appUser);
     }
 
     @Transactional
@@ -140,8 +140,18 @@ public class AppUserService
 
         List<TemplateResponse> templates = templateService.getMyTemplates(user);
 
-        AppUserDTO result = userMapService.mapAppUserToDTOWithAddInfo(user);
+        AppUserDTO result = userMapService.mapAppUserToDTOWithAddInfoAndFriends(user);
         result.setTemplates(templates);
         return result;
     }
+
+    @Transactional
+    public AppUserDTO getPlainUserWithAddInfo(long id)
+    {
+        AppUser user = appUserRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id " + 1L));
+
+        return userMapService.mapAppUserToAddUserDTOWithAddInfo(user);
+    }
+
 }

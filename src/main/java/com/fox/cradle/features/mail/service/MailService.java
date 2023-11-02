@@ -2,9 +2,7 @@ package com.fox.cradle.features.mail.service;
 
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.mail.MailMapperService;
-import com.fox.cradle.features.mail.model.Mail;
-import com.fox.cradle.features.mail.model.MailDTO;
-import com.fox.cradle.features.mail.model.NewMail;
+import com.fox.cradle.features.mail.model.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,14 +25,19 @@ public class MailService
     }
 
     @Transactional
-    public void saveMail(NewMail newMail, Long senderId, AppUser receiver)
+    public void saveNewMail(NewMail newMail, AppUser sender, AppUser receiver)
     {
-        Mail mail = Mail.builder()
+        MailMessage mailMessage = MailMessage.builder()
                 .text(newMail.getText())
+                .senderMassage(true)
+                .build();
+
+        Mail mail = Mail.builder()
+                .text(List.of(mailMessage))
                 .isRead(false)
                 .owner(receiver)
                 .templateId(newMail.getTemplateId())
-                .senderId(senderId)
+                .sender(sender)
                 .build();
 
         receiver.getMails().add(mail);
@@ -58,5 +61,28 @@ public class MailService
         Mail mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
         appUser.getMails().remove(mail);
         mailReposetory.delete(mail);
+    }
+
+    public List<MailDTO> getYourSendMails(AppUser appUser)
+    {
+        List<Mail> mails = appUser.getSendMails();
+        return mailMapperService.mapMailsToDTOs(mails);
+    }
+
+    public List<MailMessage> respondToMail(AppUser appUser, Long mailId, MessageDTO message)
+    {
+        Mail mail;
+        if(message.isOriginalSender())mail = appUser.getSendMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
+        else mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
+
+        MailMessage mailMessage = MailMessage.builder()
+                .text(message.getText())
+                .senderMassage(false)
+                .build();
+
+        mail.getText().add(mailMessage);
+        mailReposetory.save(mail);
+
+        return mail.getText();
     }
 }

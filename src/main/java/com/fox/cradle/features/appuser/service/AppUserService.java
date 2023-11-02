@@ -154,4 +154,9 @@ public class AppUserService
         return userMapService.mapAppUserToAddUserDTOWithAddInfo(user);
     }
 
+    public AppUser getUserById(Long senderId)
+    {
+        return appUserRepository.findById(senderId)
+                .orElseThrow(() -> new RuntimeException("User not found with id " + senderId));
+    }
 }

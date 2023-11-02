@@ -34,8 +34,6 @@ type AuthResponse = {
     // ... any other expected properties ...
 };
 
-
-
 const saveUser = async (userDTO : UserDTO) :Promise<AuthResponse | null> =>
 {
     try

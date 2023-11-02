@@ -1,8 +1,6 @@
 package com.fox.cradle.features.mail;
 
-import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.model.AppUserDTO;
-import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.mail.model.Mail;
 import com.fox.cradle.features.mail.model.MailDTO;
 import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
@@ -23,7 +21,11 @@ public class MailMapperService
     public MailDTO mapMailToDTO(Mail mail)
     {
         AppUserDTO fakeSender = AppUserDTO.builder()
-                .id(mail.getSenderId())
+                .id(mail.getSender().getId())
+                .build();
+
+        AppUserDTO receiver = AppUserDTO.builder()
+                .id(mail.getOwner().getId())
                 .build();
 
         TemplateResponse templateResponse = null;
@@ -33,8 +35,9 @@ public class MailMapperService
 
         return MailDTO.builder()
                 .id(mail.getId())
-                .text(mail.getText())
+                .conversation(mail.getText())
                 .sender(fakeSender)
+                .receiver(receiver)
                 .templateResponse(templateResponse)
                 .isRead(mail.isRead())
                 .build();

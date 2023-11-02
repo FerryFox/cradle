@@ -5,8 +5,6 @@ import com.fox.cradle.configuration.security.auth.RegisterRequest;
 import com.fox.cradle.features.appuser.model.AddInfoDTO;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
-import com.fox.cradle.features.blog.BlogMapping;
-import com.fox.cradle.features.blog.model.BlogEntry;
 import com.fox.cradle.features.blog.model.BlogEntryDTO;
 import com.fox.cradle.features.blog.service.BlogService;
 import com.fox.cradle.features.mail.model.NewMail;
@@ -323,11 +321,11 @@ public class DatabaseInitializer implements CommandLineRunner
         //Send a Mail
         Long templateIDsushi = sushiTemplateID;
         NewMail newMail = NewMail.builder()
-                .text("Hello, are you interested in a sushi stamp card?")
+                .text("Hello, are you interested in a some fresh Sushi? I have a stamp card?")
                 .templateId(templateIDsushi)
                 .receiverId(appUserIceCompany.getId())
                 .build();
-        mailService.saveMail(newMail, appUserFood.getId(), appUserIceCompany);
+        mailService.saveNewMail(newMail, appUserFood, appUserIceCompany);
 
         Long templateIDVegetables = vegetablesID;
         NewMail newMail2 = NewMail.builder()
@@ -335,14 +333,14 @@ public class DatabaseInitializer implements CommandLineRunner
                 .templateId(templateIDVegetables)
                 .receiverId(appUserIceCompany.getId())
                 .build();
-        mailService.saveMail(newMail2, appUserFood.getId(), appUserIceCompany);
+        mailService.saveNewMail(newMail2, appUserFood, appUserIceCompany);
 
         NewMail newMail3 = NewMail.builder()
                 .text("Pff then get lost! Who needs your stamp card")
                 .templateId(null)
                 .receiverId(appUserIceCompany.getId())
                 .build();
-        mailService.saveMail(newMail3, appUserFood.getId(), appUserIceCompany);
+        mailService.saveNewMail(newMail3, appUserFood, appUserIceCompany);
 
 
         System.out.println("DatabaseInitializer finished...");

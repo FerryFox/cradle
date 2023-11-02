@@ -3,8 +3,20 @@ import {TemplateModel} from "../../template/model/models";
 
 export type Mail = {
     id: number;
-    text: string;
+    conversation : MailText[];
     sender: AppUserDTO;
+    receiver: AppUserDTO;
     templateResponse : TemplateModel;
     read : boolean;
+}
+
+export type MailText = {
+    id: number;
+    text: string;
+    senderMassage : boolean;
+}
+
+export type MessageDTO = {
+    text: string;
+    originalSender : boolean;
 }

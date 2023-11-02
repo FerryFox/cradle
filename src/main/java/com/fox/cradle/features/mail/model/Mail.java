@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -18,13 +20,17 @@ public class Mail
     @GeneratedValue
     private Long id;
 
-    private String text;
+    @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<MailMessage> text;
+
     private boolean isRead;
+    private Long templateId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="receiver_id")
     private AppUser owner;
 
-    private Long templateId;
-    private Long senderId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="sender_id")
+    private AppUser sender;
 }

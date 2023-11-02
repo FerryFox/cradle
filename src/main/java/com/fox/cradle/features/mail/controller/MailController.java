@@ -4,14 +4,16 @@ import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.model.AppUserDTO;
 import com.fox.cradle.features.appuser.service.AppUserService;
+import com.fox.cradle.features.mail.model.Mail;
 import com.fox.cradle.features.mail.model.MailDTO;
+import com.fox.cradle.features.mail.model.MailMessage;
+import com.fox.cradle.features.mail.model.MessageDTO;
 import com.fox.cradle.features.mail.service.MailService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,4 +82,35 @@ public class MailController
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("your-send-mails")
+    public ResponseEntity<List<MailDTO>> getYourSendMails(HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+
+        List<MailDTO> result = mailService.getYourSendMails(appUse.get());
+
+        for (MailDTO mailDTO : result)
+        {
+            AppUserDTO receiver = appUserService.getPlainUserWithAddInfo(mailDTO.getReceiver().getId());
+            mailDTO.setReceiver(receiver);
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("respond/{mailId}")
+    public ResponseEntity<List<MailMessage>> respondToMail(@PathVariable Long mailId, @RequestBody MessageDTO message, HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+
+         List<MailMessage> messages = mailService.respondToMail(appUse.get(), mailId, message);
+
+        return ResponseEntity.ok(messages);
+    }
 }

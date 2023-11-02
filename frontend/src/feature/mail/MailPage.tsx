@@ -3,7 +3,7 @@ import Controller from "../core/Controller";
 import {Tab, Tabs, Toolbar} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import {Mail} from "./model/models";
+import {Mail, MailText, MessageDTO} from "./model/models";
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
 import NotReadMails from "./NotReadMails";
 import OldMails from "./OldMails";
@@ -15,6 +15,10 @@ export default function MailPage() {
     const [read, setRead] = useState<Mail[]>([]);
     const [notRead, setNotRead] = useState<Mail[]>([]);
 
+    const handleTapChange = (event: React.SyntheticEvent, newValue: string) => {
+        setTabValue(newValue);
+    };
+
     useEffect(() => {
         axios.get<Mail[]>("/api/mails/all").then((response) => {
             const fetchedMails = response.data;
@@ -25,6 +29,11 @@ export default function MailPage() {
             setRead(readMails);
             setNotRead(unreadMails);
         });
+    }, []);
+
+    useEffect(() => {
+        axios.get<Mail[]>("/api/mails/your-send-mails").then((response) =>
+        {console.log(response.data)});
     }, []);
 
     const handleReadClick = (clickedMail: Mail) => {
@@ -49,9 +58,51 @@ export default function MailPage() {
         );
     }
 
-    const handleTapChange = (event: React.SyntheticEvent, newValue: string) => {
-        setTabValue(newValue);
+    const handleResponse = (mailId: number, messageDTO: MessageDTO) => {
+        axios.post<MailText[]>("/api/mails/respond/" + mailId.toString(), messageDTO, {
+
+        }).then(response => {
+            const updatedConversation = response.data;
+            const updatedMails = mails.map(mail => {
+                // Use the spread operator to avoid mutating the original mail object
+                if (mail.id === mailId) {
+                    return {
+                        ...mail,
+                        conversation: updatedConversation,
+                    };
+                }
+                return mail;
+            });
+
+            // Update the state with the new array of mails
+            setMails(updatedMails);
+
+            // If you need to update read and notRead as well, follow a similar approach:
+            setRead(currentRead => currentRead.map(mail => {
+                if (mail.id === mailId) {
+                    return {
+                        ...mail,
+                        conversation: updatedConversation,
+                    };
+                }
+                return mail;
+            }));
+
+            setNotRead(currentNotRead => currentNotRead.map(mail => {
+                if (mail.id === mailId) {
+                    return {
+                        ...mail,
+                        conversation: updatedConversation,
+                    };
+                }
+                return mail;
+            }));
+        }).catch(error => {
+            // Handle error
+            console.error("Error responding to mail:", error);
+        });
     };
+
 
     const handleGetCardClick = async (templateId: number, clickedMail: Mail) => {
         try {
@@ -84,7 +135,7 @@ export default function MailPage() {
 
                 <Tab value="tab1" label="Recent Mails" />
                 <Tab value="tab2" label="Old Mails" />
-                <Tab value="tab3" label="Write a Mail" />
+                <Tab value="tab3" label="Send Mails" />
             </Tabs>
 
             {tabValue === 'tab1' &&
@@ -95,7 +146,9 @@ export default function MailPage() {
                     <NotReadMails notRead={notRead}
                                   handleReadClick={handleReadClick}
                                   handleGetCardClick={handleGetCardClick}
-                                  handleDeleteClick={handleDeleteClick}/>
+                                  handleDeleteClick={handleDeleteClick}
+                                  handleResponse={handleResponse}
+                                 />
                 </> }
             {tabValue === 'tab2' &&
                 <>

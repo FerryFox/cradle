@@ -9,8 +9,7 @@ import com.fox.cradle.features.mail.service.MailService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +41,43 @@ public class MailController
         }
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("count")
+    public ResponseEntity<Integer> getMailCount(HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+
+        return ResponseEntity.ok(mailService.getMailCount(appUse.get()));
+    }
+
+    @PostMapping("mark-as-read/{mailId}")
+    public ResponseEntity<Void> markMailAsRead(@PathVariable Long mailId, HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+
+        mailService.markMailAsRead(appUse.get(), mailId);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("delete/{mailId}")
+    public ResponseEntity<Void> deleteMail(@PathVariable Long mailId, HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+
+        mailService.deleteMail(appUse.get(), mailId);
+
+        return ResponseEntity.ok().build();
     }
 
 }

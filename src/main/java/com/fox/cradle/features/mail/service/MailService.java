@@ -40,4 +40,23 @@ public class MailService
         receiver.getMails().add(mail);
         mailReposetory.save(mail);
     }
+
+    public Integer getMailCount(AppUser appUser)
+    {
+        return appUser.getMails().stream().filter(mail -> !mail.isRead()).toList().size();
+    }
+
+    public void markMailAsRead(AppUser appUser, Long mailId)
+    {
+        Mail mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
+        mail.setRead(true);
+        mailReposetory.save(mail);
+    }
+
+    public void deleteMail(AppUser appUser, Long mailId)
+    {
+        Mail mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
+        appUser.getMails().remove(mail);
+        mailReposetory.delete(mail);
+    }
 }

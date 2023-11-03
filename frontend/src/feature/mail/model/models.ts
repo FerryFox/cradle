@@ -20,3 +20,11 @@ export type MessageDTO = {
     text: string;
     originalSender : boolean;
 }
+
+export type NewMail =
+{
+    text: string;
+    templateId?: number;
+    receiverId: number;
+
+}

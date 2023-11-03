@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from "react";
 import Controller from "../core/Controller";
-import {Tab, Tabs, Toolbar} from "@mui/material";
+import {Paper, Tab, Tabs, Toolbar} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import {Mail, MailText, MessageDTO} from "./model/models";
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
 import NotReadMails from "./NotReadMails";
-import OldMails from "./OldMails";
+import SendMails from "./SendMails";
+import {DEFAULT_ELEVATION} from "../../globalConfig";
+import {useNavigate} from "react-router-dom";
 
 export default function MailPage() {
 
@@ -14,6 +16,8 @@ export default function MailPage() {
     const [tabValue, setTabValue] = React.useState('tab1');
     const [read, setRead] = useState<Mail[]>([]);
     const [notRead, setNotRead] = useState<Mail[]>([]);
+    const [sendMails, setSendMails] = useState<Mail[]>([]);
+    const navigateTo = useNavigate();
 
     const handleTapChange = (event: React.SyntheticEvent, newValue: string) => {
         setTabValue(newValue);
@@ -31,9 +35,10 @@ export default function MailPage() {
         });
     }, []);
 
+
     useEffect(() => {
         axios.get<Mail[]>("/api/mails/your-send-mails").then((response) =>
-        {console.log(response.data)});
+        setSendMails(response.data));
     }, []);
 
     const handleReadClick = (clickedMail: Mail) => {
@@ -54,6 +59,15 @@ export default function MailPage() {
                 const updatedRead = read.filter(mail => mail.id !== clickedMail.id);
                 setNotRead(updatedNotRead);
                 setRead(updatedRead);
+            }
+        );
+    }
+
+    const handleOriginalSenderDelete = (clickedMail : Mail) => {
+        axios.delete("/api/mails/delete-originator/" + clickedMail.id).then(
+            () => {
+                const updatedSendMails = sendMails.filter(mail => mail.id !== clickedMail.id);
+                setSendMails(updatedSendMails);
             }
         );
     }
@@ -97,6 +111,17 @@ export default function MailPage() {
                 }
                 return mail;
             }));
+
+            setSendMails(currentSendMails => currentSendMails.map(mail => {
+                if (mail.id === mailId) {
+                    return {
+                        ...mail,
+                        conversation: updatedConversation,
+                    };
+                }
+                return mail;
+            }));
+
         }).catch(error => {
             // Handle error
             console.error("Error responding to mail:", error);
@@ -133,16 +158,20 @@ export default function MailPage() {
                 sx={{ py: 2 }}
                 indicatorColor="secondary">
 
-                <Tab value="tab1" label="Recent Mails" />
-                <Tab value="tab2" label="Old Mails" />
-                <Tab value="tab3" label="Send Mails" />
+                <Tab value="tab1" label={`Recent (${notRead.length})`} />
+                <Tab value="tab2" label={`Old  (${read.length})`}/>
+                <Tab value="tab3" label={`Send (${sendMails.length})`}/>
             </Tabs>
+
+
+            <Paper elevation={DEFAULT_ELEVATION} sx={{py : 2, mx : 0, mb : 2}}>
+                <Typography onClick={() => navigateTo("/new-mail/")}>
+                    Write a new mail
+                </Typography>
+            </Paper>
 
             {tabValue === 'tab1' &&
                 <>
-                    <Typography variant={"h6"} align={"center"}>
-                        You have {notRead.length} new mails
-                    </Typography>
                     <NotReadMails notRead={notRead}
                                   handleReadClick={handleReadClick}
                                   handleGetCardClick={handleGetCardClick}
@@ -152,14 +181,19 @@ export default function MailPage() {
                 </> }
             {tabValue === 'tab2' &&
                 <>
-                    <Typography variant={"h6"} align={"center"}>
-                        You have {read.length} old mails
-                    </Typography>
-                    <OldMails oldMails={read}
-                              handleDeleteClick={handleDeleteClick}/>
+                    <NotReadMails notRead={read}
+                              handleDeleteClick={handleDeleteClick}
+                              handleResponse={handleResponse}
+                              handleGetCardClick={handleGetCardClick}
+                    />
                 </>}
             {tabValue === 'tab3' &&
                 <>
+                    <SendMails
+                        mails={sendMails}
+                        handleResponse={handleResponse}
+                        handleDeleteClick={handleOriginalSenderDelete}
+                    />
 
                 </>
             }

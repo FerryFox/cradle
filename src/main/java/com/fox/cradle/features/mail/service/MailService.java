@@ -63,6 +63,13 @@ public class MailService
         mailReposetory.delete(mail);
     }
 
+    public void deleteSenderMail(AppUser appUser, Long mailId)
+    {
+        Mail mail = appUser.getSendMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
+        appUser.getSendMails().remove(mail);
+        mailReposetory.delete(mail);
+    }
+
     public List<MailDTO> getYourSendMails(AppUser appUser)
     {
         List<Mail> mails = appUser.getSendMails();
@@ -77,7 +84,7 @@ public class MailService
 
         MailMessage mailMessage = MailMessage.builder()
                 .text(message.getText())
-                .senderMassage(false)
+                .senderMassage(message.isOriginalSender())
                 .build();
 
         mail.getText().add(mailMessage);
@@ -85,4 +92,6 @@ public class MailService
 
         return mail.getText();
     }
+
+
 }

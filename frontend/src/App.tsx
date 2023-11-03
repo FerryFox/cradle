@@ -25,6 +25,7 @@ import AppUserHomePage from "./feature/user/friend/AppUserHomePage";
 import FriendsPage from "./feature/user/friend/FriendsPage";
 import BlogPage from "./feature/Blog/BlogPage";
 import MailPage from "./feature/mail/MailPage";
+import MailForm from "./feature/mail/MailForm";
 
 export default function App()
 {
@@ -48,6 +49,7 @@ export default function App()
                     <Route path="/friends" element={<FriendsPage/>}/>
                     <Route path="/blog" element={<BlogPage />} />
                     <Route path="/mail" element={<MailPage />} />
+                    <Route path="/new-mail/:templateId?" element={<MailForm />} />
 
                     <Route path="/templates" element={<Templates/>} />
                     <Route path="/templates/owned" element={<TemplatesOwned/>} />

@@ -4,10 +4,10 @@ import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.model.AppUserDTO;
 import com.fox.cradle.features.appuser.service.AppUserService;
-import com.fox.cradle.features.mail.model.Mail;
 import com.fox.cradle.features.mail.model.MailDTO;
 import com.fox.cradle.features.mail.model.MailMessage;
 import com.fox.cradle.features.mail.model.MessageDTO;
+import com.fox.cradle.features.mail.model.NewMail;
 import com.fox.cradle.features.mail.service.MailService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/api/mails")
@@ -56,7 +55,7 @@ public class MailController
         return ResponseEntity.ok(mailService.getMailCount(appUse.get()));
     }
 
-    @PostMapping("mark-as-read/{mailId}")
+    @PostMapping("/mark-as-read/{mailId}")
     public ResponseEntity<Void> markMailAsRead(@PathVariable Long mailId, HttpServletRequest httpServletRequest)
     {
         Optional<AppUser> appUse =  appUserService.
@@ -69,7 +68,7 @@ public class MailController
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("delete/{mailId}")
+    @DeleteMapping("/delete/{mailId}")
     public ResponseEntity<Void> deleteMail(@PathVariable Long mailId, HttpServletRequest httpServletRequest)
     {
         Optional<AppUser> appUse =  appUserService.
@@ -78,6 +77,19 @@ public class MailController
         if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
         mailService.deleteMail(appUse.get(), mailId);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete-originator/{mailId}")
+    public ResponseEntity<Void> deleteSenderMail(@PathVariable Long mailId, HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> appUse =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+
+        mailService.deleteSenderMail(appUse.get(), mailId);
 
         return ResponseEntity.ok().build();
     }
@@ -112,5 +124,20 @@ public class MailController
          List<MailMessage> messages = mailService.respondToMail(appUse.get(), mailId, message);
 
         return ResponseEntity.ok(messages);
+    }
+
+    @PostMapping("send")
+    public ResponseEntity<Void> sendMail(@RequestBody NewMail newMail, HttpServletRequest httpServletRequest)
+    {
+        Optional<AppUser> sender =  appUserService.
+                findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
+
+        if (sender.isEmpty()) return ResponseEntity.badRequest().build();
+
+        AppUser reciver = appUserService.getUserById(newMail.getReceiverId());
+
+        mailService.saveNewMail(newMail, sender.get(), reciver);
+
+        return ResponseEntity.ok().build();
     }
 }

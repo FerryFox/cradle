@@ -342,6 +342,13 @@ public class DatabaseInitializer implements CommandLineRunner
                 .build();
         mailService.saveNewMail(newMail3, appUserFood, appUserIceCompany);
 
+        NewMail newMail4 = NewMail.builder()
+                .text("Hello,how are you ? you have a stamp card?")
+                .templateId(templateIDsushi)
+                .receiverId(appUserIceCompany.getId())
+                .build();
+        mailService.saveNewMail(newMail4, appUserIceCompany, appUserFood);
+
 
         System.out.println("DatabaseInitializer finished...");
     }

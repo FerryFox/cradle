@@ -7,14 +7,13 @@ import Typography from "@mui/material/Typography";
 import Template from "../template/Template";
 import React, {useState} from "react";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import ReplayIcon from '@mui/icons-material/Replay';
 import TaskIcon from '@mui/icons-material/Task';
 import TextField from "@mui/material/TextField";
 import SendIcon from '@mui/icons-material/Send';
 
 type NotReadMailsProps = {
     handleGetCardClick: ( templateId: number, clickedMail: Mail) => void;
-    handleReadClick: (mail: Mail) => void;
+    handleReadClick?: (mail: Mail) => void;
     handleDeleteClick: (mail: Mail) => void;
     handleResponse: (id: number, message : MessageDTO) => void;
     notRead : Mail[];
@@ -81,57 +80,66 @@ return (
                             </Grid>
                             <Grid item xs={12}>
                                 <Stack spacing={2}>
-                                    {mail?.conversation.map(conversation => (
-                                            <>
-                                                <Paper elevation={DEFAULT_ELEVATION} key={conversation.id}
-                                                       sx={{
-                                                           bgcolor: conversation.senderMassage ?
-                                                               theme.palette.grey[500] :
-                                                               theme.palette.primary.main }}>
+                                    {mail?.conversation.map((conversation) => (
+                                        <div key={conversation.id + "receiver"}
+                                             style={{
+                                                 display: 'flex',
+                                                 justifyContent: !conversation.senderMassage ? 'flex-end' : 'flex-start', // Right if sender, left if not
+                                             }}>
+                                            <Paper elevation={DEFAULT_ELEVATION}
+                                                   sx={{
+                                                       bgcolor: conversation.senderMassage ? theme.palette.grey[500] : theme.palette.primary.main,
+                                                       maxWidth: '70%',
+                                                   }}>
+                                                <Typography variant="body2" sx={{ py: 1, px: 2 }}>
+                                                    {conversation.text}
+                                                </Typography>
+                                            </Paper>
+                                        </div>
+                                    ))}
 
-                                                    <Typography variant={"body2"} sx={{py : 1, px :0}}  >
-                                                        {conversation.text}
-                                                    </Typography>
-                                                </Paper>
-                                                </>))}
-
-                                    <Paper elevation={DEFAULT_ELEVATION}>
+                                    <Paper elevation={DEFAULT_ELEVATION} sx={{ display: 'flex', alignItems: 'center' }}>
                                         <TextField
-                                            id="outlined-multiline-static"
+                                            id={`outlined-multiline-static-${mail.id}`}
                                             label="Response"
                                             multiline
                                             rows={1}
-                                            defaultValue=""
                                             variant="outlined"
                                             fullWidth
                                             value={text}
-                                            onChange={(event) =>
-                                                setText(event.target.value)}
+                                            onChange={(event) => setText(event.target.value)}
                                         />
-                                        <IconButton>
-                                            <SendIcon onClick={() => {
-                                                sendResponse(mail.id, text);
-                                                setText("");
-                                            }}/>
+                                        <IconButton onClick={() => {
+                                            sendResponse(mail.id, text);
+                                            setText("");
+                                        }}>
+                                            <SendIcon />
                                         </IconButton>
                                     </Paper>
                                 </Stack>
                             </Grid>
-                            <Grid item xs={6}>
+
+                            <Grid item xs={12}>
                                 {mail.templateResponse && (
-                                    <Template templateModel={mail.templateResponse}
-                                              getButton={handleThisMailClick} />
+                                    <>
+                                        <Divider variant={"middle"} color={"primary"} sx={{my : 2}}></Divider>
+                                        <Template templateModel={mail.templateResponse}
+                                                  getButton={handleThisMailClick} />
+                                    </>
+
                                 )}
                             </Grid>
+                            <Grid item xs={12} sx={{pt : 2}}>
+                                <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                                    {handleReadClick && (
+                                        <Button startIcon={<TaskIcon/>} onClick={() => handleReadClick(mail)} >Mark as Read</Button>
+                                    )
+                                    }
+                                    <Button startIcon={<DeleteForeverIcon/>} onClick={() => handleDeleteClick(mail)} color={"secondary"}>Delete</Button>
+                                </ButtonGroup>
+                            </Grid>
                         </Grid>
-                        <Divider sx={{mt : 2}} variant={"middle"} color={"warning"}></Divider>
-                        <Grid item xs={12} sx={{pt : 2}}>
-                            <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                                <Button startIcon={<ReplayIcon/>}>Replay</Button>
-                                <Button startIcon={<TaskIcon/>} onClick={() => handleReadClick(mail)} >Mark as Read</Button>
-                                <Button startIcon={<DeleteForeverIcon/>} onClick={() => handleDeleteClick(mail)} color={"secondary"}>Delete</Button>
-                            </ButtonGroup>
-                        </Grid>
+
                     </Stack>
                     </Paper>
                 </div>

@@ -12,10 +12,12 @@ import {TemplateModel} from "./model/models";
 import Controller from "../core/Controller";
 import Grid from "@mui/material/Grid";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
+import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
 
 
 export default function TemplateDetails()
 {
+    const navigateTo = useNavigate();
     const location = useLocation();
     const [templateModel] = useState<TemplateModel>(location.state?.templateModel);
     const navigate = useNavigate();
@@ -23,6 +25,7 @@ export default function TemplateDetails()
     const createdDate = new Date(templateModel.createdDate);
     const lastModifiedDate = new Date(templateModel.lastModifiedDate);
     const expirationDate = new Date(templateModel.expirationDate);
+    const [gotCard, setGotCard] = useState(false);
 
     const handleDelete = (id : number) => {
         axios
@@ -33,6 +36,15 @@ export default function TemplateDetails()
             .catch((error) => {
                 console.error('Error deleting:', error);
             });
+    };
+
+    const handleGetCardClick = async (templateId: number) => {
+        try {
+            await createStampCardFromTemplateId(templateId);
+            setGotCard(true);
+        } catch (error) {
+            console.error("Error creating the stamp card:", error);
+        }
     };
 
 return (
@@ -53,11 +65,17 @@ return (
                         Share your Stamp Card with the world!
                     </Typography>
 
-                    <Button variant={"contained"} sx={{ width: '80%'}}>
+                    <Button
+                        variant="contained"
+                        sx={{ width: '80%' }}
+                        color={gotCard ? "secondary" : "primary"}
+                        onClick={() => handleGetCardClick(templateModel.id)}
+                    >
                         Get
                     </Button>
 
-                    <Button variant={"contained"} sx={{ width: '80%' }}>
+                    <Button variant={"contained"} sx={{ width: '80%' }}
+                            onClick={() => navigate("/new-mail/" + templateModel.id) }>
                         Share
                     </Button>
                 </Stack>
@@ -161,7 +179,7 @@ return (
         </Typography>
             <Paper elevation={DEFAULT_ELEVATION} >
                 <Stack direction="column" spacing={2} alignItems="left" sx={{ mx: 2, mt : 2, py :2 }}>
-                        <img src={`data:image/png;base64,${templateModel.image}`} alt={"Your Template Picture"}/>
+                        <img src={templateModel.image} alt={"Your Template Picture"}/>
 
                     <Button variant={"contained"}>
                         Edit

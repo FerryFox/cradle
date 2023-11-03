@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react";
 import Controller from "../core/Controller";
-import {Button, ButtonGroup, Toolbar} from "@mui/material";
+import {Button, ButtonGroup, Tab, Tabs, Toolbar} from "@mui/material";
 import BlogForm from "./BlogForm";
 import Container from "@mui/material/Container";
 import {BlogDTO} from "./model/BlogDTO";
@@ -10,8 +10,13 @@ import ShowBlogs from "./ShowBlogs";
 
 export default function BlogPage() {
     const [blogs, setBlogs] = useState<BlogDTO[]>([]);
-    const [activeTab, setActiveTab] = useState('tab1');
     const token = localStorage.getItem("authToken");
+
+    const [tabValue, setTabValue] = React.useState('tab1');
+
+    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+        setTabValue(newValue);
+    };
 
     const hotSortedBlogs = useMemo(() => {
         return [...blogs].sort((a, b) => a.title.localeCompare(b.title));
@@ -37,7 +42,7 @@ export default function BlogPage() {
             headers: { Authorization: `Bearer ${token}` }
         }).then((response) => {
             setBlogs(prevState => [...prevState, response.data]);
-            setActiveTab("tab1");
+            setTabValue("tab1");
         }).catch((error) => {
             console.log(error);
         });
@@ -48,15 +53,23 @@ export default function BlogPage() {
             <Controller title={"Story"} />
             <Toolbar></Toolbar>
             <Container>
-                <ButtonGroup variant="text" aria-label="outlined primary button group" sx={{ py: 2 }}>
-                    <Button onClick={() => setActiveTab("tab1")}>Latest Stories </Button>
-                    <Button onClick={() => setActiveTab("tab2")}>Hot Topics</Button>
-                    <Button onClick={() => setActiveTab("tab3")}>Share Your Tale</Button>
-                </ButtonGroup>
 
-                {activeTab === 'tab1' && <ShowBlogs blogs={timeSortedBlogs} />}
-                {activeTab === 'tab2' && <ShowBlogs blogs={hotSortedBlogs} />}
-                {activeTab === 'tab3' && <BlogForm onSubmit={handleSubmit} />}
+                <Tabs
+                    value={tabValue}
+                    onChange={handleChange}
+                    textColor="secondary"
+                    variant="fullWidth"
+                    sx={{ py: 2 }}
+                    indicatorColor="secondary">
+
+                    <Tab value="tab1" label="Latest Stories" />
+                    <Tab value="tab2" label="Hot Topics" />
+                    <Tab value="tab3" label="Share Your Tale" />
+                </Tabs>
+
+                {tabValue === 'tab1' && <ShowBlogs blogs={timeSortedBlogs} />}
+                {tabValue === 'tab2' && <ShowBlogs blogs={hotSortedBlogs} />}
+                {tabValue === 'tab3' && <BlogForm onSubmit={handleSubmit} />}
             </Container>
         </>
     )

@@ -108,7 +108,6 @@ export default function TemplateEdit()
             return;
         }
 
-
         const token = localStorage.getItem('authToken');
         await axios.put('/api/templates', editedTemplateModel,
     {

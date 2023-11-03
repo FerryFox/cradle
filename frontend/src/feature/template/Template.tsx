@@ -36,6 +36,7 @@ export default function Template({ templateModel, getButton }: TemplateProps)
             position: 'relative',
             minWidth:"50%",
             height: '34vh',}}>
+
             <CardMedia
                 sx={{ height: "17vh" }}
                 image={templateModel.image}
@@ -119,8 +120,6 @@ export default function Template({ templateModel, getButton }: TemplateProps)
 
                 </CardContent>)
             }
-
-
         </Card>
     );
 }

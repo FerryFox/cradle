@@ -8,6 +8,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import TextField from "@mui/material/TextField";
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import {number} from "prop-types";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 type AppBarComponentProps = {
     toggleDrawer?: () => void,
@@ -22,6 +25,17 @@ export default function AppBarComponent({  toggleDrawer,
                             showSecondLine} : AppBarComponentProps,)
 {
     const navigate = useNavigate();
+    const [mailCount, setMailCount] = useState<number>(0);
+    const token = localStorage.getItem("authToken");
+
+    useEffect(() => {
+        if (!token) {
+            navigate("/signin");
+        }
+        axios.get<number>("/api/mails/count").then((response) => {
+            setMailCount(response.data)
+        });
+    }, []);
 
 return (
     <AppBar position="absolute">
@@ -47,9 +61,9 @@ return (
                     {title}
                 </Typography>
 
-                <IconButton color="inherit">
-                    <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon />
+                <IconButton color="inherit"  onClick={() => navigate("/mail")}>
+                    <Badge badgeContent={mailCount} color="secondary">
+                            <NotificationsIcon />
                     </Badge>
                 </IconButton>
             </div>

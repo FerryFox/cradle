@@ -5,6 +5,10 @@ import com.fox.cradle.configuration.security.auth.RegisterRequest;
 import com.fox.cradle.features.appuser.model.AddInfoDTO;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
+import com.fox.cradle.features.blog.model.BlogEntryDTO;
+import com.fox.cradle.features.blog.service.BlogService;
+import com.fox.cradle.features.mail.model.NewMail;
+import com.fox.cradle.features.mail.service.MailService;
 import com.fox.cradle.features.news.model.News;
 import com.fox.cradle.features.news.model.NewsCategory;
 import com.fox.cradle.features.news.service.NewsService;
@@ -35,6 +39,8 @@ public class DatabaseInitializer implements CommandLineRunner
     private final TemplateService templateService;
     private final PictureService pictureService;
     private final NewsService newsService;
+    private final BlogService blogService;
+    private final MailService mailService;
 
     static final String PASSWORD = "startrek";
     static final String EXP = "2024-10-11T06:39:11.609Z";
@@ -144,6 +150,8 @@ public class DatabaseInitializer implements CommandLineRunner
         authService.register(registerRequestCinema);
         AppUser appUserCinema = appUserService.findUserByEmail(registerRequestCinema.getEmail()).orElseThrow();
 
+
+
         String cinemaP = pictureService.loadPictureFromFile("cinemap");
         AddInfoDTO infoCinema = AddInfoDTO.builder()
                 .name("Cinema")
@@ -210,7 +218,7 @@ public class DatabaseInitializer implements CommandLineRunner
                 .stampCardStatus(StampCardStatus.PUBLIC)
                 .appUser(appUserFood)
                 .build();
-        templateService.createTemplate(sushiTemplate, appUserFood);
+        long sushiTemplateID =  templateService.createTemplate(sushiTemplate, appUserFood).getId();
 
         String vegetables = pictureService.loadPictureFromFile("vegetables");
         NewTemplate vegetablesTemplate = NewTemplate.builder()
@@ -226,7 +234,7 @@ public class DatabaseInitializer implements CommandLineRunner
                 .stampCardStatus(StampCardStatus.PUBLIC)
                 .appUser(appUserFood)
                 .build();
-        templateService.createTemplate(vegetablesTemplate, appUserFood);
+        long vegetablesID = templateService.createTemplate(vegetablesTemplate, appUserFood).getId();
 
 //Create User 4
         RegisterRequest registerRequestPark = RegisterRequest.builder()
@@ -281,8 +289,68 @@ public class DatabaseInitializer implements CommandLineRunner
                 .appUser(appUserClothes)
                 .build();
         templateService.createTemplate(skateTemplate, appUserClothes);
-        System.out.println("DatabaseInitializer finished...");
 
+        //create some blogentries
+        String iceCreamFox = pictureService.loadPictureFromFile("foxbeachblog");
+        BlogEntryDTO blogEntryDTO1 = BlogEntryDTO.builder()
+                        .title("Ice Cream Fox on the Beach Now")
+                        .content("We are happy to announce that we are on the way to the beach. We are looking forward to your visit!")
+                        .pictureBase64(iceCreamFox)
+                        .build();
+        blogService.saveBlog(blogEntryDTO1, appUserIceCompany);
+
+        String iceCreamFox2 = pictureService.loadPictureFromFile("foxcardblog");
+        BlogEntryDTO blogEntryDTO2 = BlogEntryDTO.builder()
+                        .title("Ice Cream Fox Card")
+                        .content("We are happy to announce that we have a new stamp card. We are looking forward to your visit!")
+                        .pictureBase64(iceCreamFox2)
+                        .build();
+        blogService.saveBlog(blogEntryDTO2, appUserIceCompany);
+
+        String iceCreamFox3 = pictureService.loadPictureFromFile("foxpaperblog");
+        BlogEntryDTO blogEntryDTO3 = BlogEntryDTO.builder()
+                        .title("Burger Bliss On Wheels")
+                        .content("Ever craved a perfectly grilled, juicy burger? Look no further than [Truck Name]'s mobile burger haven! We source premium ingredients, from the crispest lettuce to the most flavorful beef cuts. Each bite promises a burst of gourmet goodness, all served right from our truck's grill to your plate. Join us on the streets and experience the magic of burgers crafted with passion and precision!")
+                        .pictureBase64(iceCreamFox3)
+                        .build();
+        blogService.saveBlog(blogEntryDTO3, appUserFood);
+
+        //AddFriends
+        appUserService.addFriend(appUserIceCompany.getId(), appUserCinema.getId());
+
+        //Send a Mail
+        Long templateIDsushi = sushiTemplateID;
+        NewMail newMail = NewMail.builder()
+                .text("Hello, are you interested in a some fresh Sushi? I have a stamp card?")
+                .templateId(templateIDsushi)
+                .receiverId(appUserIceCompany.getId())
+                .build();
+        mailService.saveNewMail(newMail, appUserFood, appUserIceCompany);
+
+        Long templateIDVegetables = vegetablesID;
+        NewMail newMail2 = NewMail.builder()
+                .text("Hello, are you interested in a some fresh Vegetables? I have a stamp card?")
+                .templateId(templateIDVegetables)
+                .receiverId(appUserIceCompany.getId())
+                .build();
+        mailService.saveNewMail(newMail2, appUserFood, appUserIceCompany);
+
+        NewMail newMail3 = NewMail.builder()
+                .text("Pff then get lost! Who needs your stamp card")
+                .templateId(null)
+                .receiverId(appUserIceCompany.getId())
+                .build();
+        mailService.saveNewMail(newMail3, appUserFood, appUserIceCompany);
+
+        NewMail newMail4 = NewMail.builder()
+                .text("Hello,how are you ? you have a stamp card?")
+                .templateId(templateIDsushi)
+                .receiverId(appUserIceCompany.getId())
+                .build();
+        mailService.saveNewMail(newMail4, appUserIceCompany, appUserFood);
+
+
+        System.out.println("DatabaseInitializer finished...");
     }
 
     private List<News> initNewsMongoDb()

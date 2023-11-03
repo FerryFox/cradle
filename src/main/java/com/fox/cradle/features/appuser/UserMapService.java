@@ -4,6 +4,9 @@ import com.fox.cradle.features.appuser.model.AddInfoDTO;
 import com.fox.cradle.features.appuser.model.AdditionalInfo;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.model.AppUserDTO;
+import com.fox.cradle.features.mail.MailMapperService;
+import com.fox.cradle.features.mail.model.MailDTO;
+import com.fox.cradle.features.mail.service.MailService;
 import com.fox.cradle.features.picture.service.PictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 public class UserMapService
 {
     private final PictureService pictureService;
+    private final MailService mailService;
 
     public AddInfoDTO mapAdditionalInfoToDTO(AdditionalInfo info)
     {
@@ -34,38 +38,56 @@ public class UserMapService
                 .build();
     }
 
-    public AppUserDTO mapAppUserToDTOWithAddInfo(AppUser appUser)
+    public AppUserDTO mapAppUserToDTOWithAddInfoAndFriends(AppUser appUser)
     {
         List<AppUserDTO> friends = appUser.getFriends().stream()
                 .map(this::mapAppUserToAddUserDTOWithAddInfo)
                 .collect(Collectors.toList());
 
+        AddInfoDTO info = mapAdditionalInfoToDTO(appUser.getAdditionalInfo());
 
         return AppUserDTO.builder()
                 .id(appUser.getId())
                 .appUserName(appUser.getAppUserName())
                 .appUserEmail(appUser.getAppUserEmail())
                 .nameIdentifier(appUser.getNameIdentifier())
-                .addInfoDTO(mapAdditionalInfoToDTO(appUser.getAdditionalInfo()))
+                .addInfoDTO(info)
                 .friends(friends)
                 .build();
     }
 
     public AppUserDTO mapAppUserToAddUserDTOWithAddInfo(AppUser appUser)
     {
+        AddInfoDTO info = mapAdditionalInfoToDTO(appUser.getAdditionalInfo());
+
         return AppUserDTO.builder()
                 .id(appUser.getId())
                 .appUserName(appUser.getAppUserName())
                 .appUserEmail(appUser.getAppUserEmail())
                 .nameIdentifier(appUser.getNameIdentifier())
-                .addInfoDTO(mapAdditionalInfoToDTO(appUser.getAdditionalInfo()))
+                .addInfoDTO(info)
                 .build();
     }
 
-    public List<AppUserDTO> mapAppUserListToDTO(List<AppUser> friends)
+    public AppUserDTO mapAppUserToDTOWithAddInfoAndMails(AppUser appUser)
+    {
+        AddInfoDTO info = mapAdditionalInfoToDTO(appUser.getAdditionalInfo());
+        List<MailDTO> mails = mailService.getMails(appUser);
+
+        return AppUserDTO.builder()
+                .id(appUser.getId())
+                .appUserName(appUser.getAppUserName())
+                .appUserEmail(appUser.getAppUserEmail())
+                .nameIdentifier(appUser.getNameIdentifier())
+                .addInfoDTO(info)
+                .mails(mails)
+                .build();
+    }
+
+    public List<AppUserDTO> mapAppUserFriendsToDTOWithAddInfo(List<AppUser> friends)
     {
         return friends.stream()
-                .map(this::mapAppUserToDTOWithAddInfo)
+                .map(this::mapAppUserToAddUserDTOWithAddInfo)
                 .collect(Collectors.toList());
     }
 }

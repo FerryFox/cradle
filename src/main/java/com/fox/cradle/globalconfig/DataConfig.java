@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
         "com.fox.cradle.features.appuser",
         "com.fox.cradle.features.stampsystem",
         "com.fox.cradle.features.blog",
+        "com.fox.cradle.features.mail",
 })
 @EnableMongoRepositories(basePackages = {
         "com.fox.cradle.features.picture",

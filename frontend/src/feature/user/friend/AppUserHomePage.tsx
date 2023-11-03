@@ -6,7 +6,7 @@ import {Divider, Stack, Toolbar} from "@mui/material";
 import {AppUserDTO} from "../model/models";
 import Template from "../../template/Template";
 import Grid from "@mui/material/Grid";
-import AppInfoReadOnly from "../AddInfoReadOnly";
+import AddInfoReadOnly from "../AddInfoReadOnly";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import {createStampCardFromTemplateId} from "../../../assets/service/stampCardService";
@@ -37,16 +37,19 @@ return(
     <Toolbar/>
     <Container>
     <Stack spacing={2}>
-        {appUser.addInfoDTO && <AppInfoReadOnly userInfo={appUser.addInfoDTO}/>}
+        {appUser.addInfoDTO && <AddInfoReadOnly userInfo={appUser.addInfoDTO}/>}
 
-        <Typography variant={"h3"}>
-            Templates
-        </Typography>
-        <Divider color={"primary"}></Divider>
-
+        {appUser.templates &&
+            <div >
+                <Typography variant={"h5"} alignItems={"left"}>
+                    Templates
+                </Typography>
+                <Divider color={"primary"}></Divider>
+            </div>
+        }
         {appUser.templates?.map((template) => (
             <Grid>
-                <Grid item xs={12} key={template.id + "template"}>
+                <Grid item xs={12} key={template.id + "t"}>
                     <Template templateModel={ template } getButton={handleGetCardClick} />
                 </Grid>
             </Grid>

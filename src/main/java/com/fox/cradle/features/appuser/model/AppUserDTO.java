@@ -1,8 +1,10 @@
 package com.fox.cradle.features.appuser.model;
 
+import com.fox.cradle.features.mail.model.MailDTO;
 import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -18,4 +20,5 @@ public class AppUserDTO
     private AddInfoDTO addInfoDTO;
     private List<AppUserDTO> friends;
     private List<TemplateResponse> templates;
+    private List<MailDTO> mails;
 }

@@ -9,6 +9,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import {useNavigate} from "react-router-dom";
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 
 type ButtonConfig = {
@@ -34,18 +35,18 @@ return (
     <Card elevation={DEFAULT_ELEVATION}>
             <CardHeader
                 avatar={
-                    <Avatar src={appUser.addInfoDTO?.picture}  >
+                    <Avatar src={appUser.addInfoDTO?.picture}>
                         {appUser.appUserName.charAt(0)}{appUser.appUserName.charAt(1)}
                     </Avatar>
                 }
 
                 action={
                     !small ? (
-                        <IconButton onClick={() => setShowMore(!showMore)}>
+                        <IconButton color={showMore?"secondary":"primary"} size={"large"} onClick={() => setShowMore(!showMore)}>
                             <ChangeCircleIcon />
                         </IconButton>
                     ) : (
-                        <IconButton onClick={() => navigateTo(`/appuser/${appUser.id}`)}>
+                        <IconButton color={"primary"} size={"large"} onClick={() => navigateTo(`/appuser/${appUser.id}`)}>
                             <PermContactCalendarIcon/>
                         </IconButton>
                     )
@@ -53,22 +54,22 @@ return (
                 title={appUser.appUserName}
                 subheader={appUser.nameIdentifier.substring(0, 8) + " " +
                            appUser.addInfoDTO?.status ? (appUser.addInfoDTO?.status ) : ("") }
-            />
+                sx={{ pb: showMore ? 0 : 2, pt : 2 }}/>
 
         {showMore &&
             <>
             <CardContent>
-                <Divider sx={{mb : 2}}/>
+                <Divider sx={{mb : 1}} color={"primary"}/>
                 <Typography variant={"body2"} align={"left"}>
                     {appUser.addInfoDTO?.bio}
                 </Typography>
 
                         <Typography variant={"body2"} align={"left"}>
-                            # {appUser.nameIdentifier.substring(0, 8)}
+                            #{appUser.nameIdentifier.substring(0, 8)}
                         </Typography>
             </CardContent>
             <CardActions sx={{ px: 1, justifyContent: 'flex-end'}}>
-                <Button variant={"contained"} size={"small"} onClick={() => navigateTo(`/appuser/${appUser.id}`) }>
+                <Button startIcon={<PersonSearchIcon/>} variant={"contained"} size={"small"} onClick={() => navigateTo(`/appuser/${appUser.id}`) }>
                     Details
                 </Button>
                 {buttons && buttons.map((button, index) => (
@@ -77,7 +78,7 @@ return (
                         startIcon={button.startIcon}
                         size="small"
                         variant="contained"
-                        color={button.color || "primary"}
+                        color={button.color ?? "primary"}
                         onClick={() => button.onClick(appUser.id.toString())}
                     >
                         {button.label}

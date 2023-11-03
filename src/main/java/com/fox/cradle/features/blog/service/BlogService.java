@@ -4,12 +4,10 @@ import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.blog.BlogMapping;
 import com.fox.cradle.features.blog.model.BlogEntry;
 import com.fox.cradle.features.blog.model.BlogEntryDTO;
-import com.fox.cradle.features.picture.service.PictureService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -22,7 +20,9 @@ public class BlogService {
     public BlogEntryDTO saveBlog(BlogEntryDTO blogEntryDTO, AppUser appUser)
     {
         BlogEntry blogEntry = blogMapping.mapBlogDTOToEntity(blogEntryDTO, appUser);
+
         blogRepository.save(blogEntry);
+
         return blogMapping.mapToDTO(blogEntry);
     }
 

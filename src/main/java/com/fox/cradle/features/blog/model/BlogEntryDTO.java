@@ -1,7 +1,6 @@
 package com.fox.cradle.features.blog.model;
 
 import com.fox.cradle.features.appuser.model.AppUserDTO;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;

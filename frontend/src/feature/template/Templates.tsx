@@ -3,7 +3,6 @@ import Template from "./Template";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import {IconButton, Snackbar, Toolbar} from "@mui/material";
-import Button from "@mui/material/Button";
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
 import Controller from "../core/Controller";
 import {TemplateModel} from "./model/models";

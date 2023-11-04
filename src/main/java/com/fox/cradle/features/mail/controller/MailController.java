@@ -121,7 +121,7 @@ public class MailController
 
         if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-         List<MailMessage> messages = mailService.respondToMail(appUse.get(), mailId, message);
+        List<MailMessage> messages = mailService.respondToMail(appUse.get(), mailId, message);
 
         return ResponseEntity.ok(messages);
     }

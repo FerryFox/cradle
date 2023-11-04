@@ -48,8 +48,8 @@ return(
             </div>
         }
         {appUser.templates?.map((template) => (
-            <Grid>
-                <Grid item xs={12} key={template.id + "t"}>
+            <Grid key={template.id + "t"}>
+                <Grid item xs={12} >
                     <Template templateModel={ template } getButton={handleGetCardClick} />
                 </Grid>
             </Grid>

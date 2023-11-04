@@ -72,14 +72,14 @@ return (
                 <Button startIcon={<PersonSearchIcon/>} variant={"contained"} size={"small"} onClick={() => navigateTo(`/appuser/${appUser.id}`) }>
                     Details
                 </Button>
-                {buttons && buttons.map((button, index) => (
+                {buttons?.map((button, index) => (
                     <Button
                         key={index}
                         startIcon={button.startIcon}
                         size="small"
                         variant="contained"
                         color={button.color ?? "primary"}
-                        onClick={() => button.onClick(appUser.id.toString())}
+                        onClick={() => button.onClick(appUser?.id?.toString())}
                     >
                         {button.label}
                     </Button>

@@ -31,7 +31,6 @@ public class BlogController
         if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
         BlogEntryDTO result =  blogService.saveBlog(blogEntryDTO, appUse.get());
-        System.out.println(result);
         return ResponseEntity.ok(result);
     }
 

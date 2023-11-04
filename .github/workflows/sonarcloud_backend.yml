@@ -35,4 +35,5 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=your_project_key -Dsonar.scm.exclusions.disabled=true
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=foxgate_stampede_backend -Dsonar.coverage.jacoco.xmlReportPaths=path/to/jacoco.xml
+

@@ -23,11 +23,11 @@ type FormErrors = {
     text?: string;
 }
 
-export default function NotReadMails({ notRead ,
-                                         handleGetCardClick,
-                                         handleReadClick,
-                                         handleDeleteClick,
-                                         handleResponse}: NotReadMailsProps)
+export default function Mails({ notRead ,
+                                handleGetCardClick,
+                                handleReadClick,
+                                handleDeleteClick,
+                                handleResponse}: NotReadMailsProps)
 {
     const theme = useTheme();
     const [text, setText] = useState<string>("");

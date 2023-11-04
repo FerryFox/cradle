@@ -71,7 +71,7 @@ public class UserMapService
     public AppUserDTO mapAppUserToDTOWithAddInfoAndMails(AppUser appUser)
     {
         AddInfoDTO info = mapAdditionalInfoToDTO(appUser.getAdditionalInfo());
-        List<MailDTO> mails = mailService.getMails(appUser);
+        List<MailDTO> mails = mailService.getAllUserMails(appUser);
 
         return AppUserDTO.builder()
                 .id(appUser.getId())

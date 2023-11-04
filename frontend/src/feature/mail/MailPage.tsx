@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import {Mail, MailText, MessageDTO} from "./model/models";
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
-import NotReadMails from "./NotReadMails";
+import Mails from "./Mails";
 import SendMails from "./SendMails";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 import {useNavigate} from "react-router-dom";
@@ -24,7 +24,7 @@ export default function MailPage() {
     };
 
     useEffect(() => {
-        axios.get<Mail[]>("/api/mails/all").then((response) => {
+        axios.get<Mail[]>("/api/mails/all-my-mails").then((response) => {
             const fetchedMails = response.data;
             const readMails = fetchedMails.filter(mail => mail.read);
             const unreadMails = fetchedMails.filter(mail => !mail.read);
@@ -172,19 +172,19 @@ export default function MailPage() {
 
             {tabValue === 'tab1' &&
                 <>
-                    <NotReadMails notRead={notRead}
-                                  handleReadClick={handleReadClick}
-                                  handleGetCardClick={handleGetCardClick}
-                                  handleDeleteClick={handleDeleteClick}
-                                  handleResponse={handleResponse}
+                    <Mails notRead={notRead}
+                           handleReadClick={handleReadClick}
+                           handleGetCardClick={handleGetCardClick}
+                           handleDeleteClick={handleDeleteClick}
+                           handleResponse={handleResponse}
                                  />
                 </> }
             {tabValue === 'tab2' &&
                 <>
-                    <NotReadMails notRead={read}
-                              handleDeleteClick={handleDeleteClick}
-                              handleResponse={handleResponse}
-                              handleGetCardClick={handleGetCardClick}
+                    <Mails notRead={read}
+                           handleDeleteClick={handleDeleteClick}
+                           handleResponse={handleResponse}
+                           handleGetCardClick={handleGetCardClick}
                     />
                 </>}
             {tabValue === 'tab3' &&

@@ -18,7 +18,7 @@ public class MailService
 
 
     @Transactional
-    public List<MailDTO> getMails(AppUser appUser)
+    public List<MailDTO> getAllUserMails(AppUser appUser)
     {
         List<Mail> mails = appUser.getMails();
         return mailMapperService.mapMailsToDTOs(mails);

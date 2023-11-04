@@ -34,7 +34,7 @@ class AuthenticationControllerIntegrationTest
     void postRegisterTest() throws Exception{
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
-                .email("test1.user@test.com")
+                .email("test1.userqwe@test.com")
                 .firstname("bob")
                 .receiveNews(true)
                 .password("myPassword")

@@ -23,6 +23,6 @@ jobs:
           args: >
             -Dsonar.projectKey=foxgate_stampede_frontend
             -Dsonar.organization=ferryfox
-            -Dsonar.sources=frontend/src
+            -Dsonar.sources=src
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

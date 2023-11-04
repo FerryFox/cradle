@@ -117,7 +117,7 @@ public class AuthenticationService implements IAuthenticationService
             return jwtService.isTokenValid(token, user);
         }
         catch (SignatureException ex) {
-                throw new TokenCheckException("Invalid token signature detected.");
+            throw new TokenCheckException("Invalid token signature detected.");
         }
         catch (ExpiredJwtException ex) {
             throw new TokenCheckException("Token has expired.");

@@ -34,7 +34,6 @@ class AuthenticationServiceIntegrationTest
     @Test
     void registerTest()
     {
-        /*
         //Given
         RegisterRequest request = new RegisterRequest();
         request.setFirstname("foxd");
@@ -50,11 +49,7 @@ class AuthenticationServiceIntegrationTest
 
         //THEN
         Assertions.assertNotNull(response.getToken());
-        assert response.getToken() != null;
         assert response.getToken().equals(jwtToken);
-        */
-        Assertions.assertNull(null);
-
     }
 
     @Test
@@ -92,4 +87,6 @@ class AuthenticationServiceIntegrationTest
         assertNotNull(refreshToken, "Refresh token should not be null");
         assertTrue(jwtService.isTokenValid(refreshToken, user), "Refresh token should be valid for the user");
     }
+
+    //Test for invalid token has a problem that I can not catch the error
 }

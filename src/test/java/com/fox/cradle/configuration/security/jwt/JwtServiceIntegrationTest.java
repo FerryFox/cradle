@@ -108,6 +108,4 @@ class JwtServiceIntegrationTest
         String username = jwtService.extractUsername(token);
         Assertions.assertNotEquals(user2.getEmail() , username);
     }
-
-
 }

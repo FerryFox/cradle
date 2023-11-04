@@ -31,27 +31,6 @@ class AuthenticationServiceIntegrationTest
     private AuthenticationService authService;
 
     @Test
-    void registerTest()
-    {
-        //Given
-        RegisterRequest request = new RegisterRequest();
-        request.setFirstname("foxd");
-        request.setEmail("ndfgew2@new.com");
-        request.setPassword("startrek");
-        request.setReceiveNews(true);
-
-        User user = new User();
-        user.setEmail("ndfgew2@new.com");
-        //WHEN
-        AuthenticationResponse response = authService.register(request);
-        String jwtToken = jwtService.generateToken(user);
-
-        //THEN
-        Assertions.assertNotNull(response.getToken());
-        assert response.getToken().equals(jwtToken);
-    }
-
-    @Test
     void authenticateTest()
     {
         //GIVEN

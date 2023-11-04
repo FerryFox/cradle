@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -20,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthenticationControllerTest
+class AuthenticationControllerIntegrationTest
 {
     @Autowired
     MockMvc mockMvc;
@@ -30,7 +31,7 @@ class AuthenticationControllerTest
 
 
     @Test
-    void shouldRegisterUser() throws Exception{
+    void postRegisterTest() throws Exception{
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
                 .email("test1.user@test.com")
@@ -50,12 +51,12 @@ class AuthenticationControllerTest
     }
 
     @Test
-    void authenticate() throws Exception
+    void postAuthenticationTest() throws Exception
     {
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
                 .email("me.bob@test.com")
-                .firstname("bobz")
+                .firstname("bob99")
                 .receiveNews(true)
                 .password("myPassword")
                 .build();
@@ -66,7 +67,6 @@ class AuthenticationControllerTest
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
                 .andExpect(status().isCreated());
-
 
         AuthenticationRequest authRequest = AuthenticationRequest.builder()
                 .email("me.bob@test.com")
@@ -84,12 +84,12 @@ class AuthenticationControllerTest
     }
 
     @Test
-    void refreshToken() throws Exception
+    void postRefreshTokenTest() throws Exception
     {
         //GIVEN
         RegisterRequest request = RegisterRequest.builder()
                 .email("test4.user@test.com")
-                .firstname("rere")
+                .firstname("ana")
                 .receiveNews(true)
                 .password("myPassword")
                 .build();
@@ -111,5 +111,33 @@ class AuthenticationControllerTest
                 .header("Authorization", "Bearer " + token))  // Assuming you're using Bearer tokens
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.access_token").isNotEmpty());
+    }
+
+    @Test
+    void getCheckTokenTestWithValidToken() throws Exception {
+        //GIVEN
+        RegisterRequest request = RegisterRequest.builder()
+                .email("test5.user@test.com")
+                .firstname("andre")
+                .receiveNews(true)
+                .password("myPassword")
+                .build();
+
+        String requestJson = objectMapper.writeValueAsString(request);
+
+        MvcResult result = mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String responseString = result.getResponse().getContentAsString();
+        AuthenticationResponse authenticationResponse = objectMapper.readValue(responseString, AuthenticationResponse.class);
+        String token = authenticationResponse.getToken();
+
+        //WHEN THEN
+        mockMvc.perform(get("/api/auth/check-token")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
     }
 }

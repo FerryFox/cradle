@@ -1,6 +1,5 @@
 package com.fox.cradle.configuration.security.auth;
 
-
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,12 +36,12 @@ class AuthenticationServiceIntegrationTest
         //Given
         RegisterRequest request = new RegisterRequest();
         request.setFirstname("foxd");
-        request.setEmail("new2@new.com");
-        request.setPassword("1234");
+        request.setEmail("ndfgew2@new.com");
+        request.setPassword("startrek");
         request.setReceiveNews(true);
 
         User user = new User();
-        user.setEmail("new2@new.com");
+        user.setEmail("ndfgew2@new.com");
         //WHEN
         AuthenticationResponse response = authService.register(request);
         String jwtToken = jwtService.generateToken(user);

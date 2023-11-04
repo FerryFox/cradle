@@ -213,6 +213,5 @@ class MapServiceUnitTest
         //THEN 2
         Assertions.assertNotNull(stampFieldResponses);
         Assertions.assertEquals(1, stampFieldResponses.size());
-
     }
 }

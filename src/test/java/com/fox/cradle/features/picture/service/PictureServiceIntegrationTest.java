@@ -3,6 +3,7 @@ package com.fox.cradle.features.picture.service;
 import com.fox.cradle.features.picture.model.Picture;
 import org.bson.types.Binary;
 import org.junit.jupiter.api.*;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;

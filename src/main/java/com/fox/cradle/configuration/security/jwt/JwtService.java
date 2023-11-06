@@ -1,5 +1,6 @@
 package com.fox.cradle.configuration.security.jwt;
 
+import com.fox.cradle.configuration.security.config.MyInvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -34,16 +35,30 @@ public class JwtService implements IJwtService
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String extractUsernameFromRequest(HttpServletRequest request)
-    {
+    public String extractUsernameFromRequest(HttpServletRequest request) throws MyInvalidTokenException {
         String token = "";
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); // Skip "Bearer "
+            if (token.isEmpty()) {
+                throw new MyInvalidTokenException("Bearer token cannot be empty.");
+            }
+        } else {
+            throw new MyInvalidTokenException("Authorization header is either missing or doesn't contain a Bearer token.");
         }
-        return extractUsername(token);
+
+        try {
+            return extractUsername(token);
+        } catch (IllegalArgumentException e) {
+            // If the token is empty or null, it will be caught here
+            throw new MyInvalidTokenException("JWT String argument cannot be null or empty.");
+        } catch (Exception e) {
+            // Catch other exceptions and handle accordingly
+            throw new MyInvalidTokenException("Error extracting username from token: " + e.getMessage());
+        }
     }
+
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver)
     {
@@ -97,13 +112,20 @@ public class JwtService implements IJwtService
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private Claims extractAllClaims(String token) {
+    private Claims extractAllClaims(String token) throws MyInvalidTokenException
+    {
+        try
+        {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        }catch (Exception e)
+        {
+            throw new MyInvalidTokenException("Invalid token");
+        }
     }
 
     private Key getSignInKey() {

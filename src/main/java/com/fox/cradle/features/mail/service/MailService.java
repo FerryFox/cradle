@@ -18,6 +18,7 @@ public class MailService
     private final MailReposetory mailReposetory;
     private final MailMapperService mailMapperService;
 
+    static final String MAIL_NOT_FOUND_MSG = "Mail not found with id ";
 
     @Transactional
     public List<MailDTO> getAllUserMails(AppUser appUser)
@@ -64,7 +65,7 @@ public class MailService
                 .filter(mail1 -> mail1.getId().equals(mailId))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException
-                        (HttpStatus.NOT_FOUND, "Mail with id " + mailId + " not found for the user"));
+                        (HttpStatus.NOT_FOUND, MAIL_NOT_FOUND_MSG + mailId));
 
         appUser.getMails().remove(mail);
         mailReposetory.delete(mail);
@@ -75,7 +76,7 @@ public class MailService
         Mail mail = appUser.getSendMails().stream()
                 .filter(mail1 -> mail1.getId().equals(mailId))
                 .findFirst().orElseThrow(() -> new ResponseStatusException
-                        (HttpStatus.NOT_FOUND, "Mail with id " + mailId + " not found for the user"));
+                        (HttpStatus.NOT_FOUND, MAIL_NOT_FOUND_MSG + mailId));
 
         appUser.getSendMails().remove(mail);
         mailReposetory.delete(mail);
@@ -96,7 +97,7 @@ public class MailService
                     .filter(mail1 -> mail1.getId().equals(mailId))
                     .findFirst()
                     .orElseThrow( () -> new ResponseStatusException
-                            (HttpStatus.NOT_FOUND, "Mail with id " + mailId + " not found for the user"));
+                            (HttpStatus.NOT_FOUND,  MAIL_NOT_FOUND_MSG + mailId));
         }
         else
         {
@@ -104,7 +105,7 @@ public class MailService
                     .filter(mail1 -> mail1.getId().equals(mailId))
                     .findFirst()
                     .orElseThrow( () -> new ResponseStatusException
-                            (HttpStatus.NOT_FOUND, "Mail with id " + mailId + " not found for the user"));
+                            (HttpStatus.NOT_FOUND,  MAIL_NOT_FOUND_MSG + mailId));
         }
 
         MailMessage mailMessage = MailMessage.builder()

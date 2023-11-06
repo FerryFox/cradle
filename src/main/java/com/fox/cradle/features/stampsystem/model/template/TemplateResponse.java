@@ -1,5 +1,6 @@
 package com.fox.cradle.features.stampsystem.model.template;
 
+import com.fox.cradle.features.appuser.model.AppUserDTO;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardCategory;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardStatus;
@@ -21,7 +22,9 @@ public class TemplateResponse
     private String image;
 
     private String createdBy;
+    private Long userId;
     private int defaultCount;
+    private AppUserDTO creator;
 
     @Enumerated(EnumType.STRING)
     private StampCardCategory stampCardCategory;

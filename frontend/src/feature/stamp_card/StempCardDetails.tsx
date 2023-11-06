@@ -1,5 +1,5 @@
 import Container from "@mui/material/Container";
-import {Button, Paper, Toolbar} from "@mui/material";
+import {Button, IconButton, Paper, Snackbar, Toolbar} from "@mui/material";
 import Template from "../template/Template";
 import Grid from "@mui/material/Grid";
 import StampField from "./StampField";
@@ -11,6 +11,8 @@ import {StampCardModel, StampFieldModel} from "./model/models";
 import React, {useEffect, useState} from "react";
 import RedeemButton from "./RedeemButton";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
+import AppUserShortCard from "../user/AppUserShortCard";
+import CheckIcon from "@mui/icons-material/Check";
 
 export default function StampCardDetails()
 {
@@ -18,6 +20,8 @@ export default function StampCardDetails()
     const [stampCardModel, setStampCardModel] = useState<StampCardModel>();
     const navigateTo = useNavigate();
     const [message, setMessage] = useState("");
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     useEffect(() => {
         axios.get<StampCardModel>(`/api/stampcard/${id}`)
@@ -75,6 +79,7 @@ export default function StampCardDetails()
                     }
                 }
                 setMessage(response.data.stampMessage);
+                setOpenSnackbar(true);
             })
             .catch(error => {
                 console.error("Error during stamping:", error);
@@ -132,11 +137,12 @@ export default function StampCardDetails()
 return(
     <div>
         <Controller title="Details" showBackButton/>
-        <Container maxWidth={false}>
-            <Toolbar/>
-            <Toolbar/>
+        <Container sx={{my: 3}}>
+            <Toolbar />
 
-            <Grid key={stampCardModel.id} container spacing={3} justifyContent="center" >
+            {stampCardModel.templateModel.creator && <AppUserShortCard appUser={stampCardModel.templateModel.creator} />}
+
+            <Grid key={stampCardModel.id} container spacing={3} justifyContent="center" sx={{mt: 1}} >
                 <Grid item xs={6} >
                     <Template templateModel={stampCardModel.templateModel} />
                 </Grid>
@@ -171,6 +177,22 @@ return(
                 </Grid>
             </Grid>
         </Container>
+
+        <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+            open={openSnackbar}
+            autoHideDuration={2000}
+            onClose={() => setOpenSnackbar(false)}
+            message={message}
+            action={
+                <IconButton color="primary" size="small" onClick={() => setOpenSnackbar(false)}>
+                    <CheckIcon />
+                </IconButton>
+            }
+        />
     </div>
     )
 }

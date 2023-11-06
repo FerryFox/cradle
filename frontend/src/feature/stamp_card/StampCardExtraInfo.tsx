@@ -58,12 +58,6 @@ return (
                 {messageState}
             </Typography>
         </Paper>
-
-        <Paper elevation={DEFAULT_ELEVATION} sx={{py : 1}}>
-            <Typography variant={"body1"}>
-                {stampCardModel.templateModel.createdBy}
-            </Typography>
-        </Paper>
     </Stack>
     );
 }

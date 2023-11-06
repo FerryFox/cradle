@@ -42,6 +42,7 @@ public class DatabaseInitializer implements CommandLineRunner
     private final BlogService blogService;
     private final MailService mailService;
 
+
     static final String PASSWORD = "startrek";
     static final String EXP = "2024-10-11T06:39:11.609Z";
 
@@ -136,9 +137,11 @@ public class DatabaseInitializer implements CommandLineRunner
                 .stampCardSecurity(StampCardSecurity.TRUSTUSER)
                 .stampCardStatus(StampCardStatus.PRIVATE)
                 .build();
-       templateService.createTemplate(kebabTemplate, appUserIceCompany);
+        templateService.createTemplate(kebabTemplate, appUserIceCompany);
 
-        //Create User 2
+
+
+//Create User 2
         RegisterRequest registerRequestCinema = RegisterRequest.builder()
                 .firstname("Cinema")
                 .email("thalia@web.de")

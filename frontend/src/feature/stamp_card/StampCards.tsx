@@ -67,10 +67,10 @@ return(
 
         {completed.length > 0 && (
             <>
-                <Typography variant={"h3"} align={"right"}>
+                <Typography variant={"h5"} align={"right"}>
                     Ready to Claim
                 </Typography>
-                <Divider color={"secondary"}></Divider>
+                <Divider color={"primary"}></Divider>
                 <Grid container spacing={4} justifyContent="center" sx={{mt : 1}}>
                     {completed.map((card) => (
                         <Grid item xs={12} key={card.id}>
@@ -83,10 +83,10 @@ return(
 
         {active.length > 0 && (
             <>
-            <Typography variant={"h3"} align={"right"} sx={{my : 3}}>
+            <Typography variant={"h5"} align={"right"} sx={{mt : 3}}>
                 Continue Collecting
             </Typography>
-            <Divider color={"secondary"}></Divider>
+            <Divider color={"primary"}></Divider>
             <Grid container spacing={4} justifyContent="center" sx={{mt : 1}} >
                 {active.map( (card) => (
                     <Grid item xs={12}  key={card.id} >

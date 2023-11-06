@@ -94,11 +94,19 @@ class MapServiceUnitTest
     void mapStampCardToResponseNoStampFields()
     {
         //GIVEN
+        AppUser appUser = AppUser.builder()
+                .appUserName("Test User")
+                .appUserEmail("Test Email")
+                .id(1L)
+                .nameIdentifier("Test Identifier")
+                .build();
+
         Instant instant = Instant.now();
         Template template = Template.builder()
                 .id(1L)
                 .createdDate(instant)
                 .createdBy("Test User")
+                .appUser(appUser)
                 .description("Test Description")
                 .expirationDate("2030-10-11T06:39:11.609Z")
                 .image("888-888-888-888-888")

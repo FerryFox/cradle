@@ -6,6 +6,7 @@ import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import com.fox.cradle.configuration.security.user.UserRepository;
 import com.fox.cradle.features.appuser.service.AppUserRepository;
+import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.stampsystem.model.stampcard.StampCardResponse;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
@@ -36,6 +37,9 @@ class StampCardControllerTest {
 
     @Autowired
     AppUserRepository appUserRepository;
+
+    @Autowired
+    AppUserService appUserService;
 
     @Autowired
     JwtService jwtService;
@@ -104,6 +108,17 @@ class StampCardControllerTest {
         //GIVEN
         String token = getTokenFromIceCreamCompany();
 
+        String templateId = "1"; //Ice Cream Template
+
+        MvcResult result = mockMvc.perform(post("/api/stampcard/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token)
+                        .content(templateId))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        int returnedId = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+
         //WHEN THEN
         MvcResult list = mockMvc.perform(get("/api/stampcard/archived")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -117,9 +132,40 @@ class StampCardControllerTest {
         Assertions.assertTrue(onlyRedeemed);
     }
 
+
+    @Test
+    void getStampCardWithCreatorTest() throws Exception {
+        //GIVEN
+        String token = getTokenFromIceCreamCompany();
+
+        String templateId = "1"; //Ice Cream Template
+
+        MvcResult result = mockMvc.perform(post("/api/stampcard/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token)
+                        .content(templateId))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        int returnedId = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+
+        //WHEN THEN
+        mockMvc.perform(get("/api/stampcard/" + returnedId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk()).andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        StampCardResponse stampCardResponse = objectMapper.readValue(jsonResponse, new TypeReference<>() {});
+        Assertions.assertEquals(1L,stampCardResponse.getTemplateModel().getUserId());
+
+    }
+
     private String getTokenFromIceCreamCompany()
     {
         User user = userRepository.findByEmail("icecream@gmail.com").get();
         return jwtService.generateToken(user);
     }
+
 }

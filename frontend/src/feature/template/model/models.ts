@@ -1,3 +1,4 @@
+import {AppUserDTO} from "../../user/model/models";
 
 export type TemplateModel = {
     id: number;
@@ -15,6 +16,9 @@ export type TemplateModel = {
 
     createdBy : string;
     createdDate : string;
+    creator? : AppUserDTO;
+    userId : number;
+
     lastModifiedDate : string;
     expirationDate : Date;
 };

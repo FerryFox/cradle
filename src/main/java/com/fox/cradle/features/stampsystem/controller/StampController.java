@@ -2,6 +2,7 @@ package com.fox.cradle.features.stampsystem.controller;
 
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
+import com.fox.cradle.features.appuser.model.AppUserDTO;
 import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.stampsystem.model.stamp.StampFieldResponse;
 import com.fox.cradle.features.stampsystem.model.stamp.StampThisResponse;
@@ -46,6 +47,9 @@ public class StampController
         if (appUser.isEmpty()) return ResponseEntity.badRequest().build();
 
         StampCardResponse result = stampService.setCompleteForThisCard(id);
+        AppUserDTO creator = appUserService.getUserDTO(result.getTemplateModel().getUserId().toString());
+        result.getTemplateModel().setCreator(creator);
+
         return ResponseEntity.ok(result);
     }
 
@@ -58,6 +62,9 @@ public class StampController
         if (appUser.isEmpty()) return ResponseEntity.badRequest().build();
 
         StampCardResponse result = stampService.setRedeemedForThisCard(id);
+        AppUserDTO creator = appUserService.getUserDTO(result.getTemplateModel().getUserId().toString());
+        result.getTemplateModel().setCreator(creator);
+
         return ResponseEntity.ok(result);
     }
 }

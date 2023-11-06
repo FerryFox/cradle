@@ -26,7 +26,7 @@ public class MailController
     private final JwtService jwtService;
     private final MailService mailService;
 
-    @RequestMapping("/all-my-mails")
+    @GetMapping("/all-my-mails")
     public ResponseEntity<List<MailDTO>> getAllUserMails(HttpServletRequest httpServletRequest)
     {
         Optional<AppUser> appUse =  appUserService.

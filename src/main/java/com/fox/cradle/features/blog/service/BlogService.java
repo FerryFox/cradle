@@ -6,7 +6,9 @@ import com.fox.cradle.features.blog.model.BlogEntry;
 import com.fox.cradle.features.blog.model.BlogEntryDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,15 +21,16 @@ public class BlogService {
     @Transactional
     public BlogEntryDTO saveBlog(BlogEntryDTO blogEntryDTO, AppUser appUser)
     {
-        BlogEntry blogEntry = blogMapping.mapBlogDTOToEntity(blogEntryDTO, appUser);
+        try {
+            BlogEntry blogEntry = blogMapping.mapBlogDTOToEntity(blogEntryDTO, appUser);
 
-        blogRepository.save(blogEntry);
+            blogRepository.save(blogEntry);
 
-        return blogMapping.mapToDTO(blogEntry);
-    }
-
-    public BlogEntry getBlog(Long id) {
-        return blogRepository.findById(id).orElseThrow();
+            return blogMapping.mapToDTO(blogEntry);
+        }
+        catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Content is too long");
+        }
     }
 
     @Transactional

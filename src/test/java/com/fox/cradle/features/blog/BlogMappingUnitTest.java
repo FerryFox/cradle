@@ -229,14 +229,14 @@ class BlogMappingUnitTest
         Assertions.assertEquals(blogEntries.get(0).getTitle(), blogEntryDTOS.get(0).getTitle());
         Assertions.assertEquals(blogEntries.get(0).getContent(), blogEntryDTOS.get(0).getContent());
         Assertions.assertEquals(blogEntries.get(0).getCreatedDate().toString(), blogEntryDTOS.get(0).getCreatedDate());
-        Assertions.assertEquals(blogEntryDTOS.get(0).getPictureBase64(), "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolHRgXITEhJSkrLi4uGB8zODMsNygtLisBC");
+        Assertions.assertEquals("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolHRgXITEhJSkrLi4uGB8zODMsNygtLisBC", blogEntryDTOS.get(0).getPictureBase64());
         Assertions.assertEquals(blogEntries.get(0).getAppUser().getId(), blogEntryDTOS.get(0).getAppUser().getId());
 
         Assertions.assertEquals(blogEntries.get(1).getId(), blogEntryDTOS.get(1).getId());
         Assertions.assertEquals(blogEntries.get(1).getTitle(), blogEntryDTOS.get(1).getTitle());
         Assertions.assertEquals(blogEntries.get(1).getContent(), blogEntryDTOS.get(1).getContent());
         Assertions.assertEquals(blogEntries.get(1).getCreatedDate().toString(), blogEntryDTOS.get(1).getCreatedDate());
-        Assertions.assertEquals(blogEntryDTOS.get(1).getPictureBase64(), "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolHRgXITEhJSkrLi4uGB8zODMsNygtLisBB");
+        Assertions.assertEquals("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolHRgXITEhJSkrLi4uGB8zODMsNygtLisBB", blogEntryDTOS.get(1).getPictureBase64());
         Assertions.assertEquals(blogEntries.get(1).getAppUser().getId(), blogEntryDTOS.get(1).getAppUser().getId());
     }
 }

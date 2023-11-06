@@ -5,7 +5,9 @@ import com.fox.cradle.features.mail.MailMapperService;
 import com.fox.cradle.features.mail.model.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -58,14 +60,23 @@ public class MailService
 
     public void deleteMail(AppUser appUser, Long mailId)
     {
-        Mail mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().orElseThrow();
+        Mail mail = appUser.getMails().stream()
+                .filter(mail1 -> mail1.getId().equals(mailId))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException
+                        (HttpStatus.NOT_FOUND, "Mail with id " + mailId + " not found for the user"));
+
         appUser.getMails().remove(mail);
         mailReposetory.delete(mail);
     }
 
     public void deleteSenderMail(AppUser appUser, Long mailId)
     {
-        Mail mail = appUser.getSendMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().orElseThrow();
+        Mail mail = appUser.getSendMails().stream()
+                .filter(mail1 -> mail1.getId().equals(mailId))
+                .findFirst().orElseThrow(() -> new ResponseStatusException
+                        (HttpStatus.NOT_FOUND, "Mail with id " + mailId + " not found for the user"));
+
         appUser.getSendMails().remove(mail);
         mailReposetory.delete(mail);
     }
@@ -84,14 +95,16 @@ public class MailService
             mail = appUser.getSendMails().stream()
                     .filter(mail1 -> mail1.getId().equals(mailId))
                     .findFirst()
-                    .orElseThrow();
+                    .orElseThrow( () -> new ResponseStatusException
+                            (HttpStatus.NOT_FOUND, "Mail with id " + mailId + " not found for the user"));
         }
         else
         {
             mail = appUser.getMails().stream()
                     .filter(mail1 -> mail1.getId().equals(mailId))
                     .findFirst()
-                    .orElseThrow();
+                    .orElseThrow( () -> new ResponseStatusException
+                            (HttpStatus.NOT_FOUND, "Mail with id " + mailId + " not found for the user"));
         }
 
         MailMessage mailMessage = MailMessage.builder()

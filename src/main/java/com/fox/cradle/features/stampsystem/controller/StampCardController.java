@@ -2,10 +2,12 @@ package com.fox.cradle.features.stampsystem.controller;
 
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
+import com.fox.cradle.features.appuser.model.AppUserDTO;
 import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.stampsystem.model.stampcard.StampCardResponse;
 import com.fox.cradle.features.stampsystem.service.card.StampCardService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,13 +70,15 @@ public class StampCardController
         return ResponseEntity.ok(results);
     }
 
+    @Transactional
     @GetMapping("/{id}")
     public ResponseEntity<StampCardResponse> getStampCardWithCreator(@PathVariable Long id)
     {
         StampCardResponse result = stampCardService.getStampCard(id);
 
         Long appUserID = result.getTemplateModel().getUserId();
-        result.getTemplateModel().setCreator(appUserService.getUserDTO(appUserID.toString()));
+        AppUserDTO appUserDTO = appUserService.getUserDTO(appUserID.toString());
+        result.getTemplateModel().setCreator(appUserDTO);
 
         return ResponseEntity.ok(result);
     }

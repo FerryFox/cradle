@@ -1,6 +1,6 @@
 import React from "react";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
-import {Divider, Paper, Stack} from "@mui/material";
+import {Divider} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import {AdditionalInfoDTO} from "./model/models";

@@ -17,7 +17,6 @@ import {createStampCardFromTemplateId} from "../../assets/service/stampCardServi
 
 export default function TemplateDetails()
 {
-    const navigateTo = useNavigate();
     const location = useLocation();
     const [templateModel] = useState<TemplateModel>(location.state?.templateModel);
     const navigate = useNavigate();

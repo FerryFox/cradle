@@ -26,15 +26,15 @@ public class MailController
     private final JwtService jwtService;
     private final MailService mailService;
 
-    @RequestMapping("/all")
-    public ResponseEntity<List<MailDTO>> getAllMails(HttpServletRequest httpServletRequest)
+    @RequestMapping("/all-my-mails")
+    public ResponseEntity<List<MailDTO>> getAllUserMails(HttpServletRequest httpServletRequest)
     {
         Optional<AppUser> appUse =  appUserService.
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
         if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        List<MailDTO> result = mailService.getMails(appUse.get());
+        List<MailDTO> result = mailService.getAllUserMails(appUse.get());
 
         for (MailDTO mailDTO : result) {
             AppUserDTO sender = appUserService.getPlainUserWithAddInfo(mailDTO.getSender().getId());
@@ -121,7 +121,7 @@ public class MailController
 
         if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-         List<MailMessage> messages = mailService.respondToMail(appUse.get(), mailId, message);
+        List<MailMessage> messages = mailService.respondToMail(appUse.get(), mailId, message);
 
         return ResponseEntity.ok(messages);
     }

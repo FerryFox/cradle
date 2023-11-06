@@ -19,7 +19,6 @@ class PictureServiceIntegrationTest
 
     public static final String DEFAULT_PICTURE = "data:image/jpeg;base64,/9j/4AAQgGBolGxg";
 
-
     @Test
     void loadPictureFromFileTest() throws Exception
     {
@@ -134,7 +133,7 @@ class PictureServiceIntegrationTest
         //Given
 
         //When
-    Binary binary = pictureService.base64ToBinary(DEFAULT_PICTURE);
+        Binary binary = pictureService.base64ToBinary(DEFAULT_PICTURE);
 
         //Then
         Assertions.assertNotNull(binary);

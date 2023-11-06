@@ -60,7 +60,7 @@ class TemplateControllerTest
                     "defaultCount":10,
                     "stampCardCategory":"DRINK",
                     "stampCardSecurity":"TRUSTUSER",
-                    "stampCardStatus":"ACTIVE",
+                    "stampCardStatus":"PUBLIC",
                     "securityTimeGateDuration":"PT0H",
                     "expirationDate":"2024-10-18T11:59:56.000Z"
                 }
@@ -82,7 +82,7 @@ class TemplateControllerTest
                 .andExpect(jsonPath("$.defaultCount").value(10))
                 .andExpect(jsonPath("$.stampCardCategory").value("DRINK"))
                 .andExpect(jsonPath("$.stampCardSecurity").value("TRUSTUSER"))
-                .andExpect(jsonPath("$.stampCardStatus").value("ACTIVE"))
+                .andExpect(jsonPath("$.stampCardStatus").value("PUBLIC"))
                 .andExpect(jsonPath("$.expirationDate").value("2024-10-18T11:59:56.000Z"))
                 .andExpect(jsonPath("$.createdDate").exists())
                 .andExpect(jsonPath("$.lastModifiedDate").exists());
@@ -113,7 +113,7 @@ class TemplateControllerTest
                 .andExpect(jsonPath("$.defaultCount").value(10))
                 .andExpect(jsonPath("$.stampCardCategory").value("DRINK"))
                 .andExpect(jsonPath("$.stampCardSecurity").value("TRUSTUSER"))
-                .andExpect(jsonPath("$.stampCardStatus").value("ACTIVE"))
+                .andExpect(jsonPath("$.stampCardStatus").value("PUBLIC"))
                 .andExpect(jsonPath("$.expirationDate").value("2024-10-18T11:59:56.000Z"))
                 .andExpect(jsonPath("$.createdDate").exists())
                 .andExpect(jsonPath("$.lastModifiedDate").exists());
@@ -151,7 +151,7 @@ class TemplateControllerTest
         Assertions.assertEquals(10, lastTemplate.getDefaultCount());
         Assertions.assertEquals("DRINK", lastTemplate.getStampCardCategory().toString());
         Assertions.assertEquals("TRUSTUSER", lastTemplate.getStampCardSecurity().toString());
-        Assertions.assertEquals("ACTIVE", lastTemplate.getStampCardStatus().toString());
+        Assertions.assertEquals("PUBLIC", lastTemplate.getStampCardStatus().toString());
         Assertions.assertEquals("2024-10-18T11:59:56.000Z", lastTemplate.getExpirationDate());
         Assertions.assertNotNull(lastTemplate.getCreatedDate());
     }
@@ -262,7 +262,7 @@ class TemplateControllerTest
                 .description("updatedDescription")
 
                 .image(templateResponse.getImage())
-                .stampCardStatus("ACTIVE")
+                .stampCardStatus("PUBLIC")
                 .stampCardCategory("FOOD")
 
                 .expirationDate("2029-10-18T11:59:56.000Z")
@@ -279,7 +279,7 @@ class TemplateControllerTest
                 .andExpect(jsonPath("$.name").value("updatedName"))
                 .andExpect(jsonPath("$.description").value("updatedDescription"))
                 .andExpect(jsonPath("$.stampCardCategory").value("FOOD"))
-                .andExpect(jsonPath("$.stampCardStatus").value("ACTIVE"))
+                .andExpect(jsonPath("$.stampCardStatus").value("PUBLIC"))
                 .andExpect(jsonPath("$.expirationDate").value("2029-10-18T11:59:56.000Z"));
     }
 
@@ -325,10 +325,8 @@ class TemplateControllerTest
                         .header("Authorization", "Bearer " + token))
 
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value("ACTIVE"))
-                .andExpect(jsonPath("$[1]").value("INACTIVE"))
-                .andExpect(jsonPath("$[2]").value("PRIVATE"))
-                .andExpect(jsonPath("$[3]").value("PUBLIC"));
+                .andExpect(jsonPath("$[0]").value("PRIVATE"))
+                .andExpect(jsonPath("$[1]").value("PUBLIC"));
     }
 
 

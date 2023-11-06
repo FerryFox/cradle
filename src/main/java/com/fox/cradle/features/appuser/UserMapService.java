@@ -4,7 +4,6 @@ import com.fox.cradle.features.appuser.model.AddInfoDTO;
 import com.fox.cradle.features.appuser.model.AdditionalInfo;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.model.AppUserDTO;
-import com.fox.cradle.features.mail.MailMapperService;
 import com.fox.cradle.features.mail.model.MailDTO;
 import com.fox.cradle.features.mail.service.MailService;
 import com.fox.cradle.features.picture.service.PictureService;
@@ -72,7 +71,7 @@ public class UserMapService
     public AppUserDTO mapAppUserToDTOWithAddInfoAndMails(AppUser appUser)
     {
         AddInfoDTO info = mapAdditionalInfoToDTO(appUser.getAdditionalInfo());
-        List<MailDTO> mails = mailService.getMails(appUser);
+        List<MailDTO> mails = mailService.getAllUserMails(appUser);
 
         return AppUserDTO.builder()
                 .id(appUser.getId())

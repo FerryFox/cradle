@@ -1,6 +1,8 @@
 package com.fox.cradle.configuration.security.auth;
 
 import com.fox.cradle.configuration.security.config.TokenCheckException;
+import io.jsonwebtoken.io.DeserializationException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,21 +42,14 @@ public class AuthenticationController {
     }
 
     @GetMapping("/check-token")
-    public ResponseEntity<Void> checkToken(HttpServletRequest request)
-    {
-        boolean isValidToken;
-
+    public ResponseEntity<Void> checkToken(HttpServletRequest request) {
         try {
-            isValidToken = authService.checkToken(request);
-        }
-        catch (TokenCheckException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        if (isValidToken) {
-            return ResponseEntity.ok().build();
-        }
-        else {
+            if (authService.checkToken(request)) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        } catch (TokenCheckException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
@@ -62,9 +57,9 @@ public class AuthenticationController {
     //is not necessary since my frontend will handle the errors
     //keep it as example for future projects
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);

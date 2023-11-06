@@ -18,7 +18,7 @@ public class MailService
 
 
     @Transactional
-    public List<MailDTO> getMails(AppUser appUser)
+    public List<MailDTO> getAllUserMails(AppUser appUser)
     {
         List<Mail> mails = appUser.getMails();
         return mailMapperService.mapMailsToDTOs(mails);
@@ -51,21 +51,21 @@ public class MailService
 
     public void markMailAsRead(AppUser appUser, Long mailId)
     {
-        Mail mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
+        Mail mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().orElseThrow();
         mail.setRead(true);
         mailReposetory.save(mail);
     }
 
     public void deleteMail(AppUser appUser, Long mailId)
     {
-        Mail mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
+        Mail mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().orElseThrow();
         appUser.getMails().remove(mail);
         mailReposetory.delete(mail);
     }
 
     public void deleteSenderMail(AppUser appUser, Long mailId)
     {
-        Mail mail = appUser.getSendMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
+        Mail mail = appUser.getSendMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().orElseThrow();
         appUser.getSendMails().remove(mail);
         mailReposetory.delete(mail);
     }
@@ -79,8 +79,20 @@ public class MailService
     public List<MailMessage> respondToMail(AppUser appUser, Long mailId, MessageDTO message)
     {
         Mail mail;
-        if(message.isOriginalSender())mail = appUser.getSendMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
-        else mail = appUser.getMails().stream().filter(mail1 -> mail1.getId().equals(mailId)).findFirst().get();
+        if(message.isOriginalSender())
+        {
+            mail = appUser.getSendMails().stream()
+                    .filter(mail1 -> mail1.getId().equals(mailId))
+                    .findFirst()
+                    .orElseThrow();
+        }
+        else
+        {
+            mail = appUser.getMails().stream()
+                    .filter(mail1 -> mail1.getId().equals(mailId))
+                    .findFirst()
+                    .orElseThrow();
+        }
 
         MailMessage mailMessage = MailMessage.builder()
                 .text(message.getText())

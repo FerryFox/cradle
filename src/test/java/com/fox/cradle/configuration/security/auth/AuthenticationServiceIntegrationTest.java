@@ -1,6 +1,5 @@
 package com.fox.cradle.configuration.security.auth;
 
-
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,32 +29,6 @@ class AuthenticationServiceIntegrationTest
 
     @Autowired
     private AuthenticationService authService;
-
-    @Test
-    void registerTest()
-    {
-        /*
-        //Given
-        RegisterRequest request = new RegisterRequest();
-        request.setFirstname("foxd");
-        request.setEmail("new@new.com");
-        request.setPassword("1234");
-        request.setReceiveNews(true);
-
-        User user = new User();
-        user.setEmail("new@new.com");
-        //WHEN
-        AuthenticationResponse response = authService.register(request);
-        String jwtToken = jwtService.generateToken(user);
-
-        //THEN
-        Assertions.assertNotNull(response.getToken());
-        assert response.getToken() != null;
-        assert response.getToken().equals(jwtToken);
-        */
-        Assertions.assertNull(null);
-
-    }
 
     @Test
     void authenticateTest()
@@ -92,4 +65,6 @@ class AuthenticationServiceIntegrationTest
         assertNotNull(refreshToken, "Refresh token should not be null");
         assertTrue(jwtService.isTokenValid(refreshToken, user), "Refresh token should be valid for the user");
     }
+
+    //Test for invalid token has a problem that I can not catch the error
 }

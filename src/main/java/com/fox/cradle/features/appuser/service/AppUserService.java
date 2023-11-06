@@ -24,6 +24,8 @@ public class AppUserService
     private final UserMapService userMapService;
     private final TemplateService templateService;
 
+    static final String USER_NOT_FOUND_MSG = "User not found with id ";
+
     public AppUser saveAppUser(AppUser appUser)
     {
         //initialize additional info for user
@@ -83,17 +85,16 @@ public class AppUserService
     {
         List<AppUser> friends = appUser.getFriends();
 
-        List<AppUserDTO> friendsDTO = userMapService.mapAppUserFriendsToDTOWithAddInfo(friends);
-        return friendsDTO;
+        return userMapService.mapAppUserFriendsToDTOWithAddInfo(friends);
     }
 
     public AppUserDTO addFriend(Long userId, Long friendId) {
         // 1. Fetch both users
         AppUser user = appUserRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + userId));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MSG+ userId));
 
         AppUser friend = appUserRepository.findById(friendId)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + friendId));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MSG + friendId));
 
         // 2. & 3. Update the list and ensure bidirectionality
         if (!user.getFriends().contains(friend))
@@ -136,7 +137,7 @@ public class AppUserService
     public AppUserDTO getUserDTO(String id)
     {
         AppUser user = appUserRepository.findById(Long.parseLong(id))
-                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MSG + id));
 
         List<TemplateResponse> templates = templateService.getMyTemplates(user);
 
@@ -149,7 +150,7 @@ public class AppUserService
     public AppUserDTO getPlainUserWithAddInfo(long id)
     {
         AppUser user = appUserRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + 1L));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MSG + 1L));
 
         return userMapService.mapAppUserToAddUserDTOWithAddInfo(user);
     }
@@ -157,6 +158,6 @@ public class AppUserService
     public AppUser getUserById(Long senderId)
     {
         return appUserRepository.findById(senderId)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + senderId));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MSG + senderId));
     }
 }

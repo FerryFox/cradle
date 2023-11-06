@@ -4,5 +4,5 @@ public enum StampCardSecurity
 {
     TRUSTUSER,
     TIMEGATE,
-    LOCATIONGATE,
+    LOCATIONGATE
 }

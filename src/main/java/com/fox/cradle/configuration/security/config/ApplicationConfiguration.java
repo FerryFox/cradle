@@ -1,5 +1,6 @@
 package com.fox.cradle.configuration.security.config;
 
+import com.fox.cradle.configuration.security.jwt.JwtAuthenticationEntryPoint;
 import com.fox.cradle.configuration.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfiguration
 {
     private final UserRepository userRepository;
+
+    @Bean
+    public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
+        return new JwtAuthenticationEntryPoint();
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {

@@ -71,7 +71,7 @@ class BlogControllerIntegrationTest {
         Assertions.assertNotNull(blogEntryDTOResponse.getAppUser());
     }
 
-/*
+
     @Test
     void createBlogEntryTestWithWrongUser() throws Exception {
         //GIVEN
@@ -90,7 +90,7 @@ class BlogControllerIntegrationTest {
                         .content(objectMapper.writeValueAsString(blogEntryDTO)))
                 .andExpect(status().isUnauthorized())
                 .andReturn();
-} */
+    }
 
 
     @Test

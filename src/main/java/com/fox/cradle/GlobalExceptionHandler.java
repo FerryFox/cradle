@@ -1,4 +1,4 @@
-package com.fox.cradle.configuration.security;
+package com.fox.cradle;
 
 import com.fox.cradle.configuration.security.config.MyInvalidTokenException;
 import org.springframework.http.HttpStatus;

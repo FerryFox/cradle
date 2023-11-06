@@ -29,7 +29,6 @@ class AuthenticationControllerIntegrationTest
     @Autowired
     private ObjectMapper objectMapper;
 
-
     @Test
     void postRegisterTest() throws Exception{
         //GIVEN
@@ -140,4 +139,34 @@ class AuthenticationControllerIntegrationTest
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }
+
+    /*
+    @Test
+    void getCheckTokenTestWithValidTokenFail() throws Exception {
+        //GIVEN
+        RegisterRequest request = RegisterRequest.builder()
+                .email("test6.user@test.com")
+                .firstname("andre")
+                .receiveNews(true)
+                .password("myPassword")
+                .build();
+
+        String requestJson = objectMapper.writeValueAsString(request);
+
+        MvcResult result = mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String responseString = result.getResponse().getContentAsString();
+        AuthenticationResponse authenticationResponse = objectMapper.readValue(responseString, AuthenticationResponse.class);
+        String token = authenticationResponse.getToken();
+
+        //WHEN THEN
+        mockMvc.perform(get("/api/auth/check-token")
+                        .header("Authorization", "Bearer " + "invalidToken"))
+                .andExpect(status().isOk());
+    }
+     */
 }

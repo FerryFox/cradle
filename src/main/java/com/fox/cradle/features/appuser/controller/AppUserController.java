@@ -31,7 +31,6 @@ public class AppUserController
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
         if (appUser.isEmpty()) return ResponseEntity.badRequest().build();
-
         AddInfoDTO result = appUserService.getAdditionalInfo(appUser.get());
 
         return ResponseEntity.ok(result);
@@ -53,6 +52,10 @@ public class AppUserController
         return ResponseEntity.ok(result);
     }
 
+    //Get user data with
+    //  -   additional info
+    //  -   templates
+    //  -   friends
     @GetMapping("/{id}")
     public ResponseEntity<AppUserDTO> getUser(@PathVariable String id)
     {
@@ -75,6 +78,7 @@ public class AppUserController
         return ResponseEntity.ok(friends);
     }
 
+    //return friend
     @PostMapping("/add-friend/{id}")
     public ResponseEntity<AppUserDTO> addFriend(HttpServletRequest httpServletRequest, @PathVariable Long id)
     {

@@ -1,5 +1,6 @@
 package com.fox.cradle.configuration.security.jwt;
 
+import com.fox.cradle.configuration.security.config.MyInvalidTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,8 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
 
         //stops searching for the userDetails if the token is null or doesn't start with "Bearer "
         if (authHeader == null ||!authHeader.startsWith("Bearer "))
@@ -49,30 +48,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         //gets the user's email from the token and sets the userDetails to the user's email
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null)
-        {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+        try {
+            final String jwt = authHeader.substring(7);
+            final String userEmail = jwtService.extractUsername(jwt);
 
-            //checks if the token is valid and sets the authToken to the user's details
-            //also sets the SecurityContext, UsernamePasswordAuthenticationToken, and WebAuthenticationDetailsSource
-            if (jwtService.isTokenValid(jwt, userDetails))
-            {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        //gets the user's authorities which are an empty list atm.
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
 
-        }
+            filterChain.doFilter(request, response);
 
-        filterChain.doFilter(request, response);
+        } catch (MyInvalidTokenException ex) {
+            // Here you catch your custom exception and set the 401 Unauthorized response
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Invalid token");
+            // Log the exception here if you need to
+            // Do not call filterChain.doFilter(request, response) here, the response is already complete
+        }
     }
 }

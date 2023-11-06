@@ -1,5 +1,6 @@
 package com.fox.cradle.configuration.security.config;
 
+import com.fox.cradle.configuration.security.jwt.JwtAuthenticationEntryPoint;
 import com.fox.cradle.configuration.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +22,12 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf(c -> {
                     try {
@@ -45,6 +50,7 @@ public class SecurityConfiguration {
 
                     c.anyRequest().authenticated();
                 })
+                .exceptionHandling(c -> c.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authenticationProvider(authenticationProvider)

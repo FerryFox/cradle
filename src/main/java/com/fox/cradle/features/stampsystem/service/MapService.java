@@ -9,6 +9,7 @@ import com.fox.cradle.features.stampsystem.model.stampcard.StampCardResponse;
 import com.fox.cradle.features.stampsystem.model.template.Template;
 import com.fox.cradle.features.stampsystem.model.template.NewTemplate;
 import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,7 @@ public class MapService
                         .build();
     }
 
+    @Transactional
     public TemplateResponse mapTemplateToResponse(Template template)
     {
         String image = pictureService.getPictureString(template.getImage());
@@ -58,6 +60,7 @@ public class MapService
                 .description(template.getDescription())
                 .defaultCount(template.getDefaultCount())
                 .createdBy(template.getCreatedBy())
+                .userId(template.getAppUser().getId())
                 .image(image)
                 .stampCardCategory(template.getStampCardCategory())
                 .stampCardSecurity(template.getStampCardSecurity())
@@ -76,6 +79,7 @@ public class MapService
                 .toList();
     }
 
+    @Transactional
     public StampCardResponse mapStampCardToResponseNoStampFields(StampCard stampCard)
     {
         TemplateResponse templateResponse = mapTemplateToResponse(stampCard.getTemplate());
@@ -111,6 +115,7 @@ public class MapService
     }
 
 
+    @Transactional
     public StampCardResponse mapStampCardToResponse(StampCard stampCard)
     {
         TemplateResponse templateResponse = mapTemplateToResponse(stampCard.getTemplate());

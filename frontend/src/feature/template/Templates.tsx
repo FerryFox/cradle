@@ -2,20 +2,18 @@ import React, { useState, useEffect } from 'react';
 import Template from "./Template";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import {IconButton, Snackbar, Toolbar} from "@mui/material";
+import {Button, IconButton, Snackbar, Toolbar} from "@mui/material";
 import {createStampCardFromTemplateId} from "../../assets/service/stampCardService";
 import Controller from "../core/Controller";
 import {TemplateModel} from "./model/models";
 import {loadTemplateModels} from "./service/templateService";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-
-
-
+import CheckIcon from '@mui/icons-material/Check';
 export default function Templates()
 {
     const [templates, setTemplates] = useState<TemplateModel[]>([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
+
     const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleGetCardClick = async (templateId: number) => {
@@ -53,9 +51,13 @@ export default function Templates()
 
             <Grid container spacing={2} justifyContent="center" sx={{mt : 3}}>
                 {templates.map(template => (
-                    <Grid item xs={6} sm={6} md={4} key={template.id} >
-                        <Template templateModel={template} getButton={handleGetCardClick}  />
+                    <>
+                    <Grid item xs={6} key={template.id + "get"} >
+                        <Template templateModel={template}/>
+                        <Button onClick={() => handleGetCardClick(template.id)}>Get This Card</Button>
                     </Grid>
+
+                    </>
                 ))}
             </Grid>
 
@@ -69,8 +71,8 @@ export default function Templates()
                 onClose={() => setOpenSnackbar(false)}
                 message="Stamp card created"
                 action={
-                    <IconButton color="secondary" size="small" onClick={() => setOpenSnackbar(false)}>
-                        <HighlightOffIcon />
+                    <IconButton color="primary" size="small" onClick={() => setOpenSnackbar(false)}>
+                        <CheckIcon />
                     </IconButton>
                 }
             />

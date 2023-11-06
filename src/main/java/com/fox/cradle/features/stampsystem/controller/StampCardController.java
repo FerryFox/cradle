@@ -69,9 +69,12 @@ public class StampCardController
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StampCardResponse> getStampCard(@PathVariable Long id)
+    public ResponseEntity<StampCardResponse> getStampCardWithCreator(@PathVariable Long id)
     {
         StampCardResponse result = stampCardService.getStampCard(id);
+
+        Long appUserID = result.getTemplateModel().getUserId();
+        result.getTemplateModel().setCreator(appUserService.getUserDTO(appUserID.toString()));
 
         return ResponseEntity.ok(result);
     }

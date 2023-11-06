@@ -71,6 +71,27 @@ class BlogControllerIntegrationTest {
         Assertions.assertNotNull(blogEntryDTOResponse.getAppUser());
     }
 
+/*
+    @Test
+    void createBlogEntryTestWithWrongUser() throws Exception {
+        //GIVEN
+
+        BlogEntryDTO blogEntryDTO = BlogEntryDTO.builder()
+                .title("Test Title")
+                .content("Test Content")
+                .pictureBase64("data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACt")
+                .build();
+
+
+        //WHEN THEN
+        mockMvc.perform(post("/api/blog/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer jkkk" )
+                        .content(objectMapper.writeValueAsString(blogEntryDTO)))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+} */
+
 
     @Test
     void createBlogEntryTestLongName() throws Exception {

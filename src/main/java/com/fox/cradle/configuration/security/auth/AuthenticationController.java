@@ -1,8 +1,6 @@
 package com.fox.cradle.configuration.security.auth;
 
 import com.fox.cradle.configuration.security.config.TokenCheckException;
-import io.jsonwebtoken.io.DeserializationException;
-import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

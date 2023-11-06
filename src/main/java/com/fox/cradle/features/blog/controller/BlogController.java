@@ -1,5 +1,6 @@
 package com.fox.cradle.features.blog.controller;
 
+import com.fox.cradle.configuration.security.config.MyInvalidTokenException;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.service.AppUserService;
@@ -7,6 +8,7 @@ import com.fox.cradle.features.blog.model.BlogEntryDTO;
 import com.fox.cradle.features.blog.service.BlogService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +27,12 @@ public class BlogController
     @PostMapping("create")
     public ResponseEntity<BlogEntryDTO> createBlogEntry(@RequestBody BlogEntryDTO blogEntryDTO , HttpServletRequest httpServletRequest)
     {
-        Optional<AppUser> appUse =  appUserService.
+        Optional<AppUser> appUser =  appUserService.
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
-        if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
+        if (appUser.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        BlogEntryDTO result =  blogService.saveBlog(blogEntryDTO, appUse.get());
+        BlogEntryDTO result =  blogService.saveBlog(blogEntryDTO, appUser.get());
         return ResponseEntity.ok(result);
     }
 

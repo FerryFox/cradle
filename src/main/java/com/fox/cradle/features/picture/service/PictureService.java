@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PictureService
 {
-    private final PictureRepository pictureRepository;
+        private final PictureRepository pictureRepository;
     private static final String DEFAULT_PICTURE = "data:image";
 
     public String loadPictureFromFile(String imageName) throws PictureFileMissingException, IOException

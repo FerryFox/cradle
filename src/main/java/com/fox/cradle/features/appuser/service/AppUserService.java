@@ -88,6 +88,12 @@ public class AppUserService
         return userMapService.mapAppUserFriendsToDTOWithAddInfo(friends);
     }
 
+    //return friend
+    // - additional info
+
+    // - friends empty
+    // - templates null
+    // - mails null
     public AppUserDTO addFriend(Long userId, Long friendId) {
         // 1. Fetch both users
         AppUser user = appUserRepository.findById(userId)
@@ -114,6 +120,10 @@ public class AppUserService
         return userMapService.mapAppUserFriendsToDTOWithAddInfo(users);
     }
 
+
+    //load user data
+    //      - additional info
+    //      - friends
     @Transactional
     public AppUserDTO getMeDTO(AppUser appUser)
     {
@@ -133,6 +143,7 @@ public class AppUserService
     //Get user data with
     //  -   additional info
     //  -   templates
+    //  -   friends
     @Transactional
     public AppUserDTO getUserDTO(String id)
     {

@@ -52,6 +52,10 @@ public class AppUserController
         return ResponseEntity.ok(result);
     }
 
+    //Get user data with
+    //  -   additional info
+    //  -   templates
+    //  -   friends
     @GetMapping("/{id}")
     public ResponseEntity<AppUserDTO> getUser(@PathVariable String id)
     {
@@ -74,6 +78,7 @@ public class AppUserController
         return ResponseEntity.ok(friends);
     }
 
+    //return friend
     @PostMapping("/add-friend/{id}")
     public ResponseEntity<AppUserDTO> addFriend(HttpServletRequest httpServletRequest, @PathVariable Long id)
     {

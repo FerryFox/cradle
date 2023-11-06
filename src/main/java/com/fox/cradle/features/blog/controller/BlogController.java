@@ -27,6 +27,7 @@ public class BlogController
     @PostMapping("create")
     public ResponseEntity<BlogEntryDTO> createBlogEntry(@RequestBody BlogEntryDTO blogEntryDTO , HttpServletRequest httpServletRequest)
     {
+
         Optional<AppUser> appUser =  appUserService.
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 

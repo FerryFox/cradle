@@ -31,7 +31,6 @@ public class AppUserController
                 findUserByEmail(jwtService.extractUsernameFromRequest(httpServletRequest));
 
         if (appUser.isEmpty()) return ResponseEntity.badRequest().build();
-
         AddInfoDTO result = appUserService.getAdditionalInfo(appUser.get());
 
         return ResponseEntity.ok(result);

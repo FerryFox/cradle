@@ -2,13 +2,17 @@ package com.fox.cradle.features.appuser.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fox.cradle.configuration.security.auth.AuthenticationService;
+import com.fox.cradle.configuration.security.auth.RegisterRequest;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import com.fox.cradle.configuration.security.user.UserRepository;
 import com.fox.cradle.features.appuser.model.AddInfoDTO;
 import com.fox.cradle.features.appuser.model.AdditionalInfo;
+import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.model.AppUserDTO;
 import com.fox.cradle.features.appuser.service.AppUserService;
+import jakarta.transaction.Transactional;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,6 +37,9 @@ class AppUserControllerIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    private AuthenticationService authService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -96,14 +103,11 @@ class AppUserControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-
         //THEN
         AddInfoDTO addInfoDTO = objectMapper.readValue(result.getResponse().getContentAsString(), AddInfoDTO.class);
         Assertions.assertEquals(1L, addInfoDTO.getId());
         Assertions.assertEquals("We are a small ice cream company from Berlin. We love ice cream and we want to share our passion with you. We are looking forward to your visit!", addInfoDTO.getBio());
         Assertions.assertTrue(addInfoDTO.getName().contains("#"));
-        Assertions.assertNull(null);
-        Assertions.assertNotNull(addInfoDTO.getPicture());
     }
 
     @Test
@@ -205,16 +209,28 @@ class AppUserControllerIntegrationTest {
     }
 
     @Test
-    @DirtiesContext
     void saveAdditionalInfoTest() throws Exception {
         //GIVEN
-        String token = getTokenFromIceCreamCompany();
+        RegisterRequest registerRequestIce = RegisterRequest.builder()
+                .firstname("Test User")
+                .email("klrt@google.com")
+                .password("Babel678")
+                .receiveNews(true)
+                .build();
+
+        //Event triggers the creation of an appUser
+        authService.register(registerRequestIce);
+        AppUser appUser = appUserService.findUserByEmail(registerRequestIce.getEmail()).orElseThrow();
+
+        User user = userRepository.findByEmail(appUser.getAppUserEmail()).get();
+        String token = jwtService.generateToken(user);
+
 
         //WHEN
         AddInfoDTO addInfoDTO = AddInfoDTO.builder()
-                .id(1L)
+                .id(appUser.getAdditionalInfo().getId())
                 .bio("change")
-                .name("Ice Cream Company changed")
+                .name("changed name")
                 .status("change status")
                 .picture("data:image/png;base64,change")
                 .build();

@@ -55,7 +55,6 @@ public class AppUserService
         AdditionalInfo oldInfo = appUser.getAdditionalInfo();
 
         oldInfo.setBio(info.getBio());
-
         oldInfo.setStatus(info.getStatus());
         oldInfo.setConnection(info.getConnection());
 

@@ -45,6 +45,38 @@ class MailControllerIntegrationTest
     private ObjectMapper objectMapper;
 
     @Test
+    void callsWithWrongUser() throws Exception {
+        //GIVEN
+        String token = "wrong.token.provided";
+
+        //WHEN THEN
+
+        mockMvc.perform(get("/api/mails/all-my-mails")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(get("/api/mails/count")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(post("/api/mails/mark-as-read/" + 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(get("/api/mails/your-send-mails")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isUnauthorized());
+
+
+
+
+    }
+
+    @Test
     void getAllUserMailsTest() throws Exception {
         String token = getTokenFromIceCreamCompany();
 
@@ -87,7 +119,6 @@ class MailControllerIntegrationTest
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
-
     }
 
     @Test

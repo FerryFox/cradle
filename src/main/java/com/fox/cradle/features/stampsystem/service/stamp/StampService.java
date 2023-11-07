@@ -8,6 +8,7 @@ import com.fox.cradle.features.stampsystem.model.template.Template;
 import com.fox.cradle.features.stampsystem.service.MapService;
 import com.fox.cradle.features.stampsystem.service.card.StampCardRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -125,6 +126,7 @@ public class StampService
         return mapService.mapStampCardToResponse(stampCard);
     }
 
+    @Transactional
     public StampCardResponse setRedeemedForThisCard(long id)
     {
         StampCard stampCard = stampCardRepository.findById(id).orElseThrow();

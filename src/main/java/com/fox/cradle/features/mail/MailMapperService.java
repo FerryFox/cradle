@@ -40,6 +40,7 @@ public class MailMapperService
                 .receiver(receiver)
                 .templateResponse(templateResponse)
                 .isRead(mail.isRead())
+                .redeemedTemplate(mail.isRedeemedTemplate())
                 .build();
     }
 

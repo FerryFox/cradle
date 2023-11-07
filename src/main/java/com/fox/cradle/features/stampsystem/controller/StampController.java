@@ -4,6 +4,8 @@ import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.model.AppUserDTO;
 import com.fox.cradle.features.appuser.service.AppUserService;
+import com.fox.cradle.features.mail.model.NewMail;
+import com.fox.cradle.features.mail.service.MailService;
 import com.fox.cradle.features.stampsystem.model.stamp.StampFieldResponse;
 import com.fox.cradle.features.stampsystem.model.stamp.StampThisResponse;
 import com.fox.cradle.features.stampsystem.model.stampcard.StampCardResponse;
@@ -24,6 +26,7 @@ public class StampController
     private final StampService stampService;
     private final AppUserService appUserService;
     private final JwtService jwtService;
+    private final MailService mailService;
 
     @PostMapping("/stampThisCard")
     public ResponseEntity<StampThisResponse> attemptToStamp(@RequestBody StampFieldResponse stampFieldResponse, HttpServletRequest httpServletRequest)
@@ -64,6 +67,24 @@ public class StampController
         StampCardResponse result = stampService.setRedeemedForThisCard(id);
         AppUserDTO creator = appUserService.getUserDTO(result.getTemplateModel().getUserId().toString());
         result.getTemplateModel().setCreator(creator);
+
+        //send mail to template owner
+        if(result.isRedeemed()){
+
+            String news = "Greetings i redeemed your stamp card, sincerely " + appUser.get().getAppUserName();
+
+            NewMail mail = NewMail.builder()
+                    .receiverId(result.getTemplateModel().getCreator().getId())
+                    .redeemedTemplate(true)
+                    .templateId(result.getTemplateModel().getId())
+                    .text(news)
+                    .build();
+
+            AppUser receiver = appUserService.getUserById(result.getTemplateModel().getCreator().getId());
+
+            mailService.saveNewMail(mail, appUser.get(), receiver);
+        }
+
 
         return ResponseEntity.ok(result);
     }

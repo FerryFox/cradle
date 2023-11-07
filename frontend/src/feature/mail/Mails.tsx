@@ -1,5 +1,5 @@
 import {Mail, MessageDTO} from "./model/models";
-import {Button, ButtonGroup, Divider, IconButton, Paper, Stack, useTheme} from "@mui/material";
+import {Button, ButtonGroup, IconButton, Paper, Stack, useTheme} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import AppUserShortCard from "../user/AppUserShortCard";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
@@ -72,12 +72,13 @@ return (
 
             return (
                 <div key={mail.id}>
-                <Paper elevation={6} sx={{mb : 4, mt : 2, py : 1 }}>
-                    <Stack alignContent={"center"} sx={{px : 1, py : 1}} >
+                <Paper elevation={10} sx={{mb : 7, mt : 5, py : 1 }}>
+                    <Stack alignContent={"center"} sx={{px : 1, py : 2}} >
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <AppUserShortCard appUser={mail.sender}/>
                             </Grid>
+
                             <Grid item xs={12}>
                                 <Stack spacing={2}>
                                     {mail?.conversation.map((conversation) => (
@@ -119,28 +120,53 @@ return (
                                 </Stack>
                             </Grid>
 
-                            <Grid item xs={12}>
-                                {mail.templateResponse && (
-                                    <>
-                                        <Divider variant={"middle"} color={"primary"} sx={{my : 2}}></Divider>
-                                        <Template templateModel={mail.templateResponse}
-                                                  getButton={handleThisMailClick} />
-                                    </>
+                        </Grid>
+                    </Stack>
+                    {mail.templateResponse ?
+                    (
+                        <Grid container>
+                                <Grid item xs={6} sx={{py : 1, px : 1}}>
+                                            <Template templateModel={mail.templateResponse}
+                                                      getButton={handleThisMailClick} />
+                                </Grid>
 
-                                )}
-                            </Grid>
-                            <Grid item xs={12} sx={{pt : 2}}>
-                                <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                            <Grid item xs={6} sx={{ py: 15, px: 1 }}>
+                                <ButtonGroup orientation="vertical" variant="contained" aria-label="outlined primary button group">
                                     {handleReadClick && (
-                                        <Button startIcon={<TaskIcon/>} onClick={() => handleReadClick(mail)} >Mark as Read</Button>
-                                    )
-                                    }
-                                    <Button startIcon={<DeleteForeverIcon/>} onClick={() => handleDeleteClick(mail)} color={"secondary"}>Delete</Button>
+                                        <Button
+                                            startIcon={<TaskIcon />}
+                                            onClick={() => handleReadClick(mail)}>
+                                            Mark as Read
+                                        </Button>
+                                    )}
+                                    <Button
+                                        startIcon={<DeleteForeverIcon />}
+                                        onClick={() => handleDeleteClick(mail)}
+                                        color="secondary">
+                                        Delete
+                                    </Button>
                                 </ButtonGroup>
                             </Grid>
+                            </Grid>
+                    ) : (
+                        <Grid item xs={12} sx={{ py: 1, px: 1 }}>
+                            <ButtonGroup orientation="horizontal" variant="contained" aria-label="outlined primary button group">
+                                {handleReadClick && (
+                                    <Button
+                                        startIcon={<TaskIcon />}
+                                        onClick={() => handleReadClick(mail)}>
+                                        Mark as Read
+                                    </Button>
+                                )}
+                                <Button
+                                    startIcon={<DeleteForeverIcon />}
+                                    onClick={() => handleDeleteClick(mail)}
+                                    color="secondary">
+                                    Delete
+                                </Button>
+                            </ButtonGroup>
                         </Grid>
-
-                    </Stack>
+                    )}
                     </Paper>
                 </div>
             );

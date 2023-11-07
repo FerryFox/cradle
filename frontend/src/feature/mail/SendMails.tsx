@@ -1,15 +1,12 @@
 import React, {useState} from "react";
 import {Mail, MessageDTO} from "./model/models";
-import {Button, ButtonGroup, IconButton, Paper, Stack, useTheme} from "@mui/material";
+import {IconButton, Paper, Stack, useTheme} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import AppUserShortCard from "../user/AppUserShortCard";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
-import Template from "../template/Template";
-import TaskIcon from "@mui/icons-material/Task";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 type SendMailsProps = {
     mails : Mail[];
@@ -35,7 +32,7 @@ export default function SendMails({ mails, handleResponse, handleDeleteClick, ha
         <div>
             {mails.map((mail) => (
                 <div key={mail.id}>
-                    <Paper elevation={6} sx={{ mb: 4, mt: 2, py: 1 }}>
+                    <Paper elevation={6} sx={{ mb: 4, mt: 5, py: 2 }}>
                         <Stack alignItems="center" sx={{ px: 1, py: 1 }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
@@ -80,23 +77,6 @@ export default function SendMails({ mails, handleResponse, handleDeleteClick, ha
                                         </Paper>
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    {mail.templateResponse && (
-                                        <>
-                                            <Template templateModel={mail.templateResponse} />
-                                        </>
-                                    )}
-                                </Grid>
-                                <Grid item xs={12} sx={{pt : 2}}>
-                                    <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                                        {handleReadClick && (
-                                            <Button startIcon={<TaskIcon/>} onClick={() => handleReadClick(mail)} >Mark as Read</Button>
-                                        )
-                                        }
-                                        <Button startIcon={<DeleteForeverIcon/>} onClick={() => handleDeleteClick(mail)} color={"secondary"}>Delete</Button>
-                                    </ButtonGroup>
-                                </Grid>
-
                             </Grid>
                         </Stack>
                     </Paper>

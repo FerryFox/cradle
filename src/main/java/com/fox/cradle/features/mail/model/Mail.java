@@ -26,6 +26,8 @@ public class Mail
     private boolean isRead;
     private Long templateId;
 
+    private boolean redeemedTemplate;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="receiver_id")
     private AppUser owner;

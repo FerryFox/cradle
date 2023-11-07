@@ -1,14 +1,13 @@
 package com.fox.cradle.features.blog.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fox.cradle.configuration.security.jwt.JwtService;
 import com.fox.cradle.configuration.security.user.User;
 import com.fox.cradle.configuration.security.user.UserRepository;
 import com.fox.cradle.features.blog.model.BlogEntryDTO;
-import com.fox.cradle.features.blog.service.BlogRepository;
-import com.fox.cradle.features.stampsystem.model.stampcard.StampCardResponse;
-import com.jayway.jsonpath.JsonPath;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,6 +40,7 @@ class BlogControllerIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
     @Test
     void createBlogEntryTest() throws Exception {
         //GIVEN

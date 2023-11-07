@@ -21,7 +21,8 @@ type AppBarComponentProps = {
 export default function AppBarComponent({  toggleDrawer,
                             title,
                             showBackButton,
-                            showSecondLine} : AppBarComponentProps,)
+                            showSecondLine,
+                            } : AppBarComponentProps,)
 {
     const navigate = useNavigate();
     const [mailCount, setMailCount] = useState<number>(0);

@@ -1,7 +1,0 @@
-package com.fox.cradle.features.blog.service;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-class BlogServiceIntegrationTest {
-
-}

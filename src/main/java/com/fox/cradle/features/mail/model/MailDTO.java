@@ -20,6 +20,8 @@ public class MailDTO
     private TemplateResponse templateResponse;
     private boolean isRead;
 
+    private boolean redeemedTemplate;
+
     private AppUserDTO sender;
     private AppUserDTO receiver;
 }

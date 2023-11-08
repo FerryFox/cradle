@@ -9,6 +9,7 @@ import Mails from "./Mails";
 import SendMails from "./SendMails";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 import {useNavigate} from "react-router-dom";
+import RedeemNotice from "./RedeemNotice";
 
 export default function MailPage() {
 
@@ -17,6 +18,7 @@ export default function MailPage() {
     const [read, setRead] = useState<Mail[]>([]);
     const [notRead, setNotRead] = useState<Mail[]>([]);
     const [sendMails, setSendMails] = useState<Mail[]>([]);
+    const [redeemedMails, setRedeemedMails] = useState<Mail[]>([]);
     const navigateTo = useNavigate();
 
     const handleTapChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -27,11 +29,13 @@ export default function MailPage() {
         axios.get<Mail[]>("/api/mails/all-my-mails").then((response) => {
             const fetchedMails = response.data;
             const readMails = fetchedMails.filter(mail => mail.read);
-            const unreadMails = fetchedMails.filter(mail => !mail.read);
+            const unreadMails = fetchedMails.filter(mail => !mail.read && !mail.redeemedTemplate);
+            const redeemedMails = fetchedMails.filter(mail => mail.redeemedTemplate);
 
             setMails(fetchedMails);
             setRead(readMails);
             setNotRead(unreadMails);
+            setRedeemedMails(redeemedMails);
         });
     }, []);
 
@@ -161,6 +165,7 @@ export default function MailPage() {
                 <Tab value="tab1" label={`Recent (${notRead.length})`} />
                 <Tab value="tab2" label={`Old  (${read.length})`}/>
                 <Tab value="tab3" label={`Send (${sendMails.length})`}/>
+                <Tab value="tab4" label={`Redeem (${redeemedMails.length})`}/>
             </Tabs>
 
 
@@ -194,7 +199,14 @@ export default function MailPage() {
                         handleResponse={handleResponse}
                         handleDeleteClick={handleOriginalSenderDelete}
                     />
+                </>
+            }
 
+            {tabValue === 'tab4' &&
+                <>
+                    <RedeemNotice
+                        mail={redeemedMails}
+                    />
                 </>
             }
         </>

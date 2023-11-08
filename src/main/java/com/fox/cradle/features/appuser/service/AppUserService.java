@@ -10,6 +10,7 @@ import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
 import com.fox.cradle.features.stampsystem.service.template.TemplateService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -169,5 +170,17 @@ public class AppUserService
     {
         return appUserRepository.findById(senderId)
                 .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MSG + senderId));
+    }
+
+    public AppUserDTO getLatestUser()
+    {
+        Optional<AppUser> mostRecentUserWithPicture = appUserRepository
+                .findTopByPictureIdIsNotNullOrderByIdDesc(PageRequest.of(0, 1))
+                .stream()
+                .findFirst();
+
+        if (mostRecentUserWithPicture.isEmpty()) return null;
+
+        return userMapService.mapAppUserToAddUserDTOWithAddInfo(mostRecentUserWithPicture.get());
     }
 }

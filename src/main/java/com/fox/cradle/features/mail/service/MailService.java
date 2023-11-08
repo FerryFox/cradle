@@ -39,6 +39,7 @@ public class MailService
                 .text(List.of(mailMessage))
                 .isRead(false)
                 .owner(receiver)
+                .redeemedTemplate(newMail.isRedeemedTemplate())
                 .templateId(newMail.getTemplateId())
                 .sender(sender)
                 .build();
@@ -49,7 +50,7 @@ public class MailService
 
     public Integer getMailCount(AppUser appUser)
     {
-        return appUser.getMails().stream().filter(mail -> !mail.isRead()).toList().size();
+        return appUser.getMails().stream().filter(mail -> !mail.isRead() &&!mail.isRedeemedTemplate()).toList().size();
     }
 
     public void markMailAsRead(AppUser appUser, Long mailId)
@@ -118,6 +119,4 @@ public class MailService
 
         return mail.getText();
     }
-
-
 }

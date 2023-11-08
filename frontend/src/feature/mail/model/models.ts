@@ -7,6 +7,7 @@ export type Mail = {
     sender: AppUserDTO;
     receiver: AppUserDTO;
     templateResponse : TemplateModel;
+    redeemedTemplate : boolean;
     read : boolean;
 }
 

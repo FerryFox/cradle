@@ -275,7 +275,7 @@ public class DatabaseInitializer implements CommandLineRunner
                 .stampCardStatus(StampCardStatus.PUBLIC)
                 .appUser(appUserClothes)
                 .build();
-        templateService.createTemplate(rollerTemplate, appUserClothes);
+        Long rollerIDTemaplte = templateService.createTemplate(rollerTemplate, appUserClothes).getId();
 
         String skate = pictureService.loadPictureFromFile("skate");
         NewTemplate skateTemplate = NewTemplate.builder()
@@ -293,10 +293,33 @@ public class DatabaseInitializer implements CommandLineRunner
                 .build();
         templateService.createTemplate(skateTemplate, appUserClothes);
 
+
+        //Create user 5
+        RegisterRequest registerDustin = RegisterRequest.builder()
+                .firstname("Dustin")
+                .email("dustin.rasch@outlook.de")
+                .password(PASSWORD)
+                .receiveNews(true)
+                .build();
+
+        //Event triggers the creation of an appUser
+        authService.register(registerDustin);
+        AppUser appUserDustin = appUserService.findUserByEmail(registerDustin.getEmail()).orElseThrow();
+
+        String dustinpic = pictureService.loadPictureFromFile("dustin");
+        AddInfoDTO dustinInfo = AddInfoDTO.builder()
+                .name("Dustin Rasch")
+                .bio("full stack developer and Ms. chemical scientist searching for a new challenge")
+                .picture(dustinpic)
+                .status("available for new projects")
+                .build();
+
+        appUserService.updateAdditionalInfo(appUserDustin, dustinInfo);
+
         //create some blogentries
         String iceCreamFox = pictureService.loadPictureFromFile("foxbeachblog");
         BlogEntryDTO blogEntryDTO1 = BlogEntryDTO.builder()
-                        .title("Ice Cream Fox on the Beach Now")
+                        .title("At the Beach Now")
                         .content("We are happy to announce that we are on the way to the beach. We are looking forward to your visit!")
                         .pictureBase64(iceCreamFox)
                         .build();
@@ -330,30 +353,37 @@ public class DatabaseInitializer implements CommandLineRunner
                 .build();
         mailService.saveNewMail(newMail, appUserFood, appUserIceCompany);
 
-        Long templateIDVegetables = vegetablesID;
+
         NewMail newMail2 = NewMail.builder()
-                .text("Hello, are you interested in a some fresh Vegetables? I have a stamp card?")
-                .templateId(templateIDVegetables)
+                .text("Come and visit our Theme Park!")
+                .templateId(rollerIDTemaplte)
                 .receiverId(appUserIceCompany.getId())
                 .build();
-        mailService.saveNewMail(newMail2, appUserFood, appUserIceCompany);
+        mailService.saveNewMail(newMail2, appUserClothes, appUserIceCompany);
 
         NewMail newMail3 = NewMail.builder()
-                .text("Pff then get lost! Who needs your stamp card")
+                .text("we meet at the beach")
                 .templateId(null)
                 .receiverId(appUserIceCompany.getId())
                 .build();
-        mailService.saveNewMail(newMail3, appUserFood, appUserIceCompany);
+        mailService.saveNewMail(newMail3, appUserCinema, appUserIceCompany);
+
 
         NewMail newMail4 = NewMail.builder()
-                .text("Hello,how are you ? you have a stamp card?")
-                .templateId(templateIDsushi)
+                .text("Do you like coffee? ")
+                .templateId(1L)
                 .receiverId(appUserIceCompany.getId())
                 .build();
-        mailService.saveNewMail(newMail4, appUserIceCompany, appUserFood);
+        mailService.saveNewMail(newMail4,  appUserIceCompany, appUserFood );
+
+
+
+
+
 
 
         System.out.println("DatabaseInitializer finished...");
+
     }
 
     private List<News> initNewsMongoDb()

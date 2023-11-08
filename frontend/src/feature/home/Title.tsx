@@ -6,7 +6,10 @@ import React from "react";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 
 
-export default function Title(){
+
+export default function Title( )
+{
+
     return(
         <Card elevation={DEFAULT_ELEVATION} sx={{ mt : 1}}>
             <Box

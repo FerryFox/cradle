@@ -17,6 +17,7 @@ public class NewMail
     @Size(min = 1, max = 200)
     private String text;
     private Long templateId;
+    private boolean redeemedTemplate;
 
     @NotBlank
     private Long receiverId;

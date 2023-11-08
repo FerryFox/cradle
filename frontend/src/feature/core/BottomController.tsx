@@ -57,11 +57,11 @@ return (
             <DashboardIcon/>
         </IconButton>
 
-        <IconButton>
+        <IconButton  onClick={() => navigate("/stampcards")}>
             <CardGiftcardIcon/>
         </IconButton>
 
-        <IconButton>
+        <IconButton onClick={() => navigate("/mail")}>
             <MessageIcon/>
         </IconButton>
 

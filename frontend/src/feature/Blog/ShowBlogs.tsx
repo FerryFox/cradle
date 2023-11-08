@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import {BlogDTO} from "./model/BlogDTO";
-import {Button, CardActions, CardHeader, Divider, IconButton, Stack} from "@mui/material";;
+import { CardActions, CardHeader, Divider, IconButton, Stack} from "@mui/material";;
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
@@ -9,7 +9,6 @@ import Avatar from "@mui/material/Avatar";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import {useNavigate} from "react-router-dom";
-import Grid from "@mui/material/Grid";
 import CommentIcon from '@mui/icons-material/Comment';
 
 type ShowBlogsProps = {
@@ -21,6 +20,7 @@ type ShowBlogsProps = {
 export default function ShowBlogs( {blogs} : ShowBlogsProps)
 {
     const navigateTo = useNavigate()
+    const [turnRed, setTurnRed] = useState(false);
 
     const convertedDate = (date: Date) => {
         const dateObj = new Date(date);
@@ -32,10 +32,7 @@ export default function ShowBlogs( {blogs} : ShowBlogsProps)
         return dateTimeDisplay;
     }
 
-
     const date = new Date();
-    const today = date.toLocaleDateString();
-
 
     return(
         <Stack spacing={2}>
@@ -84,10 +81,10 @@ export default function ShowBlogs( {blogs} : ShowBlogsProps)
                            </Typography>
                            <Divider></Divider>
                            <CardActions>
-                               <IconButton size={"small"}>
-                                   <FavoriteIcon/>
+                               <IconButton size={"small"} onClick={() => setTurnRed(true)}>
+                                   <FavoriteIcon sx={{ color: turnRed ? "red" : "inherit" }}/>
                                </IconButton>
-                               <IconButton>
+                               <IconButton onClick={() => navigateTo("/new-mail/?recipientId=" + blog.appUser?.id)}>
                                    <CommentIcon/>
                                </IconButton>
                            </CardActions>

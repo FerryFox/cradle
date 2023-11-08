@@ -20,6 +20,7 @@ export default function Controller({ title, showBackButton = false , showSecondL
     return (
         <div>
             <AppBarComponent
+
                 title={title}
                 toggleDrawer={toggleDrawer}
                 showBackButton={showBackButton}

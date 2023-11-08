@@ -119,6 +119,13 @@ public class TemplateController
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTemplate);
     }
+
+    @GetMapping("/latest-two")
+    public ResponseEntity<List<TemplateResponse>> getLatestTwo()
+    {
+        List<TemplateResponse> response = templateService.getLatestTwo();
+        return ResponseEntity.ok(response);
+    }
 }
 
 

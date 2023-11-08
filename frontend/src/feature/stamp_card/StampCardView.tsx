@@ -9,10 +9,10 @@ import Grid from "@mui/material/Grid";
 import CardMedia from "@mui/material/CardMedia";
 import Card from "@mui/material/Card";
 
+
 interface StampCardViewProps {
     stampCard: StampCardModel;
 }
-
 
 export default function StampCardView( { stampCard }: StampCardViewProps)
 {
@@ -34,7 +34,7 @@ export default function StampCardView( { stampCard }: StampCardViewProps)
     }, [stampCard.templateModel]);
 
 return (
-<Paper elevation={DEFAULT_ELEVATION} sx={{py :2 ,px: 2}}>
+<Paper elevation={DEFAULT_ELEVATION} sx={{py :2 ,px: 2 ,}}>
     <Grid container spacing={2} justifyContent="space-between" alignItems="center">
         <Grid item xs={6} >
             <Typography variant={"h4"} align={"left"}>

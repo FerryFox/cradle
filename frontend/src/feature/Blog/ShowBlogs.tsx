@@ -32,10 +32,8 @@ export default function ShowBlogs( {blogs} : ShowBlogsProps)
         return dateTimeDisplay;
     }
 
-
     const date = new Date();
     const today = date.toLocaleDateString();
-
 
     return(
         <Stack spacing={2}>

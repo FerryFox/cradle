@@ -143,4 +143,13 @@ public class AppUserController
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/latest-user")
+    public ResponseEntity<AppUserDTO> getLatestUser()
+    {
+    	AppUserDTO result = appUserService.getLatestUser();
+
+    	if(result == null) return ResponseEntity.badRequest().build();
+    	else return ResponseEntity.ok(result);
+    }
 }

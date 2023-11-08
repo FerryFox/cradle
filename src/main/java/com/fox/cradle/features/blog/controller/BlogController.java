@@ -41,4 +41,12 @@ public class BlogController
         List<BlogEntryDTO> result = blogService.getLatestBlogEntries();
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/last")
+    public ResponseEntity<List<BlogEntryDTO>> getLastBlogEntry()
+    {
+        BlogEntryDTO result = blogService.getLastBlogEntry();
+        List<BlogEntryDTO> list = List.of(result);
+        return ResponseEntity.ok(list);
+    }
 }

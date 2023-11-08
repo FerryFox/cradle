@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -118,6 +119,17 @@ public class TemplateService
     {
         List<Template> templates = templateRepository.findAll().stream()
                     .filter( template -> template.getStampCardStatus().equals(StampCardStatus.PUBLIC))
+                    .toList();
+
+        return templates.stream().map(mapService::mapTemplateToResponse).toList();
+    }
+
+    public List<TemplateResponse> getLatestTwo()
+    {
+        List<Template> templates = templateRepository.findAll().stream()
+                    .filter( template -> template.getStampCardStatus().equals(StampCardStatus.PUBLIC))
+                    .sorted(Comparator.comparing(Template::getCreatedDate).reversed())
+                    .limit(2) // limit to top 2
                     .toList();
 
         return templates.stream().map(mapService::mapTemplateToResponse).toList();

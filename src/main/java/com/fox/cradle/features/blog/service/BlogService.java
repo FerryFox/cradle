@@ -40,4 +40,11 @@ public class BlogService {
 
         return blogMapping.mapToDTOList(blogEntries);
     }
+
+    public BlogEntryDTO getLastBlogEntry()
+    {
+        BlogEntry blogEntry = blogRepository.findTopByOrderByCreatedDateDesc();
+
+        return blogMapping.mapToDTO(blogEntry);
+    }
 }

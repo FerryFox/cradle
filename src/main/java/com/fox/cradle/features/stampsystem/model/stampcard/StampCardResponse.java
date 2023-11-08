@@ -22,7 +22,6 @@ public class StampCardResponse
 
     private TemplateResponse templateModel;
 
-
     private List<StampFieldResponse> stampFields;
 
     private boolean isCompleted;

@@ -49,7 +49,7 @@ export default function App()
                     <Route path="/friends" element={<FriendsPage/>}/>
                     <Route path="/blog" element={<BlogPage />} />
                     <Route path="/mail" element={<MailPage />} />
-                    <Route path="/new-mail/:templateId?" element={<MailForm />} />
+                    <Route path="/new-mail/:templateId?/:recipientId?" element={<MailForm />} />
 
                     <Route path="/templates" element={<Templates/>} />
                     <Route path="/templates/owned" element={<TemplatesOwned/>} />

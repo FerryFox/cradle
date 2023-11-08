@@ -19,14 +19,21 @@ type ErrorForm = {
     user?: string;
 }
 
+type RouteParams = {
+    templateId?: string;
+    recipientId?: string;
+};
+
 export default function MailForm( ) {
 
     const navigateTo = useNavigate();
-    const {templateId } = useParams<{ templateId: string }>();
+    const { templateId, recipientId } = useParams<RouteParams>();
+
     const [newMail, setNewMail] = useState<NewMail>();
     const [appUsers , setAppUsers] = useState<AppUserDTO[]>([]);
 
     const [recipient, setRecipient] = useState<AppUserDTO>();
+
     const [toggleUser, setToggleUser] = useState<boolean>(true);
 
     const [templates, setTemplates] = useState<TemplateModel[]>([]);
@@ -136,6 +143,17 @@ export default function MailForm( ) {
             }
         }
     }, [templateId, templates]);
+
+    useEffect(() => {
+        if(recipientId)
+        {
+            axios.get<AppUserDTO>(`/api/user/${recipientId}`)
+                .then((response) =>
+                {
+                    setRecipient(response.data);
+                });
+        }
+    }, [recipientId]);
 
 return (
 <>
@@ -271,10 +289,6 @@ return (
             )
         }
     </Paper>
-
-
-
-
 </>
     );
 }

@@ -56,10 +56,12 @@ public class StampCardService
                     .index(i)
                     .stampCard(savedCard)
                     .emptyImageUrl("https://images.nightcafe.studio/jobs/Ku1vjoHEHrx5OGqbtgxL/Ku1vjoHEHrx5OGqbtgxL--1--cyx7c.jpg?tr=w-640,c-at_max")
-                    .stampedImageUrl("https://images.nightcafe.studio/jobs/c2EI3ymfZvoZHuTyjhos/c2EI3ymfZvoZHuTyjhos--1--vylwa.jpg?tr=w-1600,c-at_max")
+                    .stampedImageUrl("https://images.rawpixel.com/image_png_1000/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3JtNTMzLWljb24tMTUyLnBuZw.png")
                     .build();
             fields.add(stampField);
             stampFieldRepository.save(stampField);
+
+            //old :https://images.nightcafe.studio/jobs/c2EI3ymfZvoZHuTyjhos/c2EI3ymfZvoZHuTyjhos--1--vylwa.jpg?tr=w-1600,c-at_max
         }
 
         List<StampFieldResponse> stampFieldResponses = mapService.mapStampFieldsToResponse(fields);

@@ -4,6 +4,10 @@ import {Paper} from "@mui/material";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
 import {StampFieldModel} from "./model/models";
 import React from "react";
+// @ts-ignore
+import paperImage from './Paper.jpg';
+// @ts-ignore
+import redCross from './redcross.svg';
 
 type StampFieldProps = {
     stampFields: StampFieldModel[];
@@ -13,7 +17,11 @@ type StampFieldProps = {
 export default function StampField( {stampFields ,  onStampAttempt} : StampFieldProps )
 {
     return (
-      <Paper elevation={DEFAULT_ELEVATION} sx={{px : 2, py : 2}}>
+      <Paper elevation={DEFAULT_ELEVATION} sx={{px : 2, py : 2 ,
+          backgroundImage: `url(${paperImage})`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',}}>
           <Grid container spacing={2}>
               {stampFields?.map ((stampField) =>
                   (
@@ -21,7 +29,7 @@ export default function StampField( {stampFields ,  onStampAttempt} : StampField
                       {
                           stampField.stamped ? (
                               <Box sx={{
-                                  backgroundImage: `url(${stampField.stampedImageUrl})`,
+                                  backgroundImage: `url(${redCross})`,
                                   backgroundPosition: 'center',
                                   backgroundSize: 'cover',
                                   backgroundRepeat: 'no-repeat',

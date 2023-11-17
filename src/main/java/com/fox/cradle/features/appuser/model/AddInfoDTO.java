@@ -12,7 +12,6 @@ public class AddInfoDTO
     private Long id;
     private String name;
 
-
     @Size(max = 250, message = "Bio must be less than 251 characters")
     private String bio;
 

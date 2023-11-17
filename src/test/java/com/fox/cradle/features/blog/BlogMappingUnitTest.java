@@ -13,14 +13,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
@@ -60,7 +58,7 @@ class BlogMappingUnitTest
         //WHEN
         when(pictureService.getPictureString(blogEntry.getPictureId()))
                 .thenReturn("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolHRgXITEhJSkrLi4uGB8zODMsNygtLisBC");
-        when(userMapService.mapAppUserToAddUserDTOWithAddInfo(blogEntry.getAppUser()))
+        when(userMapService.mapAppUserToAddUserDTOWith_AddInfo(blogEntry.getAppUser()))
                 .thenReturn(userDTO);
 
         BlogEntryDTO blogEntryDTO = blogMapping.mapToDTO(blogEntry);
@@ -219,7 +217,7 @@ class BlogMappingUnitTest
                 .thenReturn("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolHRgXITEhJSkrLi4uGB8zODMsNygtLisBC");
         when(pictureService.getPictureString(blogEntry2.getPictureId()))
                 .thenReturn("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFhUXGBgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolHRgXITEhJSkrLi4uGB8zODMsNygtLisBB");
-        when(userMapService.mapAppUserToAddUserDTOWithAddInfo(blogEntry.getAppUser()))
+        when(userMapService.mapAppUserToAddUserDTOWith_AddInfo(blogEntry.getAppUser()))
                 .thenReturn(AppUserDTO.builder().id(1L).build());
 
         List<BlogEntryDTO> blogEntryDTOS = blogMapping.mapToDTOList(blogEntries);

@@ -28,7 +28,7 @@ public class AppUser
 
     //Relationships
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<StampCard> myStampCards;
+    private List<StampCard> myStampCards = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AppUser> friends = new ArrayList<>();

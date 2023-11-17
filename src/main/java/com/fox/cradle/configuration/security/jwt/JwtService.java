@@ -1,6 +1,6 @@
 package com.fox.cradle.configuration.security.jwt;
 
-import com.fox.cradle.configuration.security.config.MyInvalidTokenException;
+import com.fox.cradle.configuration.security.config.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -35,27 +35,27 @@ public class JwtService implements IJwtService
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String extractUsernameFromRequest(HttpServletRequest request) throws MyInvalidTokenException {
+    public String extractUsernameFromRequest(HttpServletRequest request) throws InvalidTokenException {
         String token = "";
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); // Skip "Bearer "
             if (token.isEmpty()) {
-                throw new MyInvalidTokenException("Bearer token cannot be empty.");
+                throw new InvalidTokenException("Bearer token cannot be empty.");
             }
         } else {
-            throw new MyInvalidTokenException("Authorization header is either missing or doesn't contain a Bearer token.");
+            throw new InvalidTokenException("Authorization header is either missing or doesn't contain a Bearer token.");
         }
 
         try {
             return extractUsername(token);
         } catch (IllegalArgumentException e) {
             // If the token is empty or null, it will be caught here
-            throw new MyInvalidTokenException("JWT String argument cannot be null or empty.");
+            throw new InvalidTokenException("JWT String argument cannot be null or empty.");
         } catch (Exception e) {
             // Catch other exceptions and handle accordingly
-            throw new MyInvalidTokenException("Error extracting username from token: " + e.getMessage());
+            throw new InvalidTokenException("Error extracting username from token: " + e.getMessage());
         }
     }
 
@@ -112,7 +112,7 @@ public class JwtService implements IJwtService
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private Claims extractAllClaims(String token) throws MyInvalidTokenException
+    private Claims extractAllClaims(String token) throws InvalidTokenException
     {
         try
         {
@@ -124,7 +124,7 @@ public class JwtService implements IJwtService
                 .getBody();
         }catch (Exception e)
         {
-            throw new MyInvalidTokenException("Invalid token");
+            throw new InvalidTokenException("Invalid token");
         }
     }
 

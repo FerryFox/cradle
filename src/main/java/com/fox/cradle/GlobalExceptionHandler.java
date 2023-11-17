@@ -1,6 +1,6 @@
 package com.fox.cradle;
 
-import com.fox.cradle.configuration.security.config.MyInvalidTokenException;
+import com.fox.cradle.configuration.security.config.InvalidTokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler
 {
-    @ExceptionHandler(MyInvalidTokenException.class)
-    public ResponseEntity<?> handleInvalidTokenException(MyInvalidTokenException ex)
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<?> handleInvalidTokenException(InvalidTokenException ex)
     {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

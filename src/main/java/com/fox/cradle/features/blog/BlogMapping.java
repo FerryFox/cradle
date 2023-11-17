@@ -27,7 +27,7 @@ public class BlogMapping
 
         AppUser appUserWithAddInfo = blogEntry.getAppUser();
         appUserWithAddInfo.getAdditionalInfo();
-        AppUserDTO appUserDTO = userMapService.mapAppUserToAddUserDTOWithAddInfo(appUserWithAddInfo);
+        AppUserDTO appUserDTO = userMapService.mapAppUserToAddUserDTOWith_AddInfo(appUserWithAddInfo);
 
         return BlogEntryDTO.builder()
                 .id(blogEntry.getId())

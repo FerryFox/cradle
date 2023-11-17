@@ -1,6 +1,6 @@
 package com.fox.cradle.configuration.security.jwt;
 
-import com.fox.cradle.configuration.security.config.MyInvalidTokenException;
+import com.fox.cradle.configuration.security.config.InvalidTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -68,7 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
 
-        } catch (MyInvalidTokenException ex) {
+        } catch (InvalidTokenException ex) {
             // Here you catch your custom exception and set the 401 Unauthorized response
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Invalid token");
             // Log the exception here if you need to

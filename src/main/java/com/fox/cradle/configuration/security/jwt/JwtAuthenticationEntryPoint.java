@@ -1,6 +1,6 @@
 package com.fox.cradle.configuration.security.jwt;
 
-import com.fox.cradle.configuration.security.config.MyInvalidTokenException;
+import com.fox.cradle.configuration.security.config.InvalidTokenException;
 import java.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +12,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        if (authException.getCause() instanceof MyInvalidTokenException) {
+        if (authException.getCause() instanceof InvalidTokenException) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Invalid token");
         } else {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");

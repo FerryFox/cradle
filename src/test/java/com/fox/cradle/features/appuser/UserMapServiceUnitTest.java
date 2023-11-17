@@ -5,10 +5,8 @@ import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.appuser.model.AppUserDTO;
 import com.fox.cradle.features.mail.model.MailDTO;
 import com.fox.cradle.features.mail.model.MailMessage;
-import com.fox.cradle.features.mail.model.MessageDTO;
 import com.fox.cradle.features.mail.service.MailService;
 import com.fox.cradle.features.picture.service.PictureService;
-import com.fox.cradle.features.stampsystem.service.MapService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -138,7 +135,7 @@ class UserMapServiceUnitTest
         //WHEN
 
         when(mailService.getAllUserMails(appUser)).thenReturn(List.of(mails));
-        mapService.mapAppUserToDTOWithAddInfoAndMails(appUser);
+        mapService.mapAppUserToDTOWith_AddInfoAndMails(appUser);
 
         //THEN
         verify(mailService, times(1)).getAllUserMails(appUser);

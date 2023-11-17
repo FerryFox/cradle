@@ -27,6 +27,14 @@ public class AppUserService
 
     static final String USER_NOT_FOUND_MSG = "User not found with id ";
 
+
+    /**
+     * Saves an AppUser entity to the database. This method initializes and sets additional information
+     * for the user before saving. The AdditionalInfo entity is associated with the AppUser entity in a 1 on 1 relation.
+     *
+     * @param appUser The AppUser entity to be saved. It should not be null.
+     * @return The saved AppUser entity, including any updates made during the save process.
+     */
     public AppUser saveAppUser(AppUser appUser)
     {
         //initialize additional info for user
@@ -37,6 +45,11 @@ public class AppUserService
         return appUserRepository.save(appUser);
     }
 
+    /**
+     * Finds an AppUser entity by its id.
+     * @param email
+     * @return Optional containing the AppUser entity if it exists, or an empty Optional if it does not.
+     */
     public Optional<AppUser> findUserByEmail(String email)
     {
         return appUserRepository.findByEmail(email);
@@ -79,13 +92,18 @@ public class AppUserService
         appUserRepository.save(appUser);
     }
 
-    //load fiends user data
-    //with  - additional info
+
+    /**
+     * Returns a list of AppUserDTOs containing the friends of the given AppUser entity.
+     * The AppUserDTOs contain additional information about the friends.
+     * @param appUser
+     * @return
+     */
     public List<AppUserDTO> getFriends(AppUser appUser)
     {
         List<AppUser> friends = appUser.getFriends();
 
-        return userMapService.mapAppUserFriendsToDTOWithAddInfo(friends);
+        return userMapService.mapAppUserFriendsToDTOWith_AddInfo(friends);
     }
 
     //return friend
@@ -94,42 +112,47 @@ public class AppUserService
     // - friends empty
     // - templates null
     // - mails null
+
+    /**
+     * Adds a friend to the given AppUser entity.
+     * @param userId
+     * @param friendId
+     * @return the resulting AppUserDTO of the friend that was added. The friend's friends list, templates and mails will be empty.
+     * */
     public AppUserDTO addFriend(Long userId, Long friendId) {
-        // 1. Fetch both users
         AppUser user = appUserRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MSG+ userId));
 
         AppUser friend = appUserRepository.findById(friendId)
                 .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MSG + friendId));
 
-        // 2. & 3. Update the list and ensure bidirectionality
         if (!user.getFriends().contains(friend))
         {
             user.getFriends().add(friend);
         }
 
-        // 4. Save the updated entities
         appUserRepository.save(user);
 
-        return userMapService.mapAppUserToDTOWithAddInfoAndFriends(friend);
+        return userMapService.mapAppUserToAddUserDTOWith_AddInfo(friend);
     }
 
     public List<AppUserDTO> getUsers()
     {
         List<AppUser> users = appUserRepository.findAll();
-        return userMapService.mapAppUserFriendsToDTOWithAddInfo(users);
+        return userMapService.mapAppUserFriendsToDTOWith_AddInfo(users);
     }
 
-
-    //load user data
-    //      - additional info
-    //      - friends
+    /**
+     * Completes the appUser entity by loading its additional information and friends.
+     * @param appUser
+     * @return AppUserDTO containing the given AppUser entity's additional information and friends.
+     */
     @Transactional
     public AppUserDTO getMeDTO(AppUser appUser)
     {
         appUser.getFriends();
         appUser.getAdditionalInfo();
-        return userMapService.mapAppUserToDTOWithAddInfoAndFriends(appUser);
+        return userMapService.mapAppUserToDTOWith_AddInfo_Friends(appUser);
     }
 
     @Transactional
@@ -142,8 +165,13 @@ public class AppUserService
 
     //Get user data with
     //  -   additional info
-    //  -   templates
     //  -   friends
+
+    /**
+     * Load AppuserDTO containing the AppUser entity with the given id's additional information, friends and templates.
+     * @param id
+     * @return Returns an AppUserDTO containing the AppUser entity with the given id's additional information, friends and templates.
+     */
     @Transactional
     public AppUserDTO getUserDTO(String id)
     {
@@ -152,7 +180,7 @@ public class AppUserService
 
         List<TemplateResponse> templates = templateService.getMyTemplates(user);
 
-        AppUserDTO result = userMapService.mapAppUserToDTOWithAddInfoAndFriends(user);
+        AppUserDTO result = userMapService.mapAppUserToDTOWith_AddInfo_Friends(user);
         result.setTemplates(templates);
         return result;
     }
@@ -163,7 +191,7 @@ public class AppUserService
         AppUser user = appUserRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_MSG + 1L));
 
-        return userMapService.mapAppUserToAddUserDTOWithAddInfo(user);
+        return userMapService.mapAppUserToAddUserDTOWith_AddInfo(user);
     }
 
     public AppUser getUserById(Long senderId)
@@ -181,6 +209,6 @@ public class AppUserService
 
         if (mostRecentUserWithPicture.isEmpty()) return null;
 
-        return userMapService.mapAppUserToAddUserDTOWithAddInfo(mostRecentUserWithPicture.get());
+        return userMapService.mapAppUserToAddUserDTOWith_AddInfo(mostRecentUserWithPicture.get());
     }
 }

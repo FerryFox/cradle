@@ -37,10 +37,10 @@ public class UserMapService
                 .build();
     }
 
-    public AppUserDTO mapAppUserToDTOWithAddInfoAndFriends(AppUser appUser)
+    public AppUserDTO mapAppUserToDTOWith_AddInfo_Friends(AppUser appUser)
     {
         List<AppUserDTO> friends = appUser.getFriends().stream()
-                .map(this::mapAppUserToAddUserDTOWithAddInfo)
+                .map(this::mapAppUserToAddUserDTOWith_AddInfo)
                 .collect(Collectors.toList());
 
         AddInfoDTO info = mapAdditionalInfoToDTO(appUser.getAdditionalInfo());
@@ -55,7 +55,7 @@ public class UserMapService
                 .build();
     }
 
-    public AppUserDTO mapAppUserToAddUserDTOWithAddInfo(AppUser appUser)
+    public AppUserDTO mapAppUserToAddUserDTOWith_AddInfo(AppUser appUser)
     {
         AddInfoDTO info = mapAdditionalInfoToDTO(appUser.getAdditionalInfo());
 
@@ -68,7 +68,7 @@ public class UserMapService
                 .build();
     }
 
-    public AppUserDTO mapAppUserToDTOWithAddInfoAndMails(AppUser appUser)
+    public AppUserDTO mapAppUserToDTOWith_AddInfoAndMails(AppUser appUser)
     {
         AddInfoDTO info = mapAdditionalInfoToDTO(appUser.getAdditionalInfo());
         List<MailDTO> mails = mailService.getAllUserMails(appUser);
@@ -83,10 +83,10 @@ public class UserMapService
                 .build();
     }
 
-    public List<AppUserDTO> mapAppUserFriendsToDTOWithAddInfo(List<AppUser> friends)
+    public List<AppUserDTO> mapAppUserFriendsToDTOWith_AddInfo(List<AppUser> friends)
     {
         return friends.stream()
-                .map(this::mapAppUserToAddUserDTOWithAddInfo)
+                .map(this::mapAppUserToAddUserDTOWith_AddInfo)
                 .collect(Collectors.toList());
     }
 }

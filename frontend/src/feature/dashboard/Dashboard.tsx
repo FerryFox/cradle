@@ -15,9 +15,6 @@ import ShowBlogs from "../Blog/ShowBlogs";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import {DEFAULT_ELEVATION} from "../../globalConfig";
-
-
-
 export default function Dashboard()
 {
     const navigateTo = useNavigate();

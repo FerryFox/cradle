@@ -26,6 +26,7 @@ import FriendsPage from "./feature/user/friend/FriendsPage";
 import BlogPage from "./feature/Blog/BlogPage";
 import MailPage from "./feature/mail/MailPage";
 import MailForm from "./feature/mail/MailForm";
+import DebugPage from "./feature/debug/DebugPage";
 
 export default function App()
 {
@@ -60,6 +61,8 @@ export default function App()
                     <Route path="/stampcards" element={<StampCards/>} />
                     <Route path="/stampcard/details/:id" element={<StampCardDetails/>} />
                     <Route path="/stampcards/archive" element={<Archive/>} />
+
+                    <Route path="/debug" element={<DebugPage />} />
                 </Routes>
             </Router>
     </ThemeProvider>

@@ -14,7 +14,6 @@ import NotFoundPage from './NotFoundPage';
 import ResetPassword from "./feature/user/ResetPassword";
 import Templates from "./feature/template/Templates";
 import TemplatesOwned from "./feature/template/TemplatesOwned";
-import TemplateForm from "./feature/template/TemplateForm";
 import TemplateDetails from "./feature/template/TemplateDetails";
 import TemplateEdit from "./feature/template/TemplateEdit";
 import StampCards from "./feature/stamp_card/StampCards";
@@ -27,6 +26,7 @@ import BlogPage from "./feature/Blog/BlogPage";
 import MailPage from "./feature/mail/MailPage";
 import MailForm from "./feature/mail/MailForm";
 import DebugPage from "./feature/debug/DebugPage";
+import TemplateFormSequence from "./feature/template/templateform/TemplateFormSequence";
 
 export default function App()
 {
@@ -55,7 +55,7 @@ export default function App()
                     <Route path="/templates" element={<Templates/>} />
                     <Route path="/templates/owned" element={<TemplatesOwned/>} />
                     <Route path="/template/edit" element={<TemplateEdit/>} />
-                    <Route path="/template/form" element={<TemplateForm/>} />
+                    <Route path="/template/form" element={<TemplateFormSequence/>} />
                     <Route path="/template/details" element={<TemplateDetails/>} />
 
                     <Route path="/stampcards" element={<StampCards/>} />

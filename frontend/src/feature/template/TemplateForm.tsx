@@ -231,7 +231,6 @@ return (
                        error={!!formErrors.name}
                        helperText={formErrors.name}/>
 
-
             <TextField margin="normal" required fullWidth sx={{ marginBottom: 2 }}
                        name="promise"
                        label="promise"
@@ -269,7 +268,6 @@ return (
                 Security & Category
             </Typography>
             <Divider color={"primary"} sx={{ marginBottom: 2 }}/>
-
 
             <DatePicker
                 label="Expiration Date"

@@ -90,7 +90,7 @@ export default function BasicInformationForm( {oldBasicInformation, onBasicInfor
 return (
 <>
     <Box className={isShaking ? 'shake' : ''} component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2}}>
-        <Typography variant={"h5"} align="left">
+        <Typography variant={"h6"} align="center">
             Enter Basic Information
         </Typography>
 
@@ -159,7 +159,7 @@ return (
 
         <Grid container>
             <Grid item xs={6} >
-                <Button variant={"contained"} color={"secondary"} onClick={() => navigateTo(-1)} >
+                <Button variant={"text"} color={"secondary"} onClick={() => navigateTo(-1)} >
                     Stop Creating
                 </Button>
             </Grid>

@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import {BasicInformation} from "./models";
 import ImageFrom from "./ImageForm";
 import SecurityForm from "./SecurityForm";
+import TemplatePreview from "./TemplatePreview";
 
 export default function TemplateFormSequence()
 {
@@ -27,6 +28,8 @@ export default function TemplateFormSequence()
         stampCardCategory: '',
     });
 
+    const [imageBase64, setImageBase64] = useState<string>('');
+
     const [activeStep, setActiveStep] = useState(0); // Step state
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -37,8 +40,8 @@ export default function TemplateFormSequence()
         handleNext();
     }
 
-    const handleImageChange = () => {
-        handleNext();
+    const handleImageChange = (newImage : string) => {
+        setImageBase64(newImage);
     }
 
     const handleSecurityChange = () => {
@@ -47,7 +50,7 @@ export default function TemplateFormSequence()
 
     const steps = [
         'Basic Information',
-        'Style your card',
+        'Add an Image',
         'Set Security',
         'Look Preview',
     ];
@@ -79,11 +82,16 @@ return (
             {activeStep === 0 && (<BasicInformationForm oldBasicInformation={newBasicInformation}
                                                         onBasicInformationChange={handleBasicInformationChange} />)}
 
-            {activeStep === 1 && (<ImageFrom onImageChange={handleImageChange} stepBack={stepBack}/>)}
+            {activeStep === 1 && (<ImageFrom onImageChange={handleImageChange}
+                                             stepBack={stepBack}
+                                             handleNext={handleNext}
+                                             oldImage={imageBase64}/>)}
 
-            {activeStep === 2 && (<SecurityForm />)}
-            {activeStep === 3 && (<Typography>Step 4</Typography>)}
+            {activeStep === 2 && (<SecurityForm stepBack={stepBack}
+                                                handleNext={handleNext}/>)}
 
+            {activeStep === 3 && (<TemplatePreview stepBack={stepBack}
+                                                   handleSubmit={() => console.log("submit")}/>)}
     </Container>
 </>
 );

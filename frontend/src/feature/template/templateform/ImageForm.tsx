@@ -14,12 +14,11 @@ type Props = {
 };
 
 export default function ImageForm({ onImageChange, stepBack, oldImage, handleNext }: Props) {
-    const [crop, setCrop] = useState<Crop>({ height: 70, unit: '%', x: 15, y: 10, width: 70 });
+    const [crop, setCrop] = useState<Crop>({ height: 50, unit: '%', x: 15, y: 10, width: 50 });
     const [imageSrc, setImageSrc] = useState<string>(oldImage);
     const [originalImageSrc, setOriginalImageSrc] = useState<string>('');
     const imageRef = useRef<HTMLImageElement>(null);
 
-    const [isRectangle, setIsRectangle] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
     const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +98,10 @@ export default function ImageForm({ onImageChange, stepBack, oldImage, handleNex
             {
                 setError("");
                 setImageSrc(base64Image);
+                const NewTemplateImage = {
+                    image: base64Image,
+                    fileName: ""
+                }
                 onImageChange(base64Image);
             } else
             {

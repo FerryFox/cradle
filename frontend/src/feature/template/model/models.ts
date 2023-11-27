@@ -23,24 +23,28 @@ export type TemplateModel = {
     expirationDate : Date;
 };
 
-export type NewTemplate = {
+export type NewTemplateComposer = {
+
+    newBasicInformation : NewBasicInformation;
+    newTemplateImage : NewTemplateImage;
+    newTemplateSecurity : NewTemplateSecurity;
+}
+
+export type NewBasicInformation = {
     name : string;
     promise : string;
     description : string;
     defaultCount : number;
-
     stampCardCategory : string;
-    stampCardSecurity : string;
-    stampCardStatus : string;
-
-    image : string;
-    fileName : string;
-
-    expirationDate : Date;
-
-    securityTimeGate : SecurityTimeGate;
 }
 
-export type SecurityTimeGate = {
-    timeGateNumber : number;
+export type NewTemplateImage = {
+    image : string;
+}
+
+export type NewTemplateSecurity = {
+    expirationDate : Date;
+    securityTimeGateDurationInHour : number;
+    stampCardSecurity : string;
+    stampCardStatus : string;
 }

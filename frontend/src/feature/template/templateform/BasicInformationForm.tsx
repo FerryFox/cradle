@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography";
 import {Box, Button, Divider, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
-import {BasicInformation} from "./models";
 import {useNavigate} from "react-router-dom";
+import {NewBasicInformation} from "../model/models";
 
 type FromErrorBasic = {
     name?: string;
@@ -16,8 +16,8 @@ type FromErrorBasic = {
 }
 
 type Pops = {
-    oldBasicInformation : BasicInformation;
-    onBasicInformationChange: (basicInformation: BasicInformation) => void;
+    oldBasicInformation : NewBasicInformation;
+    onBasicInformationChange: (basicInformation: NewBasicInformation) => void;
 }
 
 export default function BasicInformationForm( {oldBasicInformation, onBasicInformationChange} : Readonly<Pops>)
@@ -27,7 +27,7 @@ export default function BasicInformationForm( {oldBasicInformation, onBasicInfor
 
     const [formErrors, setFormErrors] = useState<FromErrorBasic>({});
     const [basicInformation, setBasicInformation] =
-        useState<BasicInformation>(oldBasicInformation);
+        useState<NewBasicInformation>(oldBasicInformation);
 
     const [Category, setCategory] = useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState(oldBasicInformation.stampCardCategory || '');
@@ -102,7 +102,7 @@ return (
                    autoFocus
                    value={basicInformation.name}
                    onChange ={e  =>
-                       setBasicInformation((basicInformation: BasicInformation) =>({...basicInformation, name : e.target.value}))}
+                       setBasicInformation((basicInformation: NewBasicInformation) =>({...basicInformation, name : e.target.value}))}
                    error={!!formErrors.name}
                    helperText={formErrors.name}/>
 
@@ -112,7 +112,7 @@ return (
                    id="promise"
                    value={basicInformation.promise}
                    onChange ={e  =>
-                       setBasicInformation((basicInformation : BasicInformation) =>({...basicInformation, promise : e.target.value}))}
+                       setBasicInformation((basicInformation : NewBasicInformation) =>({...basicInformation, promise : e.target.value}))}
                    error={!!formErrors.promise}
                    helperText={formErrors.promise}/>
 
@@ -122,7 +122,7 @@ return (
                    id="description"
                    value={basicInformation.description}
                    onChange ={e  =>
-                       setBasicInformation((basicInformation : BasicInformation) =>({...basicInformation, description : e.target.value}))}
+                       setBasicInformation((basicInformation : NewBasicInformation) =>({...basicInformation, description : e.target.value}))}
                    error={!!formErrors.description}
                    helperText={formErrors.description}/>
 
@@ -132,7 +132,7 @@ return (
                    type="number"
                    value={basicInformation.defaultCount}
                    onChange={e =>
-                       setBasicInformation( (basicInformation : BasicInformation) => ({
+                       setBasicInformation( (basicInformation : NewBasicInformation) => ({
                            ...basicInformation,
                            defaultCount: parseInt(e.target.value, 10)
                        }))}
@@ -140,7 +140,9 @@ return (
                    helperText={formErrors.defaultCount}/>
 
         <FormControl fullWidth error={!!formErrors.stampCardCategory}>
-            <InputLabel id="category-wheel-lable-id">Category</InputLabel>
+            <InputLabel id="category-wheel-lable-id">
+                Category
+            </InputLabel>
             <Select
                 labelId="category-wheel-lable-id"
                 id="category-wheel-id"

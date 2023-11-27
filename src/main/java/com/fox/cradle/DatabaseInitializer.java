@@ -115,7 +115,7 @@ public class DatabaseInitializer implements CommandLineRunner
                 .defaultCount(5)
                 .expirationDate(EXP)
                 .stampCardCategory(StampCardCategory.DRINK)
-                .stampCardSecurity(StampCardSecurity.TIMEGATE)
+                .stampCardSecurity(StampCardSecurity.SPECIAL)
                 .stampCardStatus(StampCardStatus.PUBLIC)
                 .securityTimeGate( NewSecurityTimeGate.builder()
                         .timeGateNumber(1)

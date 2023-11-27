@@ -4,13 +4,8 @@ import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.picture.model.Picture;
 import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardCategory;
-import com.fox.cradle.features.stampsystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardStatus;
-import com.fox.cradle.features.stampsystem.model.stamp.TimeGateSecurity;
-import com.fox.cradle.features.stampsystem.model.template.NewTemplate;
-import com.fox.cradle.features.stampsystem.model.template.Template;
-import com.fox.cradle.features.stampsystem.model.template.TemplateEdit;
-import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
+import com.fox.cradle.features.stampsystem.model.template.*;
 import com.fox.cradle.features.stampsystem.service.MapService;
 import com.fox.cradle.features.stampsystem.service.stamp.StampService;
 import jakarta.transaction.Transactional;
@@ -56,23 +51,23 @@ public class TemplateService
 
     public TemplateResponse createTemplate(NewTemplate request, AppUser appUser)
     {
-        //picture Saving, request image is a string here and will be saved in mongo db by the picture service
-        //the picture id will be saved in the template
         String pictureId = pictureService.savePicture(request.getImage() , request.getFileName()).getId();
 
         Template createdTemplate = mapService.mapNewToTemplate(request, appUser, pictureId);
         createdTemplate.setCreatedDate(Instant.now());
 
+        Template savedTemplate = templateRepository.save(createdTemplate);
+        return mapService.mapTemplateToResponse(savedTemplate);
+    }
 
+    public TemplateResponse createTemplate(NewTemplateComposer request, AppUser appUser)
+    {
+        String pictureId = pictureService.savePicture(request.getNewTemplateImage().getImage() , "image").getId();
 
-
-        if(createdTemplate.getStampCardSecurity().equals(StampCardSecurity.TIMEGATE))
-        {
-        TimeGateSecurity timeGateSecurity = stampService.createTimeGate(request, createdTemplate);
-        createdTemplate.setTimeGateSecurity(timeGateSecurity);
-        }
+        Template createdTemplate = mapService.mapNewTemplateComposerToTemplate(request, appUser, pictureId);
 
         Template savedTemplate = templateRepository.save(createdTemplate);
+
         return mapService.mapTemplateToResponse(savedTemplate);
     }
 
@@ -91,7 +86,6 @@ public class TemplateService
     {
         Template template = templateRepository.findById(Long.parseLong(request.getId())).orElseThrow(
                 () -> new RuntimeException(ERROR));
-
 
         String oldString64 = pictureService.getPictureString(template.getImage());
         String newString64 = pictureService.removePrefixFrom64(request.getImage());

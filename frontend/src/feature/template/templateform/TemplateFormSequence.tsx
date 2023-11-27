@@ -1,52 +1,118 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {NewTemplate} from "../model/models";
+import {NewBasicInformation, NewTemplateComposer, NewTemplateImage, NewTemplateSecurity} from "../model/models";
 import BasicInformationForm from "./BasicInformationForm";
 import Controller from "../../core/Controller";
 import Container from "@mui/material/Container";
 import {Divider, Step, StepLabel, Stepper, Toolbar} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {BasicInformation} from "./models";
 import ImageFrom from "./ImageForm";
-import SecurityForm from "./SecurityForm";
+import TemplateSecurityForm from "./TemplateSecurityForm";
 import TemplatePreview from "./TemplatePreview";
+import {resizeBase64AndCropImage} from "../../../assets/picture/resizeAndCropImage";
+
 
 export default function TemplateFormSequence()
 {
     const token = localStorage.getItem("authToken");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
     const navigate = useNavigate();
 
-    const [newTemplate, setNewTemplate] = useState<NewTemplate>({} as NewTemplate);
-    const [newBasicInformation, setNewBasicInformation] = useState<BasicInformation>({
-        name: '', // Initialize all fields
-        promise: '',
-        description: '',
-        defaultCount: 0,
-        stampCardCategory: '',
-    });
-
-    const [imageBase64, setImageBase64] = useState<string>('');
-
     const [activeStep, setActiveStep] = useState(0); // Step state
+
+    const [newTemplate, setNewTemplate] = useState<NewTemplateComposer>({
+        newBasicInformation: {
+            name: '',
+            promise: '',
+            description: '',
+            defaultCount: 0,
+            stampCardCategory: '',
+        },
+
+        newTemplateImage: {
+            image: '',
+        },
+
+        newTemplateSecurity: {
+            expirationDate: new Date(),
+            securityTimeGateDurationInHour : 0,
+            stampCardSecurity : "TRUSTUSER",
+            stampCardStatus : "PUBLIC",
+        },
+    });
+    useEffect(() => {
+        console.log(newTemplate);
+    }, [newTemplate]);
+
+
+    const handleBasicInformationChange = (updatedBasicInformation: NewBasicInformation)  =>{
+        setNewTemplate(currentTemplate => ({
+            ...currentTemplate,
+            newBasicInformation: updatedBasicInformation
+        }));
+        handleNext();
+    }
+
+    const handleImageChange = (newImage : string) =>
+    {
+        const changedImage: NewTemplateImage = {
+            image: newImage
+        }
+
+        setNewTemplate(currentTemplate => ({
+            ...currentTemplate,
+            newTemplateImage: changedImage }))
+    }
+
+    const handleNewTemplateSecurity = (newTemplateSecurity : NewTemplateSecurity) => {
+
+        setNewTemplate(currentTemplate => ({
+            ...currentTemplate,
+            newTemplateSecurity: newTemplateSecurity
+        }));
+    }
+
+    const stepBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
-    const handleBasicInformationChange = (updatedBasicInformation: BasicInformation)  =>{
-        setNewBasicInformation(updatedBasicInformation);
-        handleNext();
-    }
+    const handleSubmit = async () => {
+        const token = localStorage.getItem('authToken');
 
-    const handleImageChange = (newImage : string) => {
-        setImageBase64(newImage);
-    }
+        try {
+            const resizedImageUrl = await resizeBase64AndCropImage(newTemplate.newTemplateImage.image, 300,300 );
+            console.log(resizedImageUrl)
 
-    const handleSecurityChange = () => {
-        handleNext();
-    }
+            const newTemplateImage: NewTemplateImage = {
+                image: resizedImageUrl,
+            };
+
+            console.log(newTemplateImage.image)
+
+            setNewTemplate(currentTemplate => ({
+                ...currentTemplate,
+                newTemplateImage: newTemplateImage
+            }));
+
+            const response = await axios.post('/api/templates/new-template', newTemplate, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.status === 201) { // Created
+                navigate('/templates/owned');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const steps = [
         'Basic Information',
@@ -55,17 +121,12 @@ export default function TemplateFormSequence()
         'Look Preview',
     ];
 
-    const stepBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    }
-
 return (
 <>
     <Controller title={"Create a new Template"}/>
     <Toolbar/>
     <Toolbar/>
         <Container>
-
             <Stepper activeStep={activeStep} alternativeLabel>
                 {steps.map((label) => (
                     <Step key={label}>
@@ -79,19 +140,20 @@ return (
             </Stepper>
             <Divider color={"primary"} sx={{ mt: 2 }}/>
 
-            {activeStep === 0 && (<BasicInformationForm oldBasicInformation={newBasicInformation}
+            {activeStep === 0 && (<BasicInformationForm oldBasicInformation={newTemplate.newBasicInformation}
                                                         onBasicInformationChange={handleBasicInformationChange} />)}
 
             {activeStep === 1 && (<ImageFrom onImageChange={handleImageChange}
                                              stepBack={stepBack}
                                              handleNext={handleNext}
-                                             oldImage={imageBase64}/>)}
+                                             oldImage={newTemplate.newTemplateImage.image}/>)}
 
-            {activeStep === 2 && (<SecurityForm stepBack={stepBack}
-                                                handleNext={handleNext}/>)}
+            {activeStep === 2 && (<TemplateSecurityForm stepBack={stepBack}
+                                                        handleNext={handleNext}
+                                                        onSecuritySubmit={handleNewTemplateSecurity}/>)}
 
             {activeStep === 3 && (<TemplatePreview stepBack={stepBack}
-                                                   handleSubmit={() => console.log("submit")}/>)}
+                                                   handleSubmit={handleSubmit}/>)}
     </Container>
 </>
 );

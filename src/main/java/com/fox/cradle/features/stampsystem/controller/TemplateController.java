@@ -6,7 +6,7 @@ import com.fox.cradle.features.appuser.service.AppUserService;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardCategory;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardStatus;
-import com.fox.cradle.features.stampsystem.model.template.NewTemplate;
+import com.fox.cradle.features.stampsystem.model.template.NewTemplateComposer;
 import com.fox.cradle.features.stampsystem.model.template.TemplateEdit;
 import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
 import com.fox.cradle.features.stampsystem.service.template.TemplateService;
@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.time.Instant;
 import java.util.List;
@@ -104,9 +103,9 @@ public class TemplateController
     }
 
     @PostMapping("/new-template")
-    public ResponseEntity<TemplateResponse> createTemplate(@RequestBody NewTemplate request, HttpServletRequest httpServletRequest)
+    public ResponseEntity<Void> createTemplate(@RequestBody NewTemplateComposer request, HttpServletRequest httpServletRequest)
     {
-        Instant givenDate = Instant.parse(request.getExpirationDate());
+        Instant givenDate = Instant.parse(request.getNewTemplateSecurity().getExpirationDate());
         Instant now = Instant.now();
         if (givenDate.isBefore(now)) return ResponseEntity.badRequest().build();
 
@@ -115,9 +114,9 @@ public class TemplateController
 
         if (appUse.isEmpty()) return ResponseEntity.badRequest().build();
 
-        TemplateResponse savedTemplate = templateService.createTemplate(request, appUse.get());
+        templateService.createTemplate(request, appUse.get());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedTemplate);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/latest-two")

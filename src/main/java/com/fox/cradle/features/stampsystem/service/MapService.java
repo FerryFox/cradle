@@ -6,6 +6,7 @@ import com.fox.cradle.features.stampsystem.model.stamp.StampField;
 import com.fox.cradle.features.stampsystem.model.stamp.StampFieldResponse;
 import com.fox.cradle.features.stampsystem.model.stampcard.StampCard;
 import com.fox.cradle.features.stampsystem.model.stampcard.StampCardResponse;
+import com.fox.cradle.features.stampsystem.model.template.NewTemplateComposer;
 import com.fox.cradle.features.stampsystem.model.template.Template;
 import com.fox.cradle.features.stampsystem.model.template.NewTemplate;
 import com.fox.cradle.features.stampsystem.model.template.TemplateResponse;
@@ -21,6 +22,33 @@ import java.util.List;
 public class MapService
 {
     private final PictureService pictureService;
+
+    @Transactional
+    public Template mapNewTemplateComposerToTemplate(NewTemplateComposer request, AppUser appUser, String pictureId)
+    {
+        String uniqueUserName =
+                appUser.getAppUserName() +
+                        "#" +
+                        appUser.getNameIdentifier();
+
+        Instant instant = Instant.now();
+
+        return Template.builder()
+                .name(request.getNewBasicInformation().getName())
+                .promise(request.getNewBasicInformation().getPromise())
+                .description(request.getNewBasicInformation().getDescription())
+                .image(pictureId)
+                .defaultCount(request.getNewBasicInformation().getDefaultCount())
+                .createdBy(uniqueUserName)
+                .appUser(appUser)
+                .createdDate(instant)
+                .expirationDate(request.getNewTemplateSecurity().getExpirationDate())
+                .stampCardCategory(request.getNewBasicInformation().getStampCardCategory())
+                .stampCardSecurity(request.getNewTemplateSecurity().getStampCardSecurity())
+                .stampCardStatus(request.getNewTemplateSecurity().getStampCardStatus())
+                .lastModifiedDate(instant)
+                .build();
+    }
 
     public Template mapNewToTemplate(NewTemplate dto, AppUser appUser, String pictureId)
     {

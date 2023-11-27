@@ -50,8 +50,7 @@ public class StampService
                 .getStampCardSecurity())
         {
             case TRUSTUSER -> trustUser(stampCard, stampField);
-            case TIMEGATE -> timeGate(stampCard, stampField);
-            case LOCATIONGATE -> locationGate(stampCard, stampField);
+            case SPECIAL -> timeGate(stampCard, stampField);
             default -> throw new IllegalStateException("Unexpected value: " + stampCard.getTemplate().getStampCardSecurity());
         };
     }

@@ -88,7 +88,7 @@ export default function TemplateFormSequence()
         const token = localStorage.getItem('authToken');
 
         try {
-            const resizedImageUrl = await resizeBase64AndCropImage(newTemplate.newTemplateImage.image, 300,300 );
+            const resizedImageUrl = await resizeBase64AndCropImage(newTemplate.newTemplateImage.image, 600,300 );
             console.log(resizedImageUrl)
 
             const newTemplateImage: NewTemplateImage = {

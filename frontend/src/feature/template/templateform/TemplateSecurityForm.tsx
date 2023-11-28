@@ -1,6 +1,17 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import Grid from "@mui/material/Grid";
-import {Button, Divider, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent, Switch} from "@mui/material";
+import {
+    Button,
+    Divider,
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    Stack,
+    Switch
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
@@ -100,15 +111,16 @@ export default function TemplateSecurityForm({stepBack, handleNext, onSecuritySu
         <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Box className={isShaking ? 'shake' : ''} component="form" onSubmit={handleNext} noValidate sx={{mt: 2}}>
 
+        <Stack spacing={2}>
             <FormControl fullWidth error={!!formErrors.security}>
                 <InputLabel id="security-wheel-lable-id">
-                    Choose a base for your Security Option
+                    Choose a base for Your Security Option
                 </InputLabel>
                 <Select
-                    variant={"standard"}
                     labelId="security-wheel-lable-id"
                     id="security-wheel-id"
                     value={selectedSecurity}
+                    label="Choose a base for Your Security Option"
                     onChange={(event: SelectChangeEvent) => setSelectedSecurity(event.target.value)}>
 
                     {security.map((security) => (
@@ -120,13 +132,13 @@ export default function TemplateSecurityForm({stepBack, handleNext, onSecuritySu
 
             <FormControl fullWidth error={!!formErrors.security}>
                 <InputLabel id="security-wheel-lable-id">
-                    Set public status of your stamp card
+                    Set a public status of your Stamp Card
                 </InputLabel>
                 <Select
-                    variant={"standard"}
                     labelId="security-wheel-lable-id"
                     id="security-wheel-id"
                     value={selectedStatus}
+                    label="Set a public status of your Stamp Card"
                     onChange={(event: SelectChangeEvent) => setSelectedStatus(event.target.value)}>
 
                     {status.map((status) => (
@@ -135,8 +147,7 @@ export default function TemplateSecurityForm({stepBack, handleNext, onSecuritySu
                 </Select>
                 <FormHelperText>{formErrors.security}</FormHelperText>
             </FormControl>
-
-
+        </Stack>
 
             <DatePicker
                 label="Expiration Date"

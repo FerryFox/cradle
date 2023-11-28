@@ -31,11 +31,11 @@ export default function Template({ templateModel, getButton }: TemplateProps)
     }, [templateModel]);
 
     return (
-        <Card onClick={() => setIsFront(!isFront)} elevation={DEFAULT_ELEVATION} sx={{
-            borderRadius: 3,
+        <Card onClick={() => setIsFront(!isFront)} elevation={DEFAULT_ELEVATION*2} sx={{
+            borderRadius: 5,
             position: 'relative',
-            minWidth:"50%",
-            height: '34vh',}}>
+            width: '100%',
+            height: '33vh',}}>
 
             <CardMedia
                 sx={{ height: "17vh" }}
@@ -48,7 +48,7 @@ export default function Template({ templateModel, getButton }: TemplateProps)
                       flexDirection: 'column',
                       height: '100%',
                       fontWeight: 'bold' }}>
-                <Typography variant="h5" align="left" >
+                <Typography variant="h6" align="left" >
                     {templateModel.name}
                 </Typography>
 
@@ -83,7 +83,7 @@ export default function Template({ templateModel, getButton }: TemplateProps)
                         flexDirection: 'column',
                         height: '100%',
                         fontWeight: 'bold' }}>
-                    <Typography variant="h5" align="left" >
+                    <Typography variant="h6" align="left" >
                         {templateModel.name}
                     </Typography>
 

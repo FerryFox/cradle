@@ -141,13 +141,13 @@ return (
 
         <FormControl fullWidth error={!!formErrors.stampCardCategory}>
             <InputLabel id="category-wheel-lable-id">
-                Category
+                Choose a category for your stamp card
             </InputLabel>
             <Select
                 labelId="category-wheel-lable-id"
                 id="category-wheel-id"
                 value={selectedCategory}
-                label="Category"
+                label="Choose a category for your stamp card"
                 onChange={(event: SelectChangeEvent) => setSelectedCategory(event.target.value)}>
 
                 {Category.map((category, index) => (

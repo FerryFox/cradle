@@ -5,6 +5,7 @@ import {NewTemplateComposer, TemplateModel} from "../model/models";
 import {AppUserDTO} from "../../user/model/models";
 import axios from "axios";
 import Template from "../Template";
+import Grid from "@mui/material/Grid";
 
 type Props = {
     stepBack: () => void;
@@ -56,24 +57,33 @@ export default function TemplatePreview( {stepBack, handleSubmit, newTemplateMod
             })
     }, []);
 
-
     return (
         <div>
 
-            <Typography variant={"h6"}>
+            <Typography color={"secondary"} variant={"h5"} sx={{my : 2}}>
                 Template Preview
             </Typography>
 
-            {template && (<Template templateModel={template} />)}
+            <Grid container>
+                <Grid item xs={12} sx={{mx : 1}}>
+                    {template && (<Template templateModel={template} />)}
+                </Grid>
+            </Grid>
 
+            <Divider color={"primary"} sx={{ mb : 2, mt :3 }}/>
 
-            <Divider color={"primary"} sx={{ my : 2 }}/>
-            <Button variant={"text"} onClick={stepBack}>
-                Back
-            </Button>
-            <Button variant={"text"} onClick={handleSubmit}>
-                Submit
-            </Button>
+            <Grid container>
+                <Grid item xs={6}>
+                    <Button variant={"contained"} onClick={stepBack}>
+                        Back
+                    </Button>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button variant={"contained"} onClick={handleSubmit}>
+                        Submit
+                    </Button>
+                </Grid>
+            </Grid>
         </div>
     );
 }

@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function ImageForm({ onImageChange, stepBack, oldImage, handleNext }: Props) {
-    const [crop, setCrop] = useState<Crop>({ height: 50, unit: '%', x: 15, y: 10, width: 50 });
+    const [crop, setCrop] = useState<Crop>({ height: 50, unit: '%', x: 15, y: 10, width: 100 });
     const [imageSrc, setImageSrc] = useState<string>(oldImage);
     const [originalImageSrc, setOriginalImageSrc] = useState<string>('');
     const imageRef = useRef<HTMLImageElement>(null);
@@ -53,12 +53,11 @@ export default function ImageForm({ onImageChange, stepBack, oldImage, handleNex
     }
 
     const handleCropChange = (newCrop: Crop) => {
-        setCrop({ ...newCrop, height: newCrop.width });
+        setCrop({ ...newCrop, height: newCrop.width /2 });
     };
 
     const handleCropButton = () => {
         // so this imageSrc is the image as string.
-        console.log("Crop width : " + crop.width + " + Crop height : " +  crop.height + " at position x : " + crop.x + "and y : " + crop.y);
 
         //I need the image from the <ReactCrop> tag
         if (!imageRef.current || !crop.width || !crop.height) {
@@ -66,8 +65,6 @@ export default function ImageForm({ onImageChange, stepBack, oldImage, handleNex
             handleShake()
             return Promise.reject('Crop size not set');
         }
-
-        console.log("original : "  +  imageRef.current.naturalWidth + "/" + imageRef.current.naturalHeight);
 
         const canvas = document.createElement('canvas');
         const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
@@ -105,7 +102,7 @@ export default function ImageForm({ onImageChange, stepBack, oldImage, handleNex
                 onImageChange(base64Image);
             } else
             {
-                setError("Image should be a square");
+                setError("Image should be a reactangle, with a 2:1 ratio");
             }
         });
     };
@@ -117,7 +114,7 @@ export default function ImageForm({ onImageChange, stepBack, oldImage, handleNex
             if (isApproxSquare) {
                 handleNext();
             } else {
-                setError("Image should be a square");
+                setError("Image should be a reactangle, with a 2:1 ratio");
                 handleShake();
             }
         }).catch((error) => {
@@ -127,11 +124,11 @@ export default function ImageForm({ onImageChange, stepBack, oldImage, handleNex
         });
     }
 
-    function checkIfImageIsApproximatelySquare(dataUrl : string, tolerance = 0.1) {
+    function checkIfImageIsApproximatelySquare(dataUrl : string, tolerance = 0.2) {
         return new Promise((resolve, reject) => {
             const image = new Image();
             image.onload = () => {
-                const aspectRatio = image.width / image.height;
+                const aspectRatio = image.width / (image.height *2);
                 const isApproxSquare = Math.abs(aspectRatio - 1) <= tolerance;
                 resolve(isApproxSquare);
             };
@@ -193,7 +190,6 @@ export default function ImageForm({ onImageChange, stepBack, oldImage, handleNex
                                     revert to original
                                 </Button>
                             )}
-
                     </Stack>
                     </Box>
                 )}

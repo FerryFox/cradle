@@ -21,6 +21,9 @@ export default function TemplateFormSequence()
 
     const [activeStep, setActiveStep] = useState(0); // Step state
 
+    const currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() + 1);
+
     const [newTemplate, setNewTemplate] = useState<NewTemplateComposer>({
         newBasicInformation: {
             name: '',
@@ -35,7 +38,7 @@ export default function TemplateFormSequence()
         },
 
         newTemplateSecurity: {
-            expirationDate: new Date(),
+            expirationDate: currentDate,
             securityTimeGateDurationInHour : 0,
             stampCardSecurity : "TRUSTUSER",
             stampCardStatus : "PUBLIC",
@@ -150,10 +153,12 @@ return (
 
             {activeStep === 2 && (<TemplateSecurityForm stepBack={stepBack}
                                                         handleNext={handleNext}
-                                                        onSecuritySubmit={handleNewTemplateSecurity}/>)}
+                                                        onSecuritySubmit={handleNewTemplateSecurity}
+                                                        newTemplateSecurity={newTemplate.newTemplateSecurity}/>)}
 
             {activeStep === 3 && (<TemplatePreview stepBack={stepBack}
-                                                   handleSubmit={handleSubmit}/>)}
+                                                   handleSubmit={handleSubmit}
+                                                   newTemplateModel={newTemplate}/>)}
     </Container>
 </>
 );

@@ -60,7 +60,6 @@ export function resizeAndCropImage(
     });
 }
 
-
 export function resizeBase64AndCropImage(
     base64Image: string,
     maxWidth: number = 300,

@@ -17,7 +17,7 @@ import java.time.Duration;
 @NoArgsConstructor
 @Builder
 @Data
-public class TimeGateSecurity
+public class StampInternalSecurity
 {
     @Id
     @GeneratedValue
@@ -25,6 +25,6 @@ public class TimeGateSecurity
 
     private Duration timeGateDuration;
 
-    @OneToOne(mappedBy = "timeGateSecurity")
+    @OneToOne(mappedBy = "stampInternalSecurity")
     private Template template;
 }

@@ -4,7 +4,9 @@ import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.picture.model.Picture;
 import com.fox.cradle.features.picture.service.PictureService;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardCategory;
+import com.fox.cradle.features.stampsystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardStatus;
+import com.fox.cradle.features.stampsystem.model.stamp.StampInternalSecurity;
 import com.fox.cradle.features.stampsystem.model.template.*;
 import com.fox.cradle.features.stampsystem.service.MapService;
 import com.fox.cradle.features.stampsystem.service.stamp.StampService;
@@ -12,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
@@ -65,6 +68,15 @@ public class TemplateService
         String pictureId = pictureService.savePicture(request.getNewTemplateImage().getImage() , "image").getId();
 
         Template createdTemplate = mapService.mapNewTemplateComposerToTemplate(request, appUser, pictureId);
+
+        if(!request.getNewTemplateSecurity().getStampCardSecurity().equals(StampCardSecurity.TRUSTUSER))
+        {
+            StampInternalSecurity stampInternalSecurity = StampInternalSecurity.builder()
+                    .timeGateDuration(Duration.ofHours(request.getNewTemplateSecurity().getSecurityTimeGateDurationInHour()))
+                    .build();
+
+            createdTemplate.setStampInternalSecurity(stampInternalSecurity);
+        }
 
         Template savedTemplate = templateRepository.save(createdTemplate);
 

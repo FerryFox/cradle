@@ -4,7 +4,7 @@ import com.fox.cradle.features.appuser.model.AppUser;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardCategory;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardSecurity;
 import com.fox.cradle.features.stampsystem.model.enums.StampCardStatus;
-import com.fox.cradle.features.stampsystem.model.stamp.TimeGateSecurity;
+import com.fox.cradle.features.stampsystem.model.stamp.StampInternalSecurity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -50,6 +50,6 @@ public class Template
     private AppUser appUser;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "time_gate_security_id")
-    private TimeGateSecurity timeGateSecurity;
+    @JoinColumn(name = "internal_stamp_security_id")
+    private StampInternalSecurity stampInternalSecurity;
 }

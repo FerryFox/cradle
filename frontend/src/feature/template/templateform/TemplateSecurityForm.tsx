@@ -13,6 +13,7 @@ type Props = {
     stepBack: () => void;
     handleNext : () => void;
     onSecuritySubmit : (newTemplateSecurity : NewTemplateSecurity) => void;
+    newTemplateSecurity : NewTemplateSecurity;
 };
 
 type FormErrors = {
@@ -21,30 +22,29 @@ type FormErrors = {
     security? : string;
 }
 
-export default function TemplateSecurityForm({stepBack, handleNext, onSecuritySubmit} : Props) {
+export default function TemplateSecurityForm({stepBack, handleNext, onSecuritySubmit, newTemplateSecurity} : Props) {
 
     const [isShaking, setIsShaking] = useState<boolean>(false);
     const [formErrors, setFormErrors] = useState<FormErrors>({});
     const [checkedTimeGate, setCheckedTimeGate] = useState(false);
-    const [timeGate , setTimeGate] = useState<number>(0);
+    const [timeGate , setTimeGate] =
+        useState<number>(newTemplateSecurity.securityTimeGateDurationInHour);
 
     const handleTimeGateChange = (event : ChangeEvent<HTMLInputElement> ) => {
         setCheckedTimeGate(event.target.checked);
     };
 
-    const currentDate = new Date();
-    currentDate.setFullYear(currentDate.getFullYear() + 1);
-    const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
+    const [selectedDate, setSelectedDate] = useState<Date>(newTemplateSecurity.expirationDate);
 
     const [security, setSecurity] = useState([]);
-    const [selectedSecurity, setSelectedSecurity] = useState('');
+    const [selectedSecurity, setSelectedSecurity] = useState(newTemplateSecurity.stampCardSecurity);
     useEffect(() => {
         axios('/api/templates/security')
             .then((response) => setSecurity(response.data));
     }, []);
 
     const [status, setStatus] = useState([]);
-    const [selectedStatus, setSelectedStatus] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState(newTemplateSecurity.stampCardStatus);
     useEffect(() => {
         axios('/api/templates/status')
             .then((response) => setStatus(response.data));

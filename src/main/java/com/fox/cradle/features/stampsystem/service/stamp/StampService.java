@@ -26,12 +26,12 @@ public class StampService
 
     private static final String MESSAGE = "Stamping successful";
 
-    public TimeGateSecurity createTimeGate(NewTemplate newTemplate, Template template)
+    public StampInternalSecurity createTimeGate(NewTemplate newTemplate, Template template)
     {
         int timeInHour = newTemplate.getSecurityTimeGate().getTimeGateNumber();
         Duration duration = Duration.ofHours(timeInHour);
 
-        return TimeGateSecurity.builder()
+        return StampInternalSecurity.builder()
                 .timeGateDuration(duration)
                 .template(template)
                 .build();
@@ -64,7 +64,7 @@ public class StampService
     private StampThisResponse timeGate(StampCard stampCard , StampField stampField)
     {
         Instant time = stampCard.getLastStampDate();
-        Duration duration = stampCard.getTemplate().getTimeGateSecurity().getTimeGateDuration();
+        Duration duration = stampCard.getTemplate().getStampInternalSecurity().getTimeGateDuration();
 
         if(time == null)
         {
